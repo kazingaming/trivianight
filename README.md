@@ -10,9 +10,47 @@ work out roughly where it must be, and find out how close you got.
 
 ---
 
-## Running it
+## Play it (one click)
 
-Requires **Node 20 or newer**.
+Double-click **`Launch Trivia Night.bat`**.
+
+It checks your setup, installs and builds anything missing, starts the server and opens
+your browser at <http://localhost:3001>. Close the window to stop the game.
+
+The first launch takes a minute or two while dependencies install. After that it is a few
+seconds.
+
+## First-time setup
+
+You need **one** thing installed, once:
+
+- **[Node.js 20 or newer](https://nodejs.org)** — download the LTS build and accept the
+  defaults. npm comes with it.
+
+That is all. The launcher handles dependencies and the build itself. If Node is missing or
+too old, the launcher says so and tells you where to get it.
+
+Nothing else is required: no database, no accounts, no API keys, no port forwarding.
+
+---
+
+## Game modes
+
+| Mode | Players | Rounds | Clock | How you get in |
+| --- | --- | --- | --- | --- |
+| **Solo Gauntlet** | 1 | Endless, 3 lives | 45s | Instant |
+| **Quick 1v1** | 2 | 8 | 30s | Public matchmaking |
+| **Quick FFA** | up to 4 | 10 | 30s | Public matchmaking |
+| **Private game** | 2–4 | Configurable | Configurable | Room code |
+
+**Solo Gauntlet** climbs the fastest and runs until three wildly wrong answers end it.
+**Quick 1v1** opens around medium difficulty and rises to hard. **Quick FFA** has the
+gentlest ramp so a room can settle in. **Private games** are still there for playing with
+people you know — they are just no longer what "multiplayer" means by default.
+
+---
+
+## Developer mode
 
 ```bash
 npm install
@@ -22,110 +60,121 @@ npm install
 npm run dev
 ```
 
-Then open **http://localhost:5173**.
+Vite on <http://localhost:5173> with hot reload, and the game server on `3001`. Vite
+proxies `/socket.io` and `/api` through, so everything is same-origin with no config.
 
-That starts two processes: the Vite dev server on `5173` and the game server on `3001`.
-Vite proxies `/socket.io` and `/api` through to the game server, so everything is
-same-origin and there is nothing else to configure.
+To play multiplayer locally, open a **second browser tab**. Each tab is a separate player:
+the seat token lives in `sessionStorage`, so tabs do not fight over one identity, while a
+refresh still returns you to your own seat with your score intact.
 
-### Playing multiplayer locally
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev servers with hot reload |
+| `npm run launch` | The one-click launcher, from a terminal |
+| `npm test` | Full suite: unit tests plus real multi-client matches |
+| `npm run typecheck` | Typechecks every package |
+| `npm run content:check` | Validates the question bank and prints its shape |
+| `npm run build` | Builds the client |
+| `npm run serve` | Build, then run the production server on `3001` |
 
-Open a **second browser tab** at the same address and join with the room code. Each tab is
-a separate player — the seat token lives in `sessionStorage`, so tabs don't fight over one
-identity, while a refresh still puts you back in your own seat with your score intact.
+Set `TRIVIA_DEBUG=1` for verbose room join/leave logging when chasing a multiplayer bug.
 
-To play across devices on your network, use the `Network:` URL that Vite prints and make
-sure port `5173` is reachable.
-
-### Production build
+## Production build
 
 ```bash
 npm run serve
 ```
 
-Builds the client and serves it from the game server on **http://localhost:3001** —
-one process, one port. Set `PORT` (or `TRIVIA_PORT`) to change it.
+Builds the client and serves it from the game server on <http://localhost:3001> — one
+process, one port, no Vite. This is the same path the launcher uses and the same path
+production uses, so if it works here it works deployed.
 
-### Other commands
+## Testing
 
-| Command | What it does |
-| --- | --- |
-| `npm test` | Unit tests plus a full lobby-to-podium multiplayer match |
-| `npm run typecheck` | Typechecks every package |
-| `npm run content:check` | Validates the question bank and prints its shape |
-| `npm run build` | Builds the client only |
+```bash
+npm test
+```
+
+51 tests. The interesting ones are not unit tests: `apps/server/test/` boots the real
+server binary and drives real socket clients through complete matches — matchmaking,
+hidden guesses, reveals, disconnects, abandoned games and queue lifecycle.
 
 ---
 
-## What's in the box
+## Multiplayer architecture
 
-**Three modes.**
+**The server is authoritative for everything that matters.** No player's browser hosts a
+game, decides a score, or controls another player's state. Clients render snapshots and
+submit intent.
 
-- **Solo Gauntlet** — three lives, no finish line. Difficulty climbs fastest here, a wildly
-  wrong guess costs a life, and your best score is kept locally.
-- **1v1 Duel** — two players, same questions, eight rounds. Starts around medium.
-- **Free For All** — up to four players. The gentlest ramp, so a room can settle in before
-  the ridiculous questions arrive.
+**Matchmaking.** Players join a queue by mode. The matchmaker gathers compatible tickets
+and builds a room. Pairing lives behind a `MatchmakingPolicy` interface; today there is one
+implementation — first come, first served — because there is no rating to match on. Adding
+Elo, regions or a ranked split later means writing a new policy, not touching the queue,
+the protocol or the room lifecycle.
 
-**Nine question formats** — numeric estimate, percentage, probability, year, higher/lower,
-which-is-bigger, which-is-closer, ordering, and multiple choice.
+One ticket per player, always: a duplicate request returns your existing place, switching
+modes moves you, and a disconnect or closed tab removes you. Ghosts are swept on a timer
+and on every disconnect.
 
-**105 questions** across 14 categories, every one carrying its source and whether the
-figure was measured, estimated, modelled, or true by definition.
+Free For All wants four players. If the queue is quiet it will start with three after 40
+seconds and two after 75, and the UI says so. It never fills seats with bots — every player
+in a match is a real person.
 
----
+**Game rooms.** A room owns the question, the clock and the scoreboard. Guesses are held
+server-side until every connected player has locked in; they are not sent to other clients
+in any form before the reveal, which the test suite asserts. The deadline is a server
+timestamp — the visible countdown is a rendering of it, never the source of truth.
 
-## How scoring works
+**Public vs private.** Matchmade rooms have no host: `hostId` is empty, nobody can start,
+configure or rematch them, and the server starts the match itself once the party is seated.
+Private rooms keep a party leader who picks settings and presses start. That is a social
+role only — the leader's browser has no more authority than anyone else's.
 
-Being almost right should feel nearly as good as knowing.
+**Realtime.** Socket.IO over WebSockets, with polling fallback for restrictive networks.
+Traffic is tiny: queue status, question ids, guesses, locks, deadlines and score deltas.
+Reconnection is automatic, and a returning player reclaims their seat and score by client
+id. A public match that drops below its minimum player count for 25 seconds ends honestly
+with "your opponent left" rather than stranding anyone.
 
-Open quantities are scored on **log-ratio** error, not raw difference — so guessing 5
-billion against 10 billion earns exactly what guessing 50 against 100 does. Absolute error
-would turn every large-number question into a lottery.
+**Identity.** No accounts. A random client id in `sessionStorage` identifies you for as
+long as the tab lives; your display name and colour persist in `localStorage`. Duplicate
+display names are disambiguated for display only ("Ada", "Ada 2") and never affect internal
+identity.
 
-```
-accuracy = exp(-(log10(guess / answer) / tolerance) ^ 1.3)
-```
-
-With the default tolerance that works out to roughly:
-
-| How far off | Score | Reads as |
-| --- | --- | --- |
-| within 1.4% | 99.5%+ | Bullseye |
-| within 14% | 90% | Ridiculously close |
-| within 37% | 72% | Good guess |
-| within 2.3× | 30% | In the ballpark |
-| within 4× | 10% | Way off |
-| 10× out | 1% | Different universe |
-
-Percentages and years are scored on absolute distance instead, because that is how people
-actually reason about them. Ordering questions get partial credit from pairwise
-concordance, rescaled so a random shuffle earns nothing.
-
-On top of the accuracy score: harder rounds pay a multiplier, consecutive good rounds pay a
-streak bonus, and in multiplayer the closest player takes a bonus — **but everyone still
-scores on their own accuracy.** Losing a round by a hair is never worth zero.
+**Persistence.** None on the server, by design — a party game room is worthless once
+everyone has gone home. Personal bests and settings live in your browser. Swapping rooms
+for a shared store later touches one file, `apps/server/src/rooms.ts`.
 
 ---
 
-## Project layout
+## Environment configuration
 
-```
-packages/
-  shared/     Types, scoring, number parsing, difficulty curves, wire protocol
-  content/    The question bank, its validator, and the pool selector
-apps/
-  server/     Express + Socket.IO. Authoritative for every multiplayer room.
-  web/        Vite + React client
-```
+Every value has a working default. Copy `.env.example` to `.env` only if you want to
+override something locally; in production, set these in your host's dashboard.
 
-**Content is data, never code.** `packages/shared/src/types.ts` defines the question model;
-`packages/content/src/packs/` holds the questions. Nothing in the UI knows about any
-individual question.
+| Variable | Where | Default | What it does |
+| --- | --- | --- | --- |
+| `TRIVIA_PORT` | Server | `3001` | Port to listen on. Wins over `PORT` so a launcher's ambient `PORT` cannot collide with the web dev server. |
+| `PORT` | Server | — | Used if `TRIVIA_PORT` is unset. Hosts that inject this (Render, Railway, Fly) work unchanged. |
+| `NODE_ENV` | Server | `development` | `production` serves the built client from the game server. The npm scripts set it. |
+| `ALLOWED_ORIGINS` | Server | unset | Comma-separated origins allowed to open a socket. Only needed for a **split** deployment. Unset means any origin, which is safe here (no cookies, no credentials, no accounts) but worth setting in production. |
+| `VITE_SERVER_URL` | Client | empty | Where the browser opens its socket. Empty = same origin, correct for local dev and single-process production. Set it **only** for a split deployment. |
 
-Workspace packages are consumed straight from TypeScript source — Vite aliases them and the
-server runs under `tsx` — so there is no build step between editing shared code and seeing
-it work.
+There are no secrets, no API keys and no database credentials. Nothing sensitive should
+ever end up in this file.
+
+---
+
+## Deployment
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full handoff: recommended free stack,
+accounts to create, exact steps, free-tier limits and how to avoid surprise billing.
+
+Short version: the whole game is one Node process that serves its own client, so any host
+that runs Node and keeps a WebSocket open will do. The recommended $0 option is
+**Render's free web service**, with the honest caveat that free instances sleep after 15
+minutes of inactivity.
 
 ---
 
@@ -139,10 +188,8 @@ npm run content:check
 ```
 
 The checker refuses anything malformed — a missing reveal, an answer outside its own range,
-a duplicate id, an undated statistic that is marked as changing over time — and prints the
+a duplicate id, an undated statistic marked as changing over time — and prints the
 distribution across difficulty, format and category so gaps are obvious.
-
-A numeric question looks like this:
 
 ```ts
 {
@@ -162,8 +209,7 @@ A numeric question looks like this:
     comparison: 'Roughly 2.5 million ants for every single human being.',
   },
   source: {
-    citation: 'Schultheiss et al., "The abundance, biomass, and distribution of ants on Earth"',
-    publisher: 'PNAS',
+    citation: 'Schultheiss et al., PNAS',
     year: 2022,
     kind: 'estimated',
   },
@@ -174,63 +220,84 @@ A numeric question looks like this:
 
 - The player should think *"I have no idea — but I can work this out."*
 - Not *"I either memorised this or I didn't."*
-- And not *"I can just multiply the numbers in the question."* A calculator may help you
-  reason; it should never solve the thing for you.
+- And not *"I can just multiply the numbers in the question."*
 - The reveal should be worth reading even if you got it right.
-- If the honest answer is a range, say **about**. Never imply precision nobody has.
+- If the honest answer is a range, say **about**.
 - Anything that drifts — populations, internet users — gets `volatile: true` and a year.
 
 ---
 
-## Notes on the design
+## How scoring works
 
-**Difficulty is never sent to the client during a question.** Knowing a question is tagged
-"Wildcard" would leak that the answer is absurd, so `toPublicQuestion` strips it along with
-the answer, the reveal text and the source.
+Being almost right should feel nearly as good as knowing.
 
-**Guesses are held on the server** until every connected player has locked in. They are not
-sent to other clients in any form before the reveal — the integration test asserts this.
+Open quantities are scored on **log-ratio** error, so guessing 5 billion against 10 billion
+earns exactly what guessing 50 against 100 does:
 
-**Difficulty is rolled, not scheduled.** Each round produces a weighted distribution centred
-on a moving target rather than a fixed table, so the ramp is intentional but the selection
-stays unpredictable.
+```
+accuracy = exp(-(log10(guess / answer) / tolerance) ^ 1.3)
+```
 
-**Reaction scenes** are procedural. One engine handles the physics and timing; seven themes
-(archery, free throw, darts, booster landing, curling, putting, paper plane) supply the
-paint, and the theme rotates per round. The outcome mirrors the guess: overshoot for too
-high, fall short for too low, dead centre for a bullseye.
+| How far off | Score | Reads as |
+| --- | --- | --- |
+| within 1.4% | 99.5%+ | Bullseye |
+| within 14% | 90% | Ridiculously close |
+| within 37% | 72% | Good guess |
+| within 2.3× | 30% | In the ballpark |
+| within 4× | 10% | Way off |
+| 10× out | 1% | Different universe |
 
-**Sound is synthesised** with the Web Audio API — no audio files, no licensing questions,
-and it starts only after a real user gesture.
+Percentages and years use absolute distance instead. Ordering questions get partial credit
+from pairwise concordance, rescaled so a random shuffle earns nothing.
 
-**Solo runs entirely in the browser.** No server, no latency, and it keeps working if the
-game is ever packaged for a platform without a backend. That does mean the answer is in
-memory during a round; in a single-player high-score mode the only person you could cheat
-is yourself.
-
----
-
-## Accessibility
-
-- Animation intensity has three levels, and the OS `prefers-reduced-motion` setting is
-  respected on top of whatever you choose.
-- Reaction scenes can be switched off entirely; the reveal still tells you everything.
-- Success and failure are never signalled by colour alone — there is always a word.
-- Sound is toggleable from every screen and has a volume control.
-- Full keyboard play: <kbd>Enter</kbd> locks in, <kbd>C</kbd> opens the calculator,
-  <kbd>Esc</kbd> closes it. Focus is visible everywhere and dialogs trap it.
-- Touch targets are at least 44px on touch devices; number entry never needs a letter key.
-- Reveals are announced to screen readers, and the number line has a text equivalent.
+Harder rounds pay a multiplier, streaks pay a bonus, and in multiplayer the closest player
+takes a bonus — but **everyone still scores on their own accuracy**. Losing a round by a
+hair is never worth zero.
 
 ---
 
-## Deployment
+## Troubleshooting
 
-The server serves the built client when `NODE_ENV=production`, so a single Node process on
-a single port is all you need. Rooms are in-memory by design — a party game room is
-worthless once everyone has gone home — and swapping that for a shared store touches only
-`apps/server/src/rooms.ts`.
+**"Port 3001 is already in use"** — Trivia Night is probably already running; check your
+browser and other windows. Otherwise close whatever is using the port, or set
+`TRIVIA_PORT=3002` before launching.
 
-Nothing in the client assumes a browser-only environment beyond the DOM itself: no
-build-time URLs, no absolute origins, fonts bundled rather than fetched. Packaging it later
-for a desktop or mobile shell should be a matter of pointing the socket at a host.
+**The launcher closes instantly** — Node is not installed or not on your PATH. Install the
+LTS build from [nodejs.org](https://nodejs.org) and try again.
+
+**"Matchmaking is unavailable"** — the client cannot reach the server. In dev, check that
+`npm run dev` is running both processes. In production, the backend may be waking from
+sleep (see DEPLOYMENT.md); wait ~50 seconds and retry.
+
+**Quick Match never finds anyone** — Quick 1v1 needs one other real person searching at the
+same time, and FFA wants up to four. There are no bots. To test alone, open a second
+browser tab and queue in both.
+
+**Two tabs act like the same player** — they shouldn't; identity is per-tab. If it happens,
+one tab is probably a duplicate of the other (`Ctrl`+`K`-style tab duplication copies
+`sessionStorage`). Open a genuinely new tab instead.
+
+**Changes to questions don't show up** — the launcher runs a production build. Either
+relaunch, or use `npm run dev` while editing content.
+
+**Tests time out** — the multiplayer suite starts real servers and plays real rounds; the
+full run takes about 90 seconds. That is expected.
+
+---
+
+## Project layout
+
+```
+packages/
+  shared/     Types, scoring, number parsing, difficulty curves, wire protocol
+  content/    The question bank, its validator, and the pool selector
+apps/
+  server/     Express + Socket.IO. Authoritative for matchmaking and every room.
+  web/        Vite + React client
+scripts/
+  launch.mjs  The one-click launcher
+```
+
+Workspace packages are consumed straight from TypeScript source — Vite aliases them and the
+server runs under `tsx` — so there is no build step between editing shared code and seeing
+it work.
