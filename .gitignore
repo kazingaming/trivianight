@@ -1,0 +1,77 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+dist-types/
+build/
+out/
+*.tsbuildinfo
+
+# Environment and secrets — never commit these
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Test and coverage output
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+
+# Caches
+.vite/
+.cache/
+.turbo/
+.eslintcache
+.parcel-cache/
+
+# Local databases and scratch files
+*.sqlite
+*.sqlite3
+*.db
+tmp/
+temp/
+scratch/
+*.tmp.mjs
+*.tmp.js
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS junk
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Deployment provider local state
+.vercel
+.netlify
+.wrangler/
+
+# NOTE: question content under packages/content/src is source and MUST ship.
+# Nothing in this file should exclude it.

@@ -1,0 +1,169 @@
+/**
+ * Design tokens.
+ *
+ * The look: late-night, high-contrast, a bit arcade. Amber is the voice of the
+ * game (answers, primary actions), cyan is *you*, magenta is drama. Everything
+ * else is ink and glass.
+ */
+
+:root {
+  /* --- Ink ------------------------------------------------------- */
+  --ink-900: #06070d;
+  --ink-800: #0a0b12;
+  --ink-700: #0f1119;
+  --ink-600: #151824;
+  --ink-500: #1c2030;
+  --ink-400: #262b3d;
+  --ink-300: #343a50;
+
+  /* --- Text ------------------------------------------------------ */
+  --text-hi: #f4f6ff;
+  --text-mid: #a9b0c9;
+  --text-low: #6f7793;
+  --text-faint: #4c5471;
+
+  /* --- Signal ---------------------------------------------------- */
+  --amber: #ffd84d;
+  --amber-deep: #f0a500;
+  --cyan: #4de1ff;
+  --magenta: #ff5d8f;
+  --lime: #5be49b;
+  --violet: #a98bff;
+  --orange: #ff9a4d;
+  --rose: #ff7b7b;
+  --teal: #3fd6c4;
+
+  /* --- Semantic -------------------------------------------------- */
+  --good: var(--lime);
+  --warn: var(--orange);
+  --bad: var(--magenta);
+  --focus: var(--cyan);
+
+  /* --- Player palette (index order matters, shared with server) --- */
+  --player-0: var(--cyan);
+  --player-1: var(--amber);
+  --player-2: var(--magenta);
+  --player-3: var(--lime);
+  --player-4: var(--violet);
+  --player-5: var(--orange);
+  --player-6: var(--teal);
+  --player-7: var(--rose);
+
+  /* --- Surfaces -------------------------------------------------- */
+  --surface: color-mix(in srgb, var(--ink-600) 88%, transparent);
+  --surface-raised: color-mix(in srgb, var(--ink-500) 92%, transparent);
+  --border: color-mix(in srgb, var(--text-hi) 9%, transparent);
+  --border-strong: color-mix(in srgb, var(--text-hi) 18%, transparent);
+
+  /* --- Type ------------------------------------------------------ */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+  /* Fluid type: readable on a phone, commanding on a TV. */
+  --step--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.88rem);
+  --step-0: clamp(0.94rem, 0.9rem + 0.25vw, 1.05rem);
+  --step-1: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  --step-2: clamp(1.35rem, 1.15rem + 1vw, 1.9rem);
+  --step-3: clamp(1.7rem, 1.3rem + 1.9vw, 2.8rem);
+  --step-4: clamp(2.1rem, 1.4rem + 3.3vw, 4rem);
+  --step-5: clamp(2.6rem, 1.4rem + 5.6vw, 6rem);
+
+  /* --- Space ----------------------------------------------------- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+
+  /* --- Shape ----------------------------------------------------- */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* --- Depth ----------------------------------------------------- */
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.35);
+  --shadow: 0 12px 32px -8px rgb(0 0 0 / 0.55);
+  --shadow-lg: 0 30px 70px -20px rgb(0 0 0 / 0.7);
+  --glow-amber: 0 0 0 1px color-mix(in srgb, var(--amber) 40%, transparent),
+    0 0 32px -6px color-mix(in srgb, var(--amber) 55%, transparent);
+  --glow-cyan: 0 0 0 1px color-mix(in srgb, var(--cyan) 40%, transparent),
+    0 0 32px -6px color-mix(in srgb, var(--cyan) 55%, transparent);
+
+  /* --- Motion ---------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur: 260ms;
+  --dur-slow: 520ms;
+
+  /* Multiplied by the animation-intensity setting; 0 disables transitions. */
+  --motion: 1;
+
+  /* --- Layout ---------------------------------------------------- */
+  --shell-max: 1180px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Band colours, used by feedback chips, reveal states and reactions. */
+:root {
+  --band-perfect: #ffe27a;
+  --band-great: var(--lime);
+  --band-good: var(--teal);
+  --band-fair: var(--cyan);
+  --band-miss: var(--orange);
+  --band-disaster: var(--magenta);
+}
+
+[data-band='perfect'] {
+  --band: var(--band-perfect);
+}
+[data-band='great'] {
+  --band: var(--band-great);
+}
+[data-band='good'] {
+  --band: var(--band-good);
+}
+[data-band='fair'] {
+  --band: var(--band-fair);
+}
+[data-band='miss'] {
+  --band: var(--band-miss);
+}
+[data-band='disaster'] {
+  --band: var(--band-disaster);
+}
+
+/* Player accent, set on any element carrying data-color="0..7". */
+[data-color='0'] {
+  --accent: var(--player-0);
+}
+[data-color='1'] {
+  --accent: var(--player-1);
+}
+[data-color='2'] {
+  --accent: var(--player-2);
+}
+[data-color='3'] {
+  --accent: var(--player-3);
+}
+[data-color='4'] {
+  --accent: var(--player-4);
+}
+[data-color='5'] {
+  --accent: var(--player-5);
+}
+[data-color='6'] {
+  --accent: var(--player-6);
+}
+[data-color='7'] {
+  --accent: var(--player-7);
+}
