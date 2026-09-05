@@ -142,7 +142,10 @@ export function runScene(
     const target = theme.target(width, height);
 
     // Where it actually ends up: offset from the target along the travel axis.
-    const shortfall = Math.pow(1 - clamp01(input.accuracy), 1.25) * MAX_SPREAD * width;
+    // `spread` lets a scene with less room than the canvas is wide keep its
+    // misses on screen without changing what a miss means.
+    const shortfall =
+      Math.pow(1 - clamp01(input.accuracy), 1.25) * MAX_SPREAD * width * (theme.spread ?? 1);
     const sign = input.direction === 'high' ? 1 : input.direction === 'low' ? -1 : 0;
     // A dead-centre hit still gets a hair of wobble so it never looks canned.
     const jitter = (noise[0] - 0.5) * 6 * (1 - clamp01(input.accuracy));

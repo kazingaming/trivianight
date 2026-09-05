@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title Trivia Night
+title Close Enough
 
 REM One-click launcher. Double-click this file to play.
 REM Everything is resolved relative to this file, so the project folder can be
@@ -25,7 +25,7 @@ set EXITCODE=%ERRORLEVEL%
 
 if not "%EXITCODE%"=="0" (
   echo.
-  echo   Trivia Night stopped with an error. The message above explains why.
+  echo   Close Enough stopped with an error. The message above explains why.
   echo.
   pause
 )

@@ -71,12 +71,20 @@ export const IconCopy = ({ size = 18 }: IconProps) => (
   </svg>
 );
 
-export const Logo = ({ size = 22 }: IconProps) => (
-  <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden className="topbar__mark">
-    <circle cx="32" cy="32" r="19" fill="none" stroke="var(--amber)" strokeWidth="5" />
-    <circle cx="32" cy="32" r="9" fill="none" stroke="var(--amber)" strokeWidth="5" opacity="0.5" />
-    <circle cx="39" cy="25" r="6" fill="var(--cyan)" />
-  </svg>
+/**
+ * The brand mark. A raster asset rather than inline SVG, so the artwork can be
+ * replaced by dropping a new file in `public/` without touching a component.
+ */
+export const Logo = ({ size = 26 }: IconProps) => (
+  <img
+    src="/logo.png"
+    width={size}
+    height={size}
+    alt=""
+    aria-hidden
+    className="topbar__mark"
+    decoding="async"
+  />
 );
 
 /* --- Avatar ------------------------------------------------------------ */

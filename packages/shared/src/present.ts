@@ -39,7 +39,10 @@ export function toPublicQuestion(question: Question, rng: Rng = Math.random): Pu
     case 'probability':
       return base;
     case 'year':
-      return { ...base, range: question.range };
+      // Deliberately bare. A per-question year range is authored around the
+      // answer, so shipping one would hand the player a hint; the slider uses
+      // one shared axis instead. See shared/src/timeline.ts.
+      return base;
     case 'higher-lower':
       return { ...base, reference: question.reference };
     case 'which-is-bigger':

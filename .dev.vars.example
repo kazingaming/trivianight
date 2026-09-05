@@ -1,0 +1,29 @@
+# Close Enough — local Worker secrets
+#
+# Copy this file to `apps/worker/.dev.vars` to test Google sign-in locally.
+# `.dev.vars` is gitignored and must never be committed.
+#
+# You do NOT need this file to run or develop the game. Without it, accounts
+# are simply not offered — except on a loopback host, where a local test
+# sign-in stands in so the account screens can be exercised. Everything else
+# works identically either way.
+#
+# In production these are not files: GOOGLE_CLIENT_ID goes in
+# apps/worker/wrangler.toml under [vars], and the other two are set with
+#     npx wrangler secret put GOOGLE_CLIENT_SECRET
+#     npx wrangler secret put SESSION_SECRET
+
+# From Google Cloud Console -> APIs & Services -> Credentials ->
+# "OAuth client ID", application type "Web application".
+# Authorised redirect URIs must include, exactly:
+#   http://localhost:8787/api/auth/google/callback
+#   https://<your-worker>.workers.dev/api/auth/google/callback
+GOOGLE_CLIENT_ID=
+
+# The client secret shown next to that client id. Never public.
+GOOGLE_CLIENT_SECRET=
+
+# Any long random string. It signs session cookies, so changing it signs
+# everyone out. Generate one with:
+#   node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+SESSION_SECRET=

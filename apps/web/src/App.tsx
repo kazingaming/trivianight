@@ -10,10 +10,12 @@ import { MultiplayerScreen } from './screens/Multiplayer.js';
 import { QuickMatchScreen } from './screens/QuickMatch.js';
 import { RoomScreen } from './screens/Room.js';
 import { NotFound } from './screens/NotFound.js';
+import { AccountScreen, ProfilePicture } from './screens/Account.js';
 
 import { IconMuted, IconSettings, IconSound, Logo, ToastLayer, type Toast } from './components/primitives.js';
 import { applyMotionAttribute, useSettings } from './state/settings.js';
 import { useRoom } from './state/room.js';
+import { useAccount } from './state/account.js';
 import { useSystemReducedMotion } from './lib/hooks.js';
 import { sfx } from './lib/audio.js';
 
@@ -23,6 +25,16 @@ export function App() {
   const update = useSettings((state) => state.update);
   const setSystemReducedMotion = useSettings((state) => state.setSystemReducedMotion);
   const systemReduced = useSystemReducedMotion();
+
+  // Ask once, at startup. Nothing waits on the answer; a guest simply never
+  // sees an account control.
+  const refreshAccount = useAccount((state) => state.refresh);
+  const accountStatus = useAccount((state) => state.status);
+  const accountConfig = useAccount((state) => state.config);
+  const profile = useAccount((state) => state.profile);
+  useEffect(() => {
+    void refreshAccount();
+  }, [refreshAccount]);
 
   const [toasts, setToasts] = useState<Toast[]>([]);
   const toastId = useRef(0);
@@ -67,12 +79,22 @@ export function App() {
       </a>
 
       <header className="topbar">
-        <Link to="/" className="topbar__brand" aria-label="Trivia Night home">
+        <Link to="/" className="topbar__brand" aria-label="Close Enough home">
           <Logo />
-          <span>Trivia Night</span>
+          <span>Close Enough</span>
         </Link>
 
         <div className="topbar__actions">
+          {accountStatus === 'signed-in' && profile ? (
+            <Link to="/account" className="topbar__account" title={`Signed in as ${profile.username}`}>
+              <ProfilePicture profile={profile} size={26} />
+              <span className="topbar__account-name">{profile.username}</span>
+            </Link>
+          ) : accountConfig.available && !inGame ? (
+            <Link to="/account" className="btn btn--ghost btn--sm">
+              Sign in
+            </Link>
+          ) : null}
           <button
             type="button"
             className="btn btn--ghost btn--icon"
@@ -116,6 +138,7 @@ export function App() {
             <Route path="/solo" element={<SoloScreen />} />
             <Route path="/how-to-play" element={<HowToPlay />} />
             <Route path="/settings" element={<SettingsScreen />} />
+            <Route path="/account" element={<AccountScreen />} />
             <Route path="/quick/:mode" element={<QuickMatchScreen />} />
             <Route path="/private" element={<MultiplayerScreen />} />
             <Route path="/room/:code" element={<RoomScreen />} />

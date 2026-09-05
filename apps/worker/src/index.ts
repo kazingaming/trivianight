@@ -1,5 +1,5 @@
 /**
- * Trivia Night on Cloudflare.
+ * Close Enough on Cloudflare.
  *
  * One Worker is the whole backend. It serves the built client from the edge,
  * answers a small HTTP API, and routes WebSocket upgrades to the Durable
@@ -17,9 +17,23 @@ import { ALL_QUESTIONS, contentStats } from '@trivia/content';
 import { createRoomCode, MODES, normalizeRoomCode, roomError, type GameMode } from '@trivia/shared';
 
 import { errorResponse, jsonResponse } from './ws.js';
+import {
+  authAvailable,
+  beginGoogleSignIn,
+  clearCookie,
+  clearOAuthCookie,
+  completeGoogleSignIn,
+  devLoginAllowed,
+  fetchAvatar,
+  googleConfig,
+  issueSession,
+  readSession,
+  SESSION_COOKIE,
+} from './auth.js';
 
 export { RoomDO } from './room-do.js';
 export { MatchmakerDO } from './matchmaker-do.js';
+export { UserDO } from './user-do.js';
 
 /** The matchmaker is a singleton; every player routes to the same instance. */
 const MATCHMAKER_NAME = 'global';
@@ -109,6 +123,10 @@ async function handleApi(request: Request, env: Env, url: URL, path: string): Pr
     return jsonResponse({ ok: true, data: { code, mode } });
   }
 
+  if (path.startsWith('/api/auth/') || path.startsWith('/api/account/')) {
+    return handleAccounts(request, env, url, path);
+  }
+
   if (path === '/api/room' && request.method === 'GET') {
     const code = normalizeRoomCode(url.searchParams.get('code') ?? '');
     if (code.length < 4) return errorResponse(400, roomError('INVALID_CODE'));
@@ -118,6 +136,137 @@ async function handleApi(request: Request, env: Env, url: URL, path: string): Pr
   }
 
   return errorResponse(404, roomError('BAD_REQUEST', 'Unknown endpoint.'));
+}
+
+/* -------------------------------------------------------------------- *
+ * Accounts
+ *
+ * Every route here is optional. A player who never touches them gets the
+ * whole game; a player who signs in gets their name, picture and best runs
+ * carried between devices.
+ * -------------------------------------------------------------------- */
+
+function userStub(env: Env, uid: string) {
+  return env.USER.get(env.USER.idFromName(uid));
+}
+
+async function handleAccounts(
+  request: Request,
+  env: Env,
+  url: URL,
+  path: string,
+): Promise<Response> {
+  /* --- What the client is allowed to offer --------------------------- */
+  if (path === '/api/auth/config') {
+    return jsonResponse({
+      // Whether to show a sign-in control at all.
+      available: authAvailable(env, url),
+      google: googleConfig(env) !== null,
+      devLogin: devLoginAllowed(env, url),
+    });
+  }
+
+  /* --- Google round trip --------------------------------------------- */
+  if (path === '/api/auth/google/start') {
+    const redirect = await beginGoogleSignIn(env, url);
+    return redirect ?? errorResponse(503, roomError('SERVER_ERROR', 'Sign-in is not configured.'));
+  }
+
+  if (path === '/api/auth/google/callback') {
+    const result = await completeGoogleSignIn(request, env, url);
+    if ('error' in result) return signInFailed(url, result.error);
+
+    const uid = `google:${result.identity.sub}`;
+    const response = await userStub(env, uid).fetch('https://user/ensure', {
+      method: 'POST',
+      body: JSON.stringify({
+        id: uid,
+        name: result.identity.name,
+        avatar: await fetchAvatar(result.identity.picture),
+      }),
+    });
+    if (!response.ok) return signInFailed(url, 'Could not open your account.');
+
+    const cookie = await issueSession(env, url, uid);
+    if (!cookie) return signInFailed(url, 'Sign-in is not configured.');
+
+    const headers = new Headers({ location: result.next });
+    headers.append('set-cookie', cookie);
+    headers.append('set-cookie', clearOAuthCookie(url));
+    return new Response(null, { status: 302, headers });
+  }
+
+  /*
+   * The local-only shortcut. See devLoginAllowed: it needs both an
+   * unconfigured deployment and a loopback host, which together cannot
+   * describe anything reachable from the internet.
+   */
+  if (path === '/api/auth/dev-login' && request.method === 'POST') {
+    if (!devLoginAllowed(env, url)) {
+      return errorResponse(404, roomError('BAD_REQUEST', 'Unknown endpoint.'));
+    }
+    /*
+     * `?as=` picks which local account to open. It exists so tests can start
+     * from a genuinely empty one — `wrangler dev` keeps Durable Object storage
+     * between runs, so a fixed name would inherit whatever the last session
+     * left behind. Browsing to the page uses the default.
+     */
+    const label = (url.searchParams.get('as') ?? 'local').replace(/[^a-z0-9-]/gi, '').slice(0, 40);
+    const uid = `dev:${label || 'local'}`;
+    await userStub(env, uid).fetch('https://user/ensure', {
+      method: 'POST',
+      body: JSON.stringify({ id: uid, name: 'Local Tester', avatar: null }),
+    });
+    const cookie = await issueSession(env, url, uid);
+    if (!cookie) return errorResponse(503, roomError('SERVER_ERROR'));
+    return jsonResponse({ ok: true }, 200, cookie);
+  }
+
+  if (path === '/api/auth/logout' && request.method === 'POST') {
+    return jsonResponse({ ok: true }, 200, clearCookie(SESSION_COOKIE, url));
+  }
+
+  /* --- Everything below needs a session ------------------------------ */
+  const session = await readSession(request, env, url);
+
+  if (path === '/api/auth/me') {
+    if (!session) return jsonResponse({ signedIn: false });
+    const response = await userStub(env, session.uid).fetch('https://user/profile');
+    // The account is gone but the cookie is not. Drop the cookie.
+    if (!response.ok) {
+      return jsonResponse({ signedIn: false }, 200, clearCookie(SESSION_COOKIE, url));
+    }
+    const data = (await response.json()) as object;
+    return jsonResponse({ signedIn: true, ...data });
+  }
+
+  if (!session) return errorResponse(401, roomError('BAD_REQUEST', 'Not signed in.'));
+
+  if (path === '/api/account/profile' && request.method === 'PATCH') {
+    return userStub(env, session.uid).fetch('https://user/profile', {
+      method: 'PATCH',
+      body: await request.text(),
+    });
+  }
+
+  if (path === '/api/account/score' && request.method === 'POST') {
+    return userStub(env, session.uid).fetch('https://user/score', {
+      method: 'POST',
+      body: await request.text(),
+    });
+  }
+
+  return errorResponse(404, roomError('BAD_REQUEST', 'Unknown endpoint.'));
+}
+
+/** Bounce back to the app with something it can show the player. */
+function signInFailed(url: URL, message: string): Response {
+  const target = new URL('/account', url.origin);
+  target.searchParams.set('error', message);
+  return new Response(null, {
+    status: 302,
+    headers: { location: target.toString(), 'set-cookie': clearOAuthCookie(url) },
+  });
 }
 
 async function allocatePrivateRoom(env: Env, mode: GameMode): Promise<string | null> {

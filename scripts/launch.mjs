@@ -41,7 +41,7 @@ function say(message = '') {
 
 function banner() {
   say();
-  say(`  ${c.amber}${c.bold}TRIVIA NIGHT${c.reset}`);
+  say(`  ${c.amber}${c.bold}CLOSE ENOUGH${c.reset}`);
   say(`  ${c.dim}starting up${c.reset}`);
   say();
 }
@@ -124,7 +124,7 @@ async function main() {
   const major = Number(process.versions.node.split('.')[0]);
   if (Number.isNaN(major) || major < MIN_NODE_MAJOR) {
     return fail('Node.js is too old', [
-      `Trivia Night needs Node ${MIN_NODE_MAJOR} or newer. You have ${process.versions.node}.`,
+      `Close Enough needs Node ${MIN_NODE_MAJOR} or newer. You have ${process.versions.node}.`,
       '',
       'Install the LTS version from https://nodejs.org and run this again.',
     ]);
@@ -181,7 +181,7 @@ async function main() {
   const port = Number(process.env.TRIVIA_PORT ?? process.env.PORT ?? DEFAULT_PORT);
   if (await portInUse(port)) {
     return fail(`Port ${port} is already in use`, [
-      'Trivia Night may already be running — check your browser and other windows.',
+      'Close Enough may already be running — check your browser and other windows.',
       '',
       `If something else is using port ${port}, close it, or start with a different`,
       `port by setting TRIVIA_PORT (for example: set TRIVIA_PORT=3002).`,
@@ -253,5 +253,5 @@ async function main() {
 }
 
 main().catch((error) => {
-  fail('Something went wrong starting Trivia Night', [String(error?.message ?? error)]);
+  fail('Something went wrong starting Close Enough', [String(error?.message ?? error)]);
 });

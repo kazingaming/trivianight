@@ -132,12 +132,6 @@ export function QuickMatchScreen() {
           : `${found} / ${ideal} players`}
       </p>
 
-      {mode === 'ffa' ? (
-        <p className="muted queue__note">
-          Free For All needs all four players. No bots — it waits for real people.
-        </p>
-      ) : null}
-
       <Elapsed since={status?.searchingSince ?? Date.now()} offset={clockOffset} />
 
       {connection === 'reconnecting' ? (

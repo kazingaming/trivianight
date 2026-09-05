@@ -14,6 +14,9 @@ out/
 .env
 .env.local
 .env.*.local
+# Worker secrets for `wrangler dev`. The .example file is committed; this is not.
+.dev.vars
+.dev.vars.local
 *.pem
 *.key
 secrets.json

@@ -1,0 +1,2528 @@
+1. How many Earths could fit between Earth and the Moon?
+Answer: About 30 Earths
+ Type: Numerical estimation
+ Category: Space / Scale
+ Difficulty: Medium
+ Reveal: Earth and the Moon look close together in most illustrations, but the average gap is about 384,400 km — roughly 30 Earth diameters.
+ Source: NASA / JPL
+
+2. Approximately how many Earths could fit inside the Sun by volume?
+Answer: About 1.3 million Earths
+ Type: Numerical estimation
+ Category: Space / Scale
+ Difficulty: Medium
+ Reveal: The Sun is only about 109 Earths across, but volume grows in three dimensions — so roughly 1.3 million Earths could fit inside it.
+ Source: NASA
+
+3. What is the average depth of the world's oceans?
+Answer: About 3.7 km
+ Type: Numerical estimation
+ Category: Earth / Oceans
+ Difficulty: Medium
+ Reveal: The average ocean depth is about 3,682 metres. The deepest point is almost three times deeper than that.
+ Source: NOAA
+
+4. Approximately how many potentially active volcanoes are there on Earth, excluding the continuous volcanic belts on the ocean floor?
+Answer: About 1,350
+ Type: Numerical estimation
+ Category: Earth / Geology
+ Difficulty: Hard
+ Reveal: Around 1,350 volcanoes are considered potentially active, and roughly 500 have erupted during recorded history.
+ Source: U.S. Geological Survey
+
+5. What percentage of Earth's freshwater is locked in glaciers, ice caps, and permanent snow?
+Answer: About 69%
+ Type: Percentage estimation
+ Category: Earth / Water
+ Difficulty: Hard
+ Reveal: Most freshwater isn't in lakes or rivers. Roughly 68.7% is frozen in glaciers and ice caps.
+ Source: U.S. Geological Survey
+
+6. At its seasonal peak, roughly how many worker bees can live in a strong honey-bee colony?
+Answer: About 50,000–60,000 workers
+ Type: Numerical estimation
+ Category: Animals / Scale
+ Difficulty: Medium
+ Reveal: A strong colony can reach roughly 60,000 workers, plus a queen and hundreds or thousands of drones depending on the season.
+ Source: University of Delaware / Oregon State Extension
+
+7. Which contains more water: Earth's atmosphere or all of Earth's rivers?
+Answer: The atmosphere, by about 6×
+ Type: Which Is Bigger
+ Category: Earth / Scale
+ Difficulty: Hard
+ Reveal: The atmosphere contains roughly 12,900 km³ of water, while all rivers contain only about 2,120 km³ at a given time.
+ Source: U.S. Geological Survey
+
+8. During its feeding season, roughly how much krill can an adult blue whale eat in one day?
+Answer: About 16 metric tonnes
+ Type: Numerical estimation
+ Category: Animals / Scale
+ Difficulty: Hard
+ Reveal: Research on eastern North Pacific blue whales estimated consumption of about 16 tonnes of krill per feeding day.
+ Source: Smithsonian Institution / Nature research
+
+9. Approximately how many human cells are in an adult human body?
+Answer: Roughly 30 trillion
+ Type: Numerical estimation
+ Category: Human Body / Scale
+ Difficulty: Hard
+ Reveal: A widely cited modern estimate puts a typical adult at around 30 trillion human cells — surprisingly close to the estimated number of bacteria living in the body.
+ Source: Sender, Fuchs & Milo
+
+10. Approximately how many neurons are in the human brain?
+Answer: About 86 billion
+ Type: Numerical estimation
+ Category: Human Body / Brain
+ Difficulty: Medium
+ Reveal: The commonly used estimate is about 86 billion neurons. Surprisingly, most of them are in the cerebellum rather than the cerebral cortex.
+ Source: Neuroscience literature / NIH-supported research
+
+11. Approximately how many countries in the world are completely landlocked?
+Answer: 44 countries
+ Type: Numerical estimation
+ Category: Geography
+ Difficulty: Medium
+ Reveal: Forty-four sovereign states have no direct access to an open sea or ocean. Only 32 of those are classified by the UN as landlocked developing countries.
+ Source: United Nations
+
+12. Which is wider: Australia from east to west, or the diameter of the Moon?
+Answer: Australia
+ Type: Which Is Bigger
+ Category: Geography / Space
+ Difficulty: Medium
+ Reveal: Australia is almost 4,000 km wide east-to-west. The Moon is only about 3,476 km across. Australia is therefore roughly 500 km wider.
+ Source: Geoscience Australia / NASA
+
+13. Which has the larger surface area: Russia or Pluto?
+Answer: Pluto — just barely
+ Type: Which Is Bigger
+ Category: Geography / Space
+ Difficulty: Hard
+ Reveal: Pluto's surface area is about 17.65 million km². Russia covers about 17.10 million km². Pluto wins by only around 3%.
+ Source: NASA / CIA World Factbook
+
+14. Which mountain summit is farther from the center of Earth: Mount Everest or Mount Chimborazo?
+Answer: Mount Chimborazo
+ Type: Which Is Farther
+ Category: Geography / Physical Intuition
+ Difficulty: Medium
+ Reveal: Everest is higher above sea level, but Earth bulges around the equator. Chimborazo sits near that bulge, putting its summit about 2.1 km farther from Earth's center than Everest's.
+ Source: NOAA
+
+15. Which appeared first on Earth: sharks or trees?
+Answer: Sharks
+ Type: Which Is Older
+ Category: Evolution / Deep Time
+ Difficulty: Medium
+ Reveal: Shark-like animals appear in the fossil record roughly 450 million years ago. The first organisms we'd recognize as trees appeared tens of millions of years later.
+ Source: Smithsonian
+
+16. Which is older: teaching at Oxford University or the Aztec Empire?
+Answer: Oxford University
+ Type: Which Is Older
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: Teaching existed at Oxford by 1096. The Aztec Triple Alliance that formed the Aztec Empire dates to 1428 — more than three centuries later.
+ Source: University of Oxford / Cambridge University Press
+
+17. Were woolly mammoths still alive after the Great Pyramid of Giza had already been built?
+Answer: Yes
+ Type: Timeline comparison
+ Category: Ancient History / Prehistory
+ Difficulty: Medium
+ Reveal: The Great Pyramid was completed around the mid-26th century BCE. Isolated woolly mammoths survived on Wrangel Island until roughly 4,000 years ago — centuries after the pyramid was standing.
+ Source: Smithsonian / Natural History Museum
+
+18. You're on a game show with three doors. One hides a prize. You choose a door. The host, who knows where the prize is, deliberately opens one losing door and offers you the chance to switch. What is your chance of winning if you switch?
+Answer: 2/3, or about 66.7%
+ Type: Probability / Logic
+ Category: Logic
+ Difficulty: Medium
+ Reveal: Your original choice had only a 1/3 chance. The other two doors collectively had 2/3; once the host deliberately removes a losing one, that 2/3 probability effectively concentrates on the remaining door.
+ Source: Mathematical result — Monty Hall problem
+
+19. If you roll a fair six-sided die four times, what is the probability of rolling at least one six?
+Answer: About 51.8%
+ Type: Probability estimation
+ Category: Logic / Probability
+ Difficulty: Hard
+ Reveal: It's slightly more likely than not. The easiest route is to calculate the opposite: the chance of avoiding a six four times is (5/6)^4 ≈ 48.2%, leaving about 51.8%.
+ Source: Calculated probability
+
+20. You have 8 identical-looking balls. One is heavier than the other seven. Using only a balance scale, what is the minimum number of weighings needed to guarantee finding the heavy ball?
+Answer: 2 weighings
+ Type: Deduction
+ Category: Logic
+ Difficulty: Medium
+ Reveal: Weigh 3 against 3. If one side is heavier, the odd ball is among those three; otherwise it's among the two left out. One more weighing resolves either case.
+ Source: Logical deduction
+
+21. Three switches are outside a closed room. Exactly one controls an incandescent bulb inside. You may manipulate the switches however you like, but you may enter the room only once. Can you determine which switch controls the bulb?
+Answer: Yes
+ Type: Deduction
+ Category: Logic / Lateral Thinking
+ Difficulty: Medium
+ Reveal: Turn switch A on for several minutes, then turn it off. Turn B on and enter. If the bulb is lit, B controls it. If it's off but warm, A controls it. If it's off and cold, C controls it.
+ Source: Logical puzzle
+
+22. You have two ropes. Each takes exactly one hour to burn completely, but neither burns at a constant rate. How can you measure exactly 45 minutes?
+Answer: Light one rope at both ends and the other at one end. When the first finishes, light the second end of the remaining rope.
+ Type: Deduction
+ Category: Logic / Lateral Thinking
+ Difficulty: Hard
+ Reveal: The first rope burns out after 30 minutes regardless of its uneven burn rate. At that moment the second rope has 30 minutes of burn-time remaining; lighting its other end makes it finish in 15 more minutes. Total: 45.
+ Source: Logical puzzle
+
+23. Approximately how many times larger is Africa than Greenland by area?
+Answer: About 14× larger
+ Type: Numerical estimation
+ Category: Geography / Map Intuition
+ Difficulty: Medium
+ Reveal: Africa is roughly 30.1 million km², while Greenland is about 2.17 million km². Mercator-style maps make Greenland look dramatically larger than it really is.
+ Source: CIA World Factbook
+
+24. Roughly what percentage of the world's fresh surface water is contained in Lake Baikal?
+Answer: About 20%
+ Type: Percentage estimation
+ Category: Geography / Nature
+ Difficulty: Hard
+ Reveal: A single Siberian lake contains roughly one-fifth of Earth's fresh surface water by volume. Lake Baikal is also the world's deepest freshwater lake.
+ Source: U.S. Geological Survey
+
+25. Which has more surface area: the continent of Africa or the entire Moon?
+Answer: The Moon
+ Type: Which Is Bigger
+ Category: Geography / Space
+ Difficulty: Hard
+ Reveal: Africa covers about 30.1 million km². The Moon's total spherical surface is about 37.9 million km², so the Moon has roughly 26% more surface area than Africa.
+ Source: CIA World Factbook / NASA; lunar surface area calculated from NASA's measured diameter
+
+
+
+
+
+
+Batch 2 — Questions 26–50
+All fresh. No repeats from Batch 1 or the earlier questions we discussed.
+
+26. Which is longer: the Great Wall of China or Earth's diameter?
+Answer: The Great Wall, by roughly 1.6×
+ Type: Which Is Bigger
+ Category: History / Earth Scale
+ Difficulty: Medium
+ Reveal: The Great Wall system stretches for more than 20,000 km in total. Earth is only about 12,756 km across at the equator.
+ Source: UNESCO / NASA
+
+27. Roughly how much blood does the human heart pump in one day?
+Answer: About 7,500 litres
+ Acceptable ballpark: ~6,000–9,000 L
+ Type: Numerical estimation
+ Category: Human Body / Scale
+ Difficulty: Hard
+ Reveal: The American Heart Association gives a figure of almost 2,000 gallons per day — around 7,500 litres. The heart repeatedly circulates the same relatively small blood supply.
+ Source: American Heart Association
+
+28. If you could peel off and lay out an adult person's skin flat, roughly how much area would it cover?
+Answer: Around 1.5–2 m²
+ Type: Numerical estimation
+ Category: Human Body / Physical Intuition
+ Difficulty: Medium
+ Reveal: About the area of a fairly large tabletop or small bedsheet. Skin is also the body's largest organ.
+ Source: NCBI / InformedHealth
+
+29. What percentage of all the mass in the Solar System is contained in the Sun?
+Answer: About 99.8%
+ Type: Percentage estimation
+ Category: Space / Scale
+ Difficulty: Hard
+ Reveal: Jupiter may seem enormous, but the Sun absolutely dominates the Solar System's mass. Everything else combined accounts for only about 0.2%.
+ Source: NASA
+
+30. Approximately how many times does the International Space Station orbit Earth each day?
+Answer: About 16 times
+ Type: Numerical estimation
+ Category: Space / Speed
+ Difficulty: Medium
+ Reveal: One orbit takes roughly 90 minutes, so astronauts can experience about 16 sunrises and 16 sunsets every 24 hours.
+ Source: NASA
+
+31. Which has more surface area: the Pacific Ocean or all of Earth's continents combined?
+Answer: The Pacific Ocean
+ Type: Which Is Bigger
+ Category: Geography / Scale
+ Difficulty: Medium
+ Reveal: The Pacific covers more than 155 million km² and is actually larger than the total land area of all Earth's continents combined.
+ Source: NOAA
+
+32. Which is longer on Venus: one full rotation on its axis or one trip around the Sun?
+Answer: One rotation — a Venus day is longer than a Venus year.
+ Type: Which Is Longer
+ Category: Space / Time Intuition
+ Difficulty: Medium
+ Reveal: Venus takes about 243 Earth days to rotate once, but only about 225 Earth days to orbit the Sun.
+ Source: NASA
+
+33. Which is larger by area: the Sahara Desert or the entire United States including Alaska and Hawaii?
+Answer: The United States, but only slightly
+ Type: Which Is Bigger
+ Category: Geography / Map Intuition
+ Difficulty: Hard
+ Reveal: The Sahara is roughly 9.4 million km², while the total U.S. area is about 9.8 million km². They're remarkably close in scale.
+ Source: National Geographic / CIA World Factbook
+
+34. Roughly how long after the invention of the tin food can was the first purpose-built can opener patented?
+Answer: About 48 years later
+ Type: Year / Estimation
+ Category: History / Everyday Objects
+ Difficulty: Medium
+ Reveal: Tin food cans appeared around 1810, but Ezra Warner's dedicated can opener wasn't patented until 1858. Before then, people commonly attacked cans with knives and other tools.
+ Source: U.S. National Archives / Smithsonian
+
+35. Which came first: the traditional first ancient Olympic Games or the traditional founding of Rome?
+Answer: The Olympic Games
+ Type: Which Came First
+ Category: Ancient History
+ Difficulty: Medium
+ Reveal: The traditional date of the first Olympic Games is 776 BCE. Rome's traditional founding date is 753 BCE — only about 23 years later.
+ Source: Historical chronology
+
+36. Genghis Khan lived closer in time to which event: the Great Pyramid of Giza being built, or the Moon landing?
+Answer: The Moon landing
+ Type: Which Is Closer
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: Genghis Khan was born around 1162 CE. Apollo 11 landed in 1969, about 800 years later; the Great Pyramid was already roughly 3,700 years old when he was born.
+ Source: Historical chronology
+
+37. Roughly how much blood is inside an average adult human body at one time?
+Answer: About 5 litres
+ Type: Numerical estimation
+ Category: Human Body
+ Difficulty: Easy / Medium
+ Reveal: Despite the heart pumping thousands of litres per day, the body only contains roughly five litres at once — it simply keeps circulating it.
+ Source: NCBI
+
+38. Roughly what percentage of all the bones in an adult human body are located in the hands and feet?
+Answer: About 51%
+ Type: Percentage estimation
+ Category: Human Body / Scale
+ Difficulty: Hard
+ Reveal: The two hands contain 54 bones and the two feet contain 52, for 106 out of about 206 bones in the adult skeleton. More than half your bones are in your hands and feet.
+ Source: NCBI / anatomical reference
+
+39. During breeding, how long can a male emperor penguin go without eating?
+Answer: Up to about 4 months
+ Type: Numerical estimation
+ Category: Animals / Survival
+ Difficulty: Hard
+ Reveal: Male emperor penguins can fast for roughly 120 days while courting and incubating their egg through the Antarctic winter.
+ Source: Nature / physiological research
+
+40. During flight, roughly how fast can a hummingbird's heart beat?
+Answer: More than 1,200 beats per minute
+ Type: Numerical estimation
+ Category: Animals / Biology
+ Difficulty: Hard
+ Reveal: A ruby-throated hummingbird may go from around 225 beats per minute at rest to more than 1,200 bpm in flight.
+ Source: Smithsonian National Zoo
+
+41. Approximately how far can an Arctic tern travel during one annual migration cycle?
+Answer: Around 70,000 km, with some tracked birds exceeding 80,000 km
+ Type: Numerical estimation
+ Category: Animals / Distance
+ Difficulty: Hard
+ Reveal: That's roughly 1.75 trips around Earth's circumference every year for a bird weighing only around 100 grams.
+ Source: British Antarctic Survey / PNAS
+
+42. At the deepest part of the Mariana Trench, roughly how many times greater is the pressure than at sea level?
+Answer: About 1,000×
+ Type: Numerical estimation
+ Category: Oceans / Physical Intuition
+ Difficulty: Hard
+ Reveal: Near Challenger Deep, pressure reaches roughly 1,080 atmospheres. Every small patch of surface is being crushed by kilometres of water above it.
+ Source: NOAA
+
+43. Imagine an ordinary empty bedroom measuring 4 m × 4 m × 2.5 m. Roughly how much does all the air inside it weigh?
+Answer: About 50 kg
+ Type: Fermi estimation
+ Category: Physical Intuition
+ Difficulty: Hard
+ Reveal: The room contains about 40 m³ of air. Near sea level, air has a density of roughly 1.2 kg/m³, putting the total mass around 50 kg. Air feels weightless because we're immersed in it, but it absolutely has mass.
+ Assumptions: ~1.2–1.23 kg/m³ air density; empty room
+ Source: Calculated estimate from standard air density
+
+44. Roughly how many golf balls could fit inside the passenger compartment of an empty full-size school bus?
+Answer: About 500,000 golf balls
+ Acceptable range: ~350,000–650,000 depending on bus dimensions
+ Type: Fermi estimation
+ Category: Everyday Scale / Packing
+ Difficulty: Hard
+ Reveal: A golf ball is only about 4.3 cm across. With roughly 30 m³ of usable interior volume and realistic random sphere packing, the answer lands near half a million.
+ Assumptions: Seats removed; ~30 m³ usable volume; ~64% packing efficiency
+ Source: Calculated Fermi estimate
+
+45. If people stood tightly shoulder-to-shoulder on a regulation soccer pitch, roughly how many people could fit?
+Answer: Around 25,000–30,000 people
+ Type: Fermi estimation
+ Category: Human Scale / Area
+ Difficulty: Medium
+ Reveal: A standard 105 × 68 m pitch is about 7,140 m². At roughly 4 people per square metre, you get close to 29,000 people.
+ Assumptions: ~0.25 m² per tightly packed standing adult
+ Source: Calculated estimate
+
+46. Three boxes are labeled APPLES, ORANGES, and MIXED. Every label is wrong. You may take one piece of fruit from only one box. What is the minimum number of fruits you need to draw to correctly relabel all three boxes?
+Answer: 1 fruit
+ Type: Deduction
+ Category: Logic
+ Difficulty: Medium
+ Reveal: Draw from the box labeled MIXED. Because every label is wrong, that box cannot actually be mixed. One fruit tells you whether it contains only apples or only oranges, and the other two labels can then be deduced.
+ Source: Logical deduction
+
+47. There are 100 closed doors. Person 1 toggles every door, person 2 toggles every second door, person 3 every third door, and so on through person 100. How many doors are open at the end?
+Answer: 10 doors
+ Type: Pattern / Deduction
+ Category: Logic
+ Difficulty: Hard
+ Reveal: A door is toggled once for every divisor of its number. Most numbers have divisors in pairs, so they're toggled an even number of times. Only perfect squares have an odd number of divisors. Between 1 and 100 there are 10 perfect squares.
+ Source: Mathematical deduction
+
+48. You have 25 horses, a track that can race only 5 horses at once, and no stopwatch. You need to identify the 3 fastest horses. What is the minimum number of races required?
+Answer: 7 races
+ Type: Optimization / Deduction
+ Category: Logic
+ Difficulty: Hard
+ Reveal: Race five groups first: 5 races. Race the five winners: race 6. That eliminates most horses from contention. One final race among the only remaining possible second- and third-place horses determines the top three.
+ Source: Logical optimization puzzle
+
+49. With two ordinary six-sided dice, which total is more likely: 7 or 8?
+Answer: 7
+ Type: Probability Intuition
+ Category: Logic / Probability
+ Difficulty: Easy / Medium
+ Reveal: There are 6 combinations that make 7, but only 5 combinations that make 8. Our brains often treat nearby totals as equally likely even though dice sums aren't distributed evenly.
+ Source: Calculated probability
+
+50. You repeatedly flip a fair coin until you get two heads in a row. On average, how many flips will it take?
+Answer: 6 flips
+ Type: Probability / Expected Value
+ Category: Logic
+ Difficulty: Hard
+ Reveal: It feels like it should be around four, because HH has a 1-in-4 chance across any two flips. But failed attempts overlap in awkward ways — especially when a tail resets your progress. The true expected waiting time is 6 flips.
+ Source: Calculated probability / expected-value result
+
+
+
+
+
+
+51. Approximately how much does Earth's entire atmosphere weigh?
+Answer: About 5.15 quintillion kg
+ 5,150,000,000,000,000,000 kg
+Type: Numerical estimation
+ Category: Earth / Scale
+ Difficulty: Hard
+ Reveal: Air feels almost weightless locally, but the entire atmosphere has a mass of roughly 5.15 × 10¹⁸ kg.
+ Source: Journal of Geophysical Research / NCAR
+
+52. Roughly how much material from space reaches Earth every day as cosmic dust and tiny meteoric particles?
+Answer: About 25 metric tonnes per day
+Type: Numerical estimation
+ Category: Space / Earth
+ Difficulty: Hard
+ Reveal: Most incoming extraterrestrial material isn't a dramatic meteorite — it's microscopic dust. NASA-supported estimates converge around 25 tonnes reaching Earth each day.
+ Source: NASA
+
+53. Roughly what percentage of Earth's surface is covered by ocean?
+Answer: About 71%
+Type: Percentage estimation
+ Category: Earth / Geography
+ Difficulty: Easy / Medium
+ Reveal: Almost three quarters of the planet's surface is ocean. Land is the minority at only about 29%.
+ Source: NOAA
+
+54. If someone on the Moon flashed an extremely powerful laser toward Earth, roughly how long would the light take to reach us?
+Answer: About 1.3 seconds
+Type: Numerical estimation
+ Category: Space / Distance Intuition
+ Difficulty: Medium
+ Reveal: The Moon averages about 384,400 km away, but light crosses that enormous-looking gap in only about 1.3 seconds.
+ Source: NASA
+
+55. Which has more surface area: all of Mars or all the dry land on Earth?
+Answer: They're almost the same
+Type: Which Is Bigger
+ Category: Space / Geography
+ Difficulty: Hard
+ Reveal: Mars is only about half Earth's diameter, but Earth is mostly ocean. The entire Martian surface is roughly comparable in area to Earth's total exposed land.
+ Source: NASA
+
+56. Roughly how many Earths could you line up side-by-side across Jupiter's diameter?
+Answer: About 11 Earths
+Type: Numerical estimation
+ Category: Space / Scale
+ Difficulty: Medium
+ Reveal: Jupiter is about 11 times wider than Earth. But because volume grows much faster than diameter, more than 1,300 Earths could fit inside it by volume.
+ Source: NASA
+
+57. Roughly how long is an elephant pregnant?
+Answer: About 22 months
+Type: Numerical estimation
+ Category: Animals / Biology
+ Difficulty: Medium
+ Reveal: Nearly two years. Elephants have the longest gestation period of any living mammal.
+ Source: San Diego Zoo Wildlife Alliance
+
+58. Roughly how old can a Greenland shark get?
+Answer: Around 400 years
+Type: Numerical estimation
+ Category: Animals / Deep Time
+ Difficulty: Hard
+ Reveal: Greenland sharks are the longest-lived known vertebrates. One major age estimate put a large individual around 392 years old, although with substantial uncertainty.
+ Source: Smithsonian / scientific research
+
+59. Roughly how much poop can an adult elephant produce in one day?
+Answer: Around 136 kg
+ About 300 lb
+Type: Numerical estimation
+ Category: Animals / Everyday Scale
+ Difficulty: Hard
+ Reveal: An elephant can deposit around its own human-sized person's weight in poop every day.
+ Source: San Diego Zoo Wildlife Alliance
+
+60. During a hunting dive, roughly how fast can a peregrine falcon travel?
+Answer: Around 380 km/h
+ About 240 mph
+Type: Numerical estimation
+ Category: Animals / Speed
+ Difficulty: Hard
+ Reveal: Peregrines are generally considered the fastest animals on Earth during their diving attack. Measurements have reached roughly 238 mph (383 km/h).
+ Source: Cornell Lab of Ornithology
+
+61. Through the actual land territory of how many countries does Earth's Equator pass?
+Answer: 11 countries
+Type: Numerical estimation
+ Category: Geography
+ Difficulty: Hard
+ Reveal: The Equator intersects 11 countries on land. If territorial waters of Kiribati and the Maldives are counted too, the commonly quoted total becomes 13.
+ Source: Geographic reference data
+
+62. When the Colosseum opened in Rome around 80 CE, was the Great Pyramid of Giza already older than the Colosseum is today?
+Answer: Yes
+Type: Timeline intuition
+ Category: Ancient History
+ Difficulty: Medium
+ Reveal: The Great Pyramid was already roughly 2,600 years old when the Colosseum opened. The Colosseum today is only about 1,950 years old. Ancient Egypt was ancient even to the Romans.
+ Source: Oxford Classical Dictionary / standard Egyptian chronology
+
+63. From Augustus becoming Rome's first emperor in 27 BCE to the conventional fall of the Western Roman Empire in 476 CE, roughly how long did the Roman Empire in the West last?
+Answer: About 500 years
+Type: Numerical estimation
+ Category: Ancient History / Time Scale
+ Difficulty: Medium
+ Reveal: Roughly five centuries separate Augustus from the conventional fall of the Western Empire. The Eastern Roman Empire continued much longer afterward.
+ Source: National Geographic historical chronology
+
+Logic section
+64. Four people must cross a bridge at night. Their crossing times are 1, 2, 7, and 10 minutes. Only two can cross at once, they need one flashlight, and a pair moves at the slower person's speed. What is the fastest possible time for everyone to cross?
+Answer: 17 minutes
+Type: Optimization / Logic
+ Category: Logic
+ Difficulty: Hard
+ Reveal: The trick is making the two slowest cross together:
+1 & 2 cross = 2
+1 returns = 1
+7 & 10 cross = 10
+2 returns = 2
+1 & 2 cross = 2
+Total: 17 minutes.
+
+65. There are 100 passengers boarding a plane with assigned seats. Passenger 1 ignores their assignment and chooses a random seat. Every later passenger takes their own seat if available; otherwise they choose a random remaining seat. What is the probability passenger 100 gets their assigned seat?
+Answer: 50%
+Type: Probability / Logic
+ Category: Probability
+ Difficulty: Hard
+ Reveal: Eventually the random chain must hit either passenger 1's seat or passenger 100's seat. Those two outcomes are symmetric, giving the final passenger a 1-in-2 chance.
+
+66. You have an unmarked 3-litre jug and an unmarked 5-litre jug, plus unlimited water. Can you measure exactly 4 litres?
+Answer: Yes
+Type: Deduction
+ Category: Logic
+ Difficulty: Medium
+ Reveal: Fill the 5 L jug and pour into the 3 L jug, leaving 2 L. Empty the 3 L jug and transfer those 2 L into it. Refill the 5 L jug, then pour only enough into the 3 L jug to fill it. Exactly 4 L remain in the 5 L jug.
+
+67. You have 12 identical-looking coins. Exactly one is counterfeit and may be either heavier or lighter than the others. Using only a balance scale, what is the minimum number of weighings needed to guarantee identifying the odd coin and whether it is heavier or lighter?
+Answer: 3 weighings
+Type: Deduction / Information
+ Category: Logic
+ Difficulty: Wildcard
+ Reveal: There are 24 possibilities: 12 possible coins × heavy-or-light. A balance scale has three possible outcomes per weighing. Three weighings can theoretically distinguish up to 3³ = 27 outcomes — and a carefully designed strategy can indeed solve all 24 possibilities.
+
+68. At a party, 100 people each shake hands with every other person exactly once. How many handshakes occur?
+Answer: 4,950
+Type: Combinatorial reasoning
+ Category: Logic
+ Difficulty: Medium
+ Reveal: You don't count 100 × 99, because that counts every handshake twice. The number of unique pairs is:
+100 × 99 ÷ 2 = 4,950
+The important step is recognizing you're counting pairs, not people.
+
+69. A single-elimination tournament starts with 128 players. No draws, no byes. How many matches must be played to crown one champion?
+Answer: 127 matches
+Type: Logic
+ Category: Logic / Games
+ Difficulty: Easy / Medium
+ Reveal: Don't build the tournament bracket. Each match eliminates exactly one person. To reduce 128 players to one champion, exactly 127 players must be eliminated.
+
+70. A rope is wrapped perfectly tightly around Earth's equator. You add exactly 1 metre to the rope and somehow raise it evenly all the way around Earth. Roughly how high above the ground would the rope now float?
+Answer: About 16 cm
+Type: Geometry intuition
+ Category: Logic / Physical Intuition
+ Difficulty: Hard
+ Reveal: Astonishingly, Earth's size doesn't matter. Since circumference is 2πr, adding 1 metre increases the radius by:
+1 ÷ 2π ≈ 0.159 m
+So the rope would float roughly 16 cm above the ground everywhere.
+
+71. A population of bacteria doubles every minute. A container is completely full at exactly 60 minutes. At what time was it half full?
+Answer: 59 minutes
+Type: Exponential intuition
+ Category: Logic
+ Difficulty: Easy / Medium
+ Reveal: If it doubles every minute, then one minute before it is completely full, it must be exactly half full.
+The deceptive part is how our intuition treats exponential growth as though it were linear.
+
+72. Take a normal 8 × 8 chessboard and remove two diagonally opposite corner squares. Can the remaining 62 squares be completely covered with 31 ordinary dominoes, where every domino covers exactly two neighboring squares?
+Answer: No
+Type: Deduction / Spatial reasoning
+ Category: Logic
+ Difficulty: Hard
+ Reveal: Opposite corners of a chessboard are the same color. Removing them leaves 30 squares of one color and 32 of the other. Every domino always covers one black and one white square, so complete tiling is impossible.
+
+73. A factory makes widgets, and 1% are defective. A scanner correctly flags 99% of defective widgets, but also falsely flags 5% of good widgets. If a widget gets flagged, roughly what is the chance it is actually defective?
+Answer: About 17%
+Type: Probability / Base-rate intuition
+ Category: Logic / Probability
+ Difficulty: Hard
+ Reveal: Imagine 10,000 widgets:
+100 are defective → about 99 flagged correctly
+9,900 are good → about 495 falsely flagged
+So there are about 594 flagged widgets, but only 99 are genuinely defective:
+99 ÷ 594 ≈ 16.7%
+A highly accurate test can still produce mostly false alarms when the thing being tested for is rare.
+
+74. Roughly how many individual grains of uncooked rice are in a 1 kg bag?
+Answer: Roughly 40,000–50,000 grains
+Type: Fermi estimation
+ Category: Everyday Objects / Food
+ Difficulty: Hard
+ Reveal: Studies of common rice varieties put the mass of 1,000 grains around 20–25 grams. That puts a kilogram on the order of 40,000–50,000 individual grains.
+ Source: Agricultural grain-weight studies
+ Assumption: Varies significantly by rice variety.
+
+75. At normal sea-level atmospheric pressure, roughly how much downward force does the atmosphere exert on a 1 square metre surface?
+Answer: Equivalent to the weight of roughly 10 metric tonnes
+Type: Numerical estimation / Physical intuition
+ Category: Physics / Earth
+ Difficulty: Hard
+ Reveal: Standard atmospheric pressure is about 101,000 newtons per square metre. Under Earth's gravity, that's approximately the weight of a 10,000 kg mass pressing on every square metre. We aren't crushed because pressure inside our bodies and surrounding air pushes back.
+ Source: NASA / NOAA
+
+
+
+
+
+Batch 4 — Questions 76–100
+This batch follows the new direction: more fun, more intuitive, fewer giant numbers, less math-heavy, mostly Easy–Medium.
+
+76. Roughly how wide is an ostrich's eye?
+Answer: About 5 cm / 2 inches
+ Type: Numerical estimation
+ Category: Animals
+ Difficulty: Easy / Medium
+ Reveal: An ostrich's eye is almost two inches across — the largest eye of any land animal, and bigger than a golf ball.
+ Source: San Diego Zoo
+
+77. How many hearts does an octopus have?
+Answer: 3
+Type: Numerical
+ Category: Animals
+ Difficulty: Easy
+ Reveal: Two hearts pump blood through the gills, while a third pumps oxygenated blood around the rest of the body.
+ Source: Smithsonian Ocean
+
+78. Which country is larger by total area: Japan or Germany?
+Answer: Japan
+Type: Which Is Bigger
+ Category: Geography
+ Difficulty: Easy / Medium
+ Reveal: Japan covers roughly 378,000 km², compared with Germany's roughly 357,000 km². Japan is about 6% larger.
+ Source: CIA World Factbook data
+
+79. How many official time zones does Russia span?
+Answer: 11
+Type: Numerical estimation
+ Category: Geography
+ Difficulty: Medium
+ Reveal: Russia stretches from UTC+2 all the way to UTC+12. You can cross 11 time zones without leaving the country.
+ Source: Timeanddate geographic time-zone data
+
+80. Which is the larger desert: the Sahara or Antarctica?
+Answer: Antarctica
+Type: Which Is Bigger
+ Category: Geography / Nature
+ Difficulty: Easy / Medium
+ Reveal: A desert is defined by extremely low precipitation, not heat. Antarctica is both the coldest continent and the largest desert on Earth.
+ Source: National Geographic
+
+81. Imagine a bathtub somehow large enough to hold Saturn. Would Saturn float or sink in water?
+Answer: Float
+Type: Physical Intuition
+ Category: Space
+ Difficulty: Easy / Medium
+ Reveal: Saturn's average density is only about 70% that of water. It's the only planet in our Solar System that would float.
+ Source: NASA
+
+82. On Mercury, which lasts longer: one year or one full sunrise-to-sunrise day?
+Answer: The day
+Type: Which Is Longer
+ Category: Space / Time Intuition
+ Difficulty: Medium
+ Reveal: Mercury orbits the Sun in 88 Earth days, but one full solar day lasts 176 Earth days. A Mercury day lasts two Mercury years.
+ Source: NASA
+
+83. Which planet has the shortest day in the Solar System?
+Answer: Jupiter
+Type: Comparison
+ Category: Space
+ Difficulty: Easy / Medium
+ Reveal: Despite being the largest planet, Jupiter spins incredibly quickly — one day lasts only about 9.9 hours.
+ Source: NASA
+
+84. Roughly how long is a giraffe's tongue?
+Answer: About 45–50 cm / 18–20 inches
+Type: Numerical estimation
+ Category: Animals
+ Difficulty: Easy / Medium
+ Reveal: A giraffe's tongue is roughly the length of an adult forearm and is long enough to grab leaves around thorny branches.
+ Source: Denver Zoo / Giraffe Conservation Foundation
+
+85. What color are flamingo chicks when they're born: pink, white/gray, or black?
+Answer: White/gray
+Type: Multiple choice / Intuition
+ Category: Animals
+ Difficulty: Easy
+ Reveal: Flamingos aren't naturally born pink. Their feathers gradually become pink because of carotenoid pigments in their food.
+ Source: Smithsonian National Zoo
+
+86. How many bones are inside an elephant's trunk?
+Answer: Zero
+Type: Numerical / Anatomy intuition
+ Category: Animals
+ Difficulty: Easy
+ Reveal: The trunk is a fusion of the nose and upper lip and contains no bones. Instead, it consists of an extraordinary system of muscles, nerves and connective tissue.
+ Source: Smithsonian National Zoo
+
+87. Roughly how much saliva does an average person produce every day?
+Answer: About 1 litre
+Type: Numerical estimation
+ Category: Human Body / Everyday Life
+ Difficulty: Medium
+ Reveal: Your salivary glands quietly produce about a litre every day, though the amount varies considerably between people.
+ Source: National Institute of Dental and Craniofacial Research
+
+88. Assuming all wisdom teeth are present, how many permanent teeth does a typical adult have?
+Answer: 32
+Type: Numerical
+ Category: Human Body
+ Difficulty: Easy
+ Reveal: The full adult set runs from tooth #1 to tooth #32, including the four wisdom teeth. Many people have fewer because wisdom teeth are absent or removed.
+ Source: Cleveland Clinic
+
+89. Which weighs more: an average adult human brain or one litre of water?
+Answer: The brain
+Type: Which Is Heavier
+ Category: Human Body / Physical Intuition
+ Difficulty: Easy / Medium
+ Reveal: A litre of water weighs almost exactly 1 kg. An adult brain weighs roughly 1.2–1.4 kg, or about 3 pounds.
+ Source: NIH / NINDS
+
+90. How many countries share a land border with China?
+Answer: 14
+Type: Numerical estimation
+ Category: Geography
+ Difficulty: Medium
+ Reveal: China ties Russia for one of the world's largest numbers of land neighbors: 14 sovereign countries.
+ Source: CIA World Factbook geographic data
+
+91. Which city is farther north: Rome or New York City?
+Answer: Rome
+Type: Which Is Farther North
+ Category: Geography / Map Intuition
+ Difficulty: Medium
+ Reveal: New York sits around 40.7° N, while Rome is around 41.9° N. Rome is slightly farther north despite its much warmer climate.
+
+92. Which city is farther north: Paris or Montreal?
+Answer: Paris
+Type: Which Is Farther North
+ Category: Geography / Map Intuition
+ Difficulty: Medium
+ Reveal: Montreal is around 45.5° N, while Paris is close to 48.9° N. Paris is hundreds of kilometres farther north, despite Montreal's much colder winters.
+
+93. Which came first: the founding of Baghdad or the conventional beginning of the Viking Age?
+Answer: Baghdad
+Type: Which Came First
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: Baghdad was founded in 762 CE. The famous raid on Lindisfarne in 793 CE is commonly used as the beginning of the Viking Age — roughly 30 years later.
+
+94. Which came first: samurai in Japan or the First Crusade?
+Answer: Samurai
+Type: Which Came First
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: Samurai began emerging as professional warriors in Japan during the 10th century. The First Crusade wasn't called until 1095.
+ Source: British Museum / historical chronology
+
+95. In Greek mythology, how many famous Labors did Heracles — Hercules — ultimately have to complete?
+Answer: 12
+Type: Cultural knowledge
+ Category: Greek Mythology
+ Difficulty: Easy
+ Reveal: He was originally assigned ten, but two were rejected, leading to the famous Twelve Labors of Heracles.
+
+Logic / party questions
+96. A drawer contains black socks and white socks. You're choosing in complete darkness. What is the minimum number of socks you must take to guarantee that at least two are the same color?
+Answer: 3
+Type: Logic
+ Category: Deduction
+ Difficulty: Easy
+ Reveal: The worst case is one black and one white. Whatever color the third sock is, it must match one of them.
+
+97. Two fathers and two sons go fishing. They catch exactly three fish, and each person gets one fish. How is that possible?
+Answer: There are only 3 people: a grandfather, his son, and his grandson.
+Type: Logic / Lateral Thinking
+ Category: Logic
+ Difficulty: Easy
+ Reveal: The middle person is simultaneously a father and a son.
+
+98. A clock takes exactly 5 seconds to strike 6 o'clock. Assuming equal spacing between strikes, how long does it take to strike 12 o'clock?
+Answer: 11 seconds
+Type: Logic
+ Category: Time / Reasoning
+ Difficulty: Medium
+ Reveal: Six strikes contain only 5 gaps. If those five gaps take five seconds, each gap takes one second. Twelve strikes contain 11 gaps, so they take 11 seconds.
+
+99. A doctor tells you to take 3 pills, one every 30 minutes. You take the first pill immediately. How long until you've taken all three?
+Answer: 1 hour
+Type: Logic / Everyday Reasoning
+ Category: Logic
+ Difficulty: Easy
+ Reveal: First pill at 0 minutes, second at 30, third at 60. The common instinct is to say 90 minutes because there are three pills, but there are only two waiting periods.
+
+100. Five machines take five minutes to make five identical toys. At the same rate, how long would 100 machines take to make 100 toys?
+Answer: 5 minutes
+Type: Logic / Rate Intuition
+ Category: Logic
+ Difficulty: Easy / Medium
+ Reveal: Each machine makes one toy in five minutes. Giving 100 machines one toy each doesn't change how long an individual machine needs.
+
+
+
+
+
+
+101. Which has more bones in its neck: a giraffe or a human?
+Answer: Neither — both usually have 7 neck vertebrae
+Type: Which Has More
+ Category: Animals / Human Body
+ Difficulty: Easy / Medium
+ Reveal: A giraffe's neck can be around two metres long, but it still has the same basic seven cervical vertebrae as a human. Its individual vertebrae are just enormously elongated.
+
+102. How many compartments does a cow's stomach have?
+Answer: 4
+Type: Numerical
+ Category: Animals
+ Difficulty: Easy
+ Reveal: A cow technically has one stomach divided into four compartments: rumen, reticulum, omasum and abomasum.
+
+103. Which animal has fingerprints surprisingly similar to human fingerprints?
+Answer: Koalas
+Type: Multiple Choice / Fun Fact
+ Category: Animals
+ Difficulty: Easy / Medium
+ Reveal: Koala fingertips have loops and ridges remarkably similar to ours — close enough that even under a microscope they can look surprisingly human.
+
+104. Roughly how many hours per day can a koala sleep?
+Answer: About 18–22 hours
+Type: Numerical Estimation
+ Category: Animals
+ Difficulty: Easy
+ Reveal: Koalas spend most of the day asleep or resting. Their eucalyptus diet is low in usable energy, so conserving energy is essential.
+
+105. If you completely lose a fingernail, roughly how long can it take to fully grow back?
+Answer: About 6 months
+Type: Numerical Estimation
+ Category: Human Body / Everyday Life
+ Difficulty: Medium
+ Reveal: Fingernails only grow around 3 mm per month, so replacing an entire nail can take half a year.
+
+106. Which grows faster: your fingernails or your toenails?
+Answer: Fingernails — roughly twice as fast
+Type: Which Is Faster
+ Category: Human Body
+ Difficulty: Easy
+ Reveal: One study measured average fingernail growth at about 3.5 mm/month, versus about 1.6 mm/month for toenails.
+
+107. You walk from bright daylight into a very dark cave. Roughly how long can your eyes take to become close to fully dark-adapted?
+Answer: Around 20–30 minutes
+Type: Numerical Estimation
+ Category: Human Perception
+ Difficulty: Medium
+ Reveal: Your eyes adjust somewhat within minutes, but the rod cells responsible for very-low-light vision can take around 20–30 minutes to reach maximum sensitivity.
+
+108. Roughly what percentage of people are left-handed?
+Answer: About 10–11%
+Type: Percentage Estimation
+ Category: Humans / Behavior
+ Difficulty: Easy / Medium
+ Reveal: A huge meta-analysis involving more than two million people estimated left-handedness at about 10.6% — roughly one person in ten.
+
+109. When resting normally, roughly how much air do you breathe in with a single ordinary breath?
+Answer: About 0.5 litres
+Type: Numerical Estimation
+ Category: Human Body
+ Difficulty: Medium
+ Reveal: A normal resting breath moves roughly 400–500 mL of air. That's only about a quarter of a standard 2-litre drink bottle.
+
+110. Roughly what percentage of an adult human's body weight is water?
+Answer: About 60%
+Type: Percentage Estimation
+ Category: Human Body
+ Difficulty: Easy / Medium
+ Reveal: The exact percentage varies with age, sex and body composition, but around 60% is a good adult estimate.
+
+111. When liquid water freezes into ordinary ice, does it shrink or expand — and by roughly how much?
+Answer: It expands by about 9%
+Type: Physical Intuition
+ Category: Everyday Science
+ Difficulty: Medium
+ Reveal: Water is unusual: its solid form is less dense than its liquid form. That's why frozen pipes can burst — and why ice floats.
+
+112. Roughly what fraction of a typical iceberg is hidden underwater?
+Answer: About 90%
+Type: Percentage Estimation
+ Category: Nature / Physical Intuition
+ Difficulty: Easy / Medium
+ Reveal: Only roughly a tenth of an iceberg's volume sticks above the surface. Hence the expression: “the tip of the iceberg.”
+
+113. Which is larger by total area: New Zealand or the United Kingdom?
+Answer: New Zealand
+Type: Which Is Bigger
+ Category: Geography
+ Difficulty: Medium
+ Reveal: New Zealand is about 269,000 km², while the UK is about 244,000 km². New Zealand is roughly 10% larger.
+
+114. According to their official island counts, which has more islands: Sweden or Indonesia?
+Answer: Sweden — by a huge margin
+Type: Which Has More
+ Category: Geography
+ Difficulty: Medium
+ Reveal: Sweden's official statistical definition produces about 267,570 islands. Indonesia's national geospatial agency lists about 17,380. Island definitions differ between countries, but the gap is still wonderfully counterintuitive.
+
+115. At the narrowest point of the Strait of Gibraltar, roughly how far apart are Europe and Africa?
+Answer: About 14 km / 9 miles
+Type: Distance Estimation
+ Category: Geography
+ Difficulty: Medium
+ Reveal: Southern Spain and northern Morocco are so close that the distance across the narrowest part of the strait is only around 14 km.
+
+History
+116. Which came first: Genghis Khan receiving the title “Genghis Khan” or Magna Carta?
+Answer: Genghis Khan
+Type: Which Came First
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: Temüjin united the Mongol tribes and took the title Genghis Khan in 1206. Magna Carta followed only nine years later, in 1215. These events feel like completely different historical worlds, but they were nearly contemporary.
+
+117. Which came first: Gutenberg's printing revolution or the fall of Constantinople?
+Answer: Printing — just barely
+Type: Which Came First
+ Category: History
+ Difficulty: Medium
+ Reveal: Gutenberg's printing work was underway around 1450. Constantinople fell to the Ottomans in 1453.
+
+118. Which is older: Notre-Dame Cathedral in Paris or Machu Picchu?
+Answer: Notre-Dame
+Type: Which Is Older
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: Construction of Notre-Dame began in 1163. Machu Picchu was built in the 15th century, around three centuries later. Medieval Europe predates the famous Inca city by a surprisingly large margin.
+
+119. Which came first: the Black Death reaching Europe or the formation of the Aztec Empire's Triple Alliance?
+Answer: The Black Death
+Type: Which Came First
+ Category: History / Timeline Intuition
+ Difficulty: Medium
+ Reveal: The Black Death reached Europe around 1347. The Aztec Triple Alliance formed in 1428, about 80 years later.
+
+Logic / party questions
+
+
+121. A snail is climbing out of a 10-metre well. Every day it climbs 3 metres, but every night it slips back 2 metres. How many days until it escapes?
+Answer: 8 days
+Type: Logic / Intuition
+ Category: Logic
+ Difficulty: Medium
+ Reveal: It gains one metre after each full day-and-night cycle — but on day 8 it reaches the top and escapes before it can slide backward again.
+
+122. You're running a race and pass the person currently in second place. What position are you now in?
+Answer: Second place
+Type: Logic / Trick
+ Category: Logic
+ Difficulty: Easy
+ Reveal: You haven't passed the leader. You've simply taken the position of the person who was second.
+
+123. A roulette wheel has landed on red five times in a row. Assuming each spin is independent, is black now more likely on the next spin than it was before the streak?
+Answer: No
+Type: Probability Intuition
+ Category: Logic / Probability
+ Difficulty: Easy / Medium
+ Reveal: The wheel doesn't remember previous spins. A streak of reds does not make black “due.” Believing otherwise is the classic gambler's fallacy.
+
+124. A bat and a ball together cost $1.10. The bat costs exactly $1 more than the ball. How much does the ball cost?
+Answer: 5 cents
+Type: Logic / Intuition
+ Category: Logic
+ Difficulty: Easy / Medium
+ Reveal: The instinctive answer is 10 cents — but then the bat would cost $1.10 and the total would be $1.20. At 5¢, the bat costs $1.05, totaling exactly $1.10.
+
+125. A farmer has 17 sheep. All but 9 die. How many sheep remain alive?
+Answer: 9
+Type: Logic / Language
+ Category: Logic
+ Difficulty: Easy
+ Reveal: “All but nine” means nine are the exceptions. Nine survive.
+
+
+
+
+
+126. Which animal is famous for producing cube-shaped poop?
+Answer: Wombats
+Type: Weird Nature
+ Category: Animals
+ Difficulty: Easy
+ Reveal: Wombat intestines actually shape their droppings into cubes. A wombat may produce up to around 100 cubes per day.
+
+127. What part of its body does a butterfly use to taste a plant?
+Answer: Its feet
+Type: Surprising Fact
+ Category: Animals
+ Difficulty: Easy
+ Reveal: Butterflies have taste receptors on their feet. Simply landing on a leaf can help them determine whether it's suitable food — or a good place to lay eggs.
+
+128. Roughly how long can a sloth hold its breath underwater?
+Answer: Up to about 40 minutes
+Type: Numerical Estimation
+ Category: Animals
+ Difficulty: Medium
+ Reveal: Sloths can slow their heart rate dramatically while swimming, allowing them to stay underwater for around 40 minutes. They're also surprisingly capable swimmers.
+
+129. What shape are a goat's pupils?
+A) Round
+ B) Vertical slits
+ C) Rectangular
+ D) Star-shaped
+Answer: Rectangular
+Type: Multiple Choice
+ Category: Animals
+ Difficulty: Easy
+ Reveal: Goats have bizarre-looking horizontal rectangular pupils, which help give grazing animals an extremely wide field of view.
+
+131. Roughly how many individual kernels are on an average ear of corn?
+Answer: About 800
+Type: Numerical Estimation
+ Category: Food / Everyday Life
+ Difficulty: Medium
+ Reveal: A typical ear has around 800 kernels arranged in roughly 16 rows. That's about 50 kernels per row.
+
+132. Which is longer inside your body: your small intestine or large intestine?
+Answer: Small intestine
+Type: Which Is Bigger
+ Category: Human Body
+ Difficulty: Easy
+ Reveal: The names refer mostly to width, not length. The small intestine is around 7 metres / 22 feet long, while the large intestine is only around 1.5–1.8 metres.
+
+133. Which weighs more: your skin or your brain?
+Answer: Your skin
+Type: Which Is Heavier
+ Category: Human Body
+ Difficulty: Medium
+ Reveal: An adult brain weighs around 3 lb / 1.4 kg. Your skin weighs roughly 6 lb or more, making it the body's heaviest organ.
+
+134. Botanically speaking, which one is actually a berry: a banana or a strawberry?
+Answer: Banana
+Type: Which One
+ Category: Food / Nature
+ Difficulty: Easy / Medium
+ Reveal: Botany is ridiculous. A banana qualifies as a berry, while a strawberry is an aggregate accessory fruit rather than a true botanical berry.
+
+135. Botanically speaking, what is a peanut more closely related to?
+A) Walnuts
+ B) Peas
+ C) Coconuts
+ D) Acorns
+Answer: Peas
+Type: Multiple Choice
+ Category: Food / Nature
+ Difficulty: Easy
+ Reveal: Despite the name, peanuts aren't true nuts. They're legumes, in the same broad plant family as peas, beans and lentils.
+
+136. Which country shares France's longest land border?
+A) Spain
+ B) Germany
+ C) Belgium
+ D) Brazil
+Answer: Brazil
+Type: Geography Surprise
+ Category: Geography
+ Difficulty: Medium
+ Reveal: French Guiana is legally part of France, so France and Brazil share a border of roughly 730 km in South America — France's longest border with any neighboring country.
+
+137. Which country has more ancient pyramids: Egypt or Sudan?
+Answer: Sudan
+Type: Which Has More
+ Category: Ancient History / Geography
+ Difficulty: Easy / Medium
+ Reveal: Sudan contains roughly 230–255 surviving ancient pyramids, largely built by the Kingdom of Kush — more than Egypt. They're generally much smaller and steeper than the famous Egyptian pyramids.
+
+138. Roughly how long before Columbus did Norse/Viking explorers reach North America?
+Answer: About 500 years earlier
+Type: Timeline Estimation
+ Category: History
+ Difficulty: Medium
+ Reveal: Norse explorers reached Newfoundland around 1000 CE. Columbus's first voyage came in 1492. Europeans had reached North America roughly five centuries earlier.
+
+139. Could a Japanese samurai and a European medieval knight realistically have been alive at the same time?
+Answer: Absolutely
+Type: Timeline Intuition
+ Category: History
+ Difficulty: Easy / Medium
+ Reveal: Samurai existed from around the 10th century onward, while mounted European knights were already prominent during the Middle Ages. Their histories overlapped for centuries.
+
+140. Which came first in Europe: eyeglasses or Gutenberg-style printing?
+Answer: Eyeglasses
+Type: Which Came First
+ Category: History / Everyday Objects
+ Difficulty: Medium
+ Reveal: Early spectacles appeared in northern Italy during the 13th century. Gutenberg's famous movable-type printing breakthrough came around the 1450s, well over a century later.
+
+Mythology break
+141. According to the Odyssey tradition, roughly how long was Odysseus away from home in total after leaving for the Trojan War?
+Answer: About 20 years
+Type: Numerical / Cultural Reasoning
+ Category: Greek Mythology
+ Difficulty: Medium
+ Reveal: The Trojan War lasted about 10 years, followed by another 10 years of wandering before Odysseus finally returned to Ithaca.
+Source: Homeric tradition
+
+142. How many heads does Cerberus, the famous guard dog of the Greek underworld, traditionally have?
+Answer: 3
+Type: Cultural Knowledge
+ Category: Greek Mythology
+ Difficulty: Easy
+ Reveal: Cerberus is the monstrous three-headed dog guarding the entrance to Hades so that the dead cannot escape.
+
+143. What animals pull Thor's chariot in Norse mythology?
+A) Wolves
+ B) Horses
+ C) Goats
+ D) Bears
+Answer: Goats
+Type: Multiple Choice
+ Category: Norse Mythology
+ Difficulty: Medium
+ Reveal: Thor's chariot is pulled by two goats, traditionally named Tanngrisnir and Tanngnjóstr.
+
+Party logic
+144. If there are 13 people in a room, can you guarantee that at least two of them were born in the same month?
+Answer: Yes
+Type: Logic
+ Category: Logic / Probability
+ Difficulty: Easy
+ Reveal: There are only 12 months. Once you have a 13th person, at least one month must contain two birthdays — regardless of which dates they were born on.
+
+145. A woman has 4 daughters, and every daughter has the same one brother. How many children does she have?
+Answer: 5
+Type: Logic / Language
+ Category: Logic
+ Difficulty: Easy
+ Reveal: The four daughters don't each have a different brother. They all share the same brother.
+
+
+
+147. A cube is painted red on all six outside faces, then cut into 27 identical smaller cubes. How many small cubes have paint on exactly two faces?
+Answer: 12
+Type: Spatial Reasoning
+ Category: Logic
+ Difficulty: Medium
+ Reveal: They're the cubes sitting in the middle of each edge. A cube has 12 edges, and with a 3×3×3 division, each edge contributes one such cube.
+
+
+
+
+
+
+
+
+
+
+
+151. Which usually contains more caffeine in total: one 1-oz espresso shot or one 8-oz cup of brewed coffee?
+Answer: The brewed coffee
+Difficulty: Easy / Medium
+ Reveal: Espresso is much stronger per ounce, but a typical shot has around 63 mg, while an 8-oz brewed coffee has around 96 mg.
+
+152. What color is a polar bear's skin underneath its fur?
+Answer: Black
+Category: Animals
+ Difficulty: Easy / Medium
+ Reveal: Polar bear cubs start with pink skin, but it turns black after a few months. Their apparently white coat hides it almost completely.
+
+153. Which animal has the largest eyes ever scientifically studied?
+A) Blue whale
+ B) Ostrich
+ C) Colossal squid
+ D) Elephant
+Answer: Colossal squid
+Difficulty: Medium
+ Reveal: A living colossal squid's eye can be around 27 cm across — roughly soccer-ball sized.
+
+154. Which familiar giant land animal is physically unable to jump?
+Answer: Elephant
+Category: Animals
+ Difficulty: Easy / Medium
+ Reveal: Elephants can charge at considerable speed, but their anatomy doesn't allow all four feet to push off the ground together in a jump.
+
+155. A kiwi bird has an unusual feature almost no other bird has. Where are its nostrils?
+A) Beside its eyes
+ B) At the base of its beak
+ C) Near the tip of its beak
+ D) Under its tongue
+Answer: Near the tip of its beak
+Difficulty: Medium
+ Reveal: Kiwis actually sniff out underground prey with nostrils positioned near the end of their long bill.
+
+156. Which human organ can restore its mass even after roughly two-thirds of it is surgically removed?
+Answer: The liver
+Category: Human Body
+ Difficulty: Easy / Medium
+ Reveal: The liver has extraordinary regenerative capacity. Even after around 70% is removed, the remaining tissue can regrow toward its original mass.
+
+157. Which part of your eye normally contains no blood vessels at all?
+A) Retina
+ B) Iris
+ C) Cornea
+ D) Optic nerve
+Answer: Cornea
+Difficulty: Medium
+ Reveal: Blood vessels would interfere with transparency, so the cornea instead receives nutrients largely through diffusion from tears and fluid inside the eye.
+
+158. How many bones are there in one human hand, including the wrist bones?
+Answer: 27
+Type: Numerical estimation
+ Category: Human Body
+ Difficulty: Medium
+ Reveal: That's 8 wrist bones, 5 metacarpals and 14 finger bones. Your two hands alone contain 54 bones.
+
+159. Which continent has land in the Northern, Southern, Eastern AND Western hemispheres?
+Answer: Africa
+Category: Geography
+ Difficulty: Easy / Medium
+ Reveal: Both the Equator and Prime Meridian pass through Africa, putting portions of it in all four hemispheres.
+
+160. Which country famously has three different capital cities?
+A) India
+ B) South Africa
+ C) Switzerland
+ D) Brazil
+Answer: South Africa
+Difficulty: Medium
+ Reveal: Pretoria is administrative, Cape Town legislative, and Bloemfontein traditionally serves as the judicial capital.
+
+161. Which country's national flag is the only one that isn't rectangular?
+Answer: Nepal
+Category: Geography
+ Difficulty: Easy / Medium
+ Reveal: Nepal's flag consists of two joined triangular pennants, making it instantly unlike every other national flag.
+
+History gets weird
+162. Despite its name, roughly how long did the Hundred Years' War actually last?
+Answer: 116 years
+Type: Numerical estimation
+ Category: History
+ Difficulty: Easy / Medium
+ Reveal: The conventional dates are 1337–1453. It wasn't one continuous battle, but a long series of conflicts and truces between England and France.
+
+163. Which happened first in 1977?
+A) The original Star Wars opened in cinemas
+ B) France carried out its final execution by guillotine
+Answer: Star Wars opened first
+Difficulty: Medium
+ Reveal: Star Wars opened on May 25, 1977. France's final guillotine execution happened that September.
+Darth Vader existed in cinemas while France was still technically using the guillotine.
+
+164. Alexander the Great lived closer in time to which event?
+A) Construction of the Great Pyramid of Giza
+ B) The first Moon landing
+Answer: The Great Pyramid — barely
+Difficulty: Hard, but fun
+ Reveal: Alexander died in 323 BCE. The Great Pyramid was completed around 2560 BCE, while Apollo 11 landed in 1969 CE.
+The two gaps are surprisingly close, but the pyramid wins by only around half a century.
+
+165. Which is older: chess or Notre-Dame Cathedral in Paris?
+Answer: Chess
+Difficulty: Medium
+ Reveal: Chess developed from earlier Indian games and had spread into Persia by around the 6th century CE. Construction of Notre-Dame began in 1163.
+
+166. Which came first: food canning or the bicycle?
+Answer: Food canning
+Difficulty: Medium
+ Reveal: Major breakthroughs in canning came in 1810. Karl Drais demonstrated the famous two-wheeled ancestor of the modern bicycle in 1817.
+Canned food beat the bicycle by about seven years.
+
+Mythology
+167. In Norse mythology, what kind of creature is Fenrir?
+Answer: A gigantic wolf
+Difficulty: Easy / Medium
+ Reveal: Fenrir is a monstrous wolf associated with Ragnarök and is foretold to kill Odin before being slain himself.
+
+168. In Greek mythology, who is condemned to repeatedly push a boulder uphill, only for it to roll back down?
+Answer: Sisyphus
+Difficulty: Easy / Medium
+ Reveal: His endless punishment gave us the word “Sisyphean” for a task that is exhausting, repetitive and seemingly pointless.
+
+Party logic
+169. You have 6 eggs. You break 2, fry 2, and eat 2. How many eggs are left?
+Answer: 4
+Difficulty: Easy
+ Reveal: The same two eggs can be the ones you break, fry and eat. Only two eggs were actually used.
+
+
+
+171. How many times can you subtract 10 from 100?
+Answer: Once
+Difficulty: Easy
+ Reveal: After the first subtraction, you're no longer subtracting 10 from 100. You're subtracting it from 90.
+
+172. What comes next?
+1 → 11 → 21 → 1211 → 111221 → ?
+Answer: 312211
+Difficulty: Medium / Hard
+ Reveal: Each number describes the one before it:
+111221 = three 1s, two 2s, one 1
+So:
+312211
+
+
+
+
+180. Which of your lungs is larger?
+Answer: Right lung
+Best input: Tap left/right side on a simple body silhouette
+Difficulty: Easy / Medium
+ Reveal: Your right lung has three lobes while your left has two, partly because the heart takes up space on the left side.
+
+
+
+
+
+201. Which has more potassium per 100 grams: banana or avocado?
+Answer: Avocado
+ Difficulty: Easy / Medium
+ Reveal: Avocado has about 485 mg of potassium per 100 g, while banana has about 358 mg. Bananas have the reputation; avocados quietly win.
+
+202. Botanically speaking, what is a coffee “bean”?
+A) A nut
+ B) A seed
+ C) A root
+ D) A tiny bean
+Answer: A seed
+Difficulty: Easy
+ Reveal: Coffee beans are actually the seeds inside coffee fruit, commonly called coffee cherries.
+
+203. Vanilla comes from what kind of plant?
+A) A tree
+ B) A grass
+ C) An orchid
+ D) A cactus
+Answer: An orchid
+Difficulty: Easy / Medium
+ Reveal: Real vanilla comes from the fruit pods of Vanilla planifolia, an orchid. Those little dark flecks in vanilla ice cream are orchid seeds.
+
+204. Roughly how many of those little “seeds” are visible on the outside of a typical strawberry?
+Answer: About 200
+Difficulty: Medium
+ Reveal: A medium strawberry has roughly 200 achenes. Even stranger: those specks aren't technically the seeds — each one is actually a tiny fruit containing a seed.
+
+205. Who has more bones: a newborn baby or an adult?
+Answer: A newborn baby
+Difficulty: Easy / Medium
+ Reveal: Babies are born with roughly 270 bones, while most adults have around 206. Many fuse together as you grow.
+
+206. Your brain is only about 2% of your body weight. Roughly what percentage of your body's energy does it use while you're resting?
+Answer: About 20%
+Difficulty: Medium
+ Reveal: That little 1.4 kg lump is incredibly expensive to run: the resting brain uses around one-fifth of the body's energy supply.
+
+207. How many eyelids does a camel have on each eye?
+Answer: 3
+Difficulty: Easy / Medium
+ Reveal: Camels have the usual eyelids plus a third translucent eyelid that can sweep across the eye like a windshield wiper during blowing sand.
+
+208. Which bird can genuinely fly backward under its own power?
+Answer: Hummingbird
+Difficulty: Easy
+ Reveal: Hummingbirds' unusual wing motion lets them hover, move sideways, and fly backward — something other birds can't sustain.
+
+209. What part of an octopus can effectively taste things by touching them?
+A) Its eyes
+ B) Its suckers
+ C) Its beak
+ D) Its skin
+Answer: Its suckers
+Difficulty: Easy / Medium
+ Reveal: Octopus suckers contain specialized chemical receptors, letting their arms effectively taste whatever they touch.
+
+210. In seahorses, which parent carries the developing babies?
+Answer: The male
+Difficulty: Easy
+ Reveal: The female transfers eggs into the male's pouch, and the male carries the embryos until birth.
+
+211. Which familiar mammal has males equipped with venomous ankle spurs?
+A) Beaver
+ B) Platypus
+ C) Otter
+ D) Badger
+Answer: Platypus
+Difficulty: Medium
+ Reveal: Male platypuses have sharp spurs on their hind feet connected to venom glands. As if egg-laying and a duck bill weren't weird enough.
+
+212. How many actual bones are in a shark's skeleton?
+Answer: Zero
+Difficulty: Easy / Medium
+ Reveal: Sharks are vertebrates, but their skeletons are made of cartilage rather than bone — similar to the flexible material in your nose and ears.
+
+213. Roughly how wide can the wingspan of a wandering albatross reach?
+Answer: About 3.5 metres / 11.5 feet
+Difficulty: Medium
+ Reveal: That's wider than many cars are long. The wandering albatross has the largest wingspan of any living bird.
+
+214. Which has more lakes larger than 0.1 km²: Canada or the rest of the world combined?
+Answer: Canada
+Difficulty: Medium
+ Reveal: Canada has more than 875,000 lakes above that size threshold — about 62% of the world's total by number.
+
+215. What is the world's largest landlocked country?
+A) Mongolia
+ B) Kazakhstan
+ C) Bolivia
+ D) Ethiopia
+Answer: Kazakhstan
+Difficulty: Easy / Medium
+ Reveal: Kazakhstan is enormous — the ninth-largest country on Earth, despite having no access to an open ocean.
+
+216. Which country is unusual because every single point in the country is more than 1,000 metres above sea level?
+A) Nepal
+ B) Switzerland
+ C) Lesotho
+ D) Bhutan
+Answer: Lesotho
+Difficulty: Medium
+ Reveal: Lesotho's lowest point is still about 1,400 metres above sea level, giving it the highest lowest point of any country.
+
+217. Which came first: an early fax machine or the abolition of the samurai class in Japan?
+Answer: The fax machine
+Difficulty: Medium
+ Reveal: Alexander Bain patented an early fax-like device in 1843. Samurai status wasn't finally abolished until the 1870s. Fax technology and samurai genuinely overlapped.
+
+218. When the Wright brothers made the first successful powered airplane flight in 1903, which of these still existed?
+A) The Aztec Empire
+ B) The Byzantine Empire
+ C) The Ottoman Empire
+ D) The Roman Empire in the West
+Answer: The Ottoman Empire
+Difficulty: Easy / Medium
+ Reveal: The Wright Flyer flew in 1903. The Ottoman Empire survived until 1922 — almost another two decades.
+
+219. Which came first: the Eiffel Tower or commercially sliced bread?
+Answer: The Eiffel Tower
+Difficulty: Easy / Medium
+ Reveal: The Eiffel Tower was completed in 1889. Factory-sliced bread didn't arrive until 1928 — nearly 40 years later.
+
+220. Which came first: the London Underground or the modern automobile?
+Answer: The London Underground
+Difficulty: Medium
+ Reveal: London's first Underground railway opened in 1863. Benz's pioneering automobile arrived in 1885–86. People were riding underground trains before cars existed.
+
+221. Which came first: the first surviving photograph or the invention of the word “dinosaur”?
+Answer: The photograph
+Difficulty: Medium
+ Reveal: Niépce's earliest surviving photograph dates to about 1826–27. Richard Owen coined Dinosauria in 1842. Photography existed before dinosaurs had a collective name.
+
+222. With two fair six-sided dice, which total is more likely: 5 or 9?
+Answer: They're equally likely
+Difficulty: Easy / Medium
+ Reveal: Both can be made in exactly four ways:
+5: 1+4, 2+3, 3+2, 4+1
+ 9: 3+6, 4+5, 5+4, 6+3
+Nice example of intuition being tempted to favor the “more central-looking” number.
+
+223. If yesterday was two days before Thursday, what day is today?
+Answer: Wednesday
+Difficulty: Easy / Medium
+ Reveal: Two days before Thursday is Tuesday. If yesterday was Tuesday, today must be Wednesday.
+
+224. A farm pen contains only chickens and rabbits. There are 10 heads and 28 legs in total. How many rabbits are there?
+Answer: 4 rabbits
+Difficulty: Medium
+ Reveal: If all 10 animals were chickens, you'd have 20 legs. The extra 8 legs must come from rabbits, which contribute two extra legs each.
+8 ÷ 2 = 4 rabbits.
+This is math, but the nice part is realizing you can solve it without algebra.
+
+225. Roughly how many teeth can a great white shark have in its mouth at once?
+Answer: About 300
+Difficulty: Medium
+ Reveal: Great whites can carry around 300 teeth arranged in several rows — and continuously replace them as they're lost.
+
+
+
+
+
+
+227. Roughly what percentage of the Netherlands lies below sea level?
+Answer: About 25%
+Type: Percentage estimate
+ Category: Geography / Infrastructure
+ Difficulty: Medium
+ Reveal: About a quarter of the country lies below sea level — much of it land reclaimed and kept dry through an enormous system of dikes, dunes, pumps and water management.
+
+228. Ships passing through the Panama Canal don't stay at sea level. Roughly how high above sea level are they lifted?
+Answer: About 26 metres / 85 feet
+Type: Numerical estimate
+ Category: Infrastructure
+ Difficulty: Medium
+ Reveal: The locks work like giant water elevators, raising ships about 26 metres to the level of Gatun Lake before lowering them again on the other side.
+
+229. Which sovereign country is geographically closer to Canada?
+FRANCE or MEXICO
+Answer: France
+Type: Which Is Closer
+ Category: Geography
+ Difficulty: Medium
+ Reveal: The French territory of Saint-Pierre-et-Miquelon sits only about 25 km off Newfoundland. France is therefore much closer to Canada than Mexico is.
+
+230. Which city sits higher above sea level?
+DENVER or MEXICO CITY
+Answer: Mexico City
+Type: Which Is Higher
+ Category: Geography
+ Difficulty: Easy / Medium
+ Reveal: Denver's famous “mile high” elevation is about 1,609 m. Mexico City sits around 2,240 m — over 600 metres higher.
+
+231. Which country is slightly larger by surface area?
+ARGENTINA or KAZAKHSTAN
+Answer: Argentina
+Type: Which Is Bigger
+ Category: Geography
+ Difficulty: Medium
+ Reveal: They're surprisingly close. World Bank figures put Argentina around 2.78 million km² and Kazakhstan around 2.72 million km².
+
+232. Are you measurably taller immediately after waking up than before going to bed — and by roughly how much?
+Answer: Yes — roughly 1–2 cm
+Type: Numerical estimate
+ Category: Human / Everyday Science
+ Difficulty: Easy / Medium
+ Reveal: Your spine compresses while you're upright and expands again during sleep. Studies have measured daily height changes approaching 2 cm.
+
+233. Without using tricks like grouping information into larger patterns, roughly how many separate “chunks” can your working memory hold at once?
+Answer: About 4
+Type: Numerical estimate
+ Category: Psychology / Human Mind
+ Difficulty: Medium
+ Reveal: The old famous claim was “7 ± 2,” but later research suggests the core capacity is closer to 3–5 meaningful chunks, often summarized as about four.
+
+234. Roughly how quickly can a person react to a simple visual event, like seeing a light and pressing a button?
+Answer: Around 250 milliseconds
+Type: Time estimate
+ Category: Human Perception
+ Difficulty: Medium
+ Reveal: About a quarter of a second is a useful benchmark for simple visual reaction time, though it varies with the task and person.
+
+235. Roughly how much would $1 million in US $100 bills weigh?
+Answer: About 10 kg / 22 lb
+Type: Numerical estimate
+ Category: Money / Physical Scale
+ Difficulty: Medium
+ Reveal: Every US banknote weighs about 1 gram, regardless of denomination. One million dollars in hundreds is 10,000 notes → roughly 10 kg.
+This is a good calculator-assisted question because knowing the surprising 1 gram per bill anchor is the actual challenge.
+
+236. A glass of ice water sits on a table and eventually becomes wet on the outside. Where did that water come from?
+A) It leaked through the glass
+ B) It came from the surrounding air
+ C) The glass itself released water
+ D) The ice pushed water through microscopic holes
+Answer: B — the surrounding air
+Type: Conceptual multiple choice
+ Category: Everyday Science
+ Difficulty: Easy
+ Reveal: Water vapor already present in the air cools against the glass and condenses into liquid droplets.
+
+237. Potato-chip bags are deliberately filled with which gas to help keep the chips fresh?
+A) Oxygen
+ B) Nitrogen
+ C) Hydrogen
+ D) Carbon dioxide
+Answer: Nitrogen
+Type: Multiple choice
+ Category: Food / Everyday Technology
+ Difficulty: Easy / Medium
+ Reveal: Nitrogen flushing displaces oxygen, slowing oxidation and helping preserve food. The extra gas also gives fragile chips some physical protection.
+
+238. What actually makes a popcorn kernel explode into popcorn?
+A) Air trapped inside it
+ B) Water inside it turns to steam
+ C) The starch catches fire
+ D) Oil trapped in the shell boils
+Answer: Water inside turns to steam
+Type: Multiple choice
+ Category: Food / Everyday Science
+ Difficulty: Easy
+ Reveal: Popcorn kernels contain roughly 14% moisture when they're ideal for popping. Heating turns that internal water into pressurized steam until the hull ruptures.
+
+239. Gram for gram, which usually contains more sugar?
+KETCHUP or REGULAR COLA
+Answer: Ketchup
+Type: Which Has More
+ Category: Food / Everyday Intuition
+ Difficulty: Easy / Medium
+ Reveal: USDA legacy data puts ketchup around 21 g of sugar per 100 g, while regular cola is around 10 g per 100 g — roughly half as much by weight.
+Of course, people normally consume much more cola at once.
+
+240. Why does spreading salt on an icy road help melt the ice?
+A) Salt chemically heats the road
+ B) Salt lowers water's freezing point
+ C) Salt absorbs all the water
+ D) Salt reflects more sunlight
+Answer: It lowers the freezing point
+Type: Conceptual multiple choice
+ Category: Everyday Science
+ Difficulty: Easy / Medium
+ Reveal: Dissolved salt makes it possible for water to remain liquid below its normal 0°C freezing point.
+
+241. You're driving for an hour and then check your tire pressure. It's somewhat higher than when the tires were cold. What's the main reason?
+A) The tires sucked in extra air
+ B) The air inside became hotter
+ C) Centrifugal force created more air
+ D) The rubber chemically produced gas
+Answer: The air became hotter
+Type: Conceptual multiple choice
+ Category: Everyday Physics
+ Difficulty: Easy / Medium
+ Reveal: Driving flexes and heats the tires. Hotter gas produces greater pressure inside the same tire even though roughly the same amount of air is still there.
+
+242. On a very humid day, does sweating generally cool your body more effectively or less effectively than on a dry day?
+Answer: Less effectively
+Type: Two-choice
+ Category: Human / Everyday Science
+ Difficulty: Easy
+ Reveal: Sweat cools primarily by evaporating. When the surrounding air is already full of water vapor, evaporation becomes harder — so sweat can stay on you without cooling you as effectively.
+
+243. The earliest commercial microwave ovens were enormous. Roughly how much did one of the first models weigh?
+Answer: About 340 kg / 750 lb
+Type: Numerical estimate
+ Category: Inventions / Technology
+ Difficulty: Medium
+ Reveal: The first Radarange models were about six feet tall and 750 pounds. The microwave began as industrial equipment, not a little kitchen box.
+
+244. The discovery that led Percy Spencer toward the microwave oven began when something unexpectedly melted near radar equipment. What was it?
+A) A plastic pen
+ B) A candy/chocolate bar
+ C) His watch strap
+ D) A block of cheese
+Answer: A candy/chocolate bar
+Type: Multiple choice
+ Category: Inventions
+ Difficulty: Easy / Medium
+ Reveal: Spencer noticed a candy bar in his pocket melting near a magnetron in 1945, then deliberately experimented with popcorn and an egg.
+
+245. Which existed first commercially?
+THE AUTOMATIC POP-UP TOASTER
+ or
+ MACHINE-SLICED BREAD
+Answer: The automatic pop-up toaster
+Type: Which Came First
+ Category: Everyday History
+ Difficulty: Medium
+ Reveal: The automatic toaster debuted in 1926. The first effective machine-sliced bread went on sale in 1928.
+So sliced bread wasn't even the best thing since the pop-up toaster — the toaster came first.
+
+246. One of the earliest known vending-machine designs was described nearly 2,000 years ago by Hero of Alexandria. What did it dispense when someone inserted a coin?
+A) Wine
+ B) Bread
+ C) Holy water
+ D) Theater tickets
+Answer: Holy water
+Type: Multiple choice
+ Category: Ancient Technology
+ Difficulty: Medium
+ Reveal: A coin landed on a lever, briefly opening a valve and dispensing a measured amount of water. Ancient engineering got surprisingly sophisticated.
+
+247. A flat round pizza must stay in place, and every cut is a straight line across it. What is the maximum number of pieces you can make with exactly 3 cuts?
+Answer: 7
+Type: Numerical logic
+ Category: Spatial Reasoning
+ Difficulty: Medium
+ Reveal: To maximize the pieces, every new cut must cross every previous cut at a different point:
+1 cut → 2
+ 2 cuts → 4
+ 3 cuts → 7
+Eight would require stacking/rearranging pieces or cutting through the pizza in 3D.
+
+248. In a month with 31 days, how many different weekdays must occur five times?
+Answer: 3 weekdays
+Type: Numerical logic
+ Category: Calendar / Logic
+ Difficulty: Medium
+ Reveal: Four complete weeks account for 28 days. The remaining three days mean three consecutive weekdays appear a fifth time.
+
+249. A bridge has small expansion gaps between sections. On a very hot day, do those gaps generally become wider or narrower?
+Answer: Narrower
+Type: Two-choice
+ Category: Engineering / Physical Intuition
+ Difficulty: Easy / Medium
+ Reveal: The bridge material expands as it heats up, so neighboring sections push farther into the gaps. The gaps exist precisely so that expansion has somewhere to go.
+
+
+250. If you take a 10-minute shower using a conventional showerhead, roughly how much water can flow out?
+Answer: Around 95 litres / 25 US gallons
+Type: Numerical estimate
+ Category: Everyday Life
+ Difficulty: Medium
+ Reveal: A conventional showerhead can use about 2.5 gallons per minute. Over ten minutes that's roughly 25 gallons, or 95 litres. Efficient WaterSense models cap that at 2.0 gallons per minute.
+
+
+
+
+
+
+251. Airport runways have numbers like 09, 18, or 27 painted on them. What do those numbers roughly represent?
+A) Runway length
+ B) Compass direction
+ C) Airport elevation
+ D) Construction year
+Answer: B — Compass direction
+ Difficulty: Easy / Medium
+ Reveal: Runway numbers correspond to the runway's magnetic heading rounded to the nearest 10 degrees. So Runway 27 points roughly 270° — west.
+
+252. Why are manhole covers so often round instead of square?
+A) Circles use less metal
+ B) They're easier to paint
+ C) A round cover can't fall through its own opening
+ D) Water flows around them better
+Answer: C
+ Difficulty: Easy / Medium
+ Reveal: A circle has the same width in every direction. A matching round cover can't rotate into an orientation that lets it fall through the hole.
+
+253. What color is the blood flowing through the blue-looking veins in your hand?
+A) Blue
+ B) Purple
+ C) Dark red
+ D) Colorless
+Answer: Dark red
+ Difficulty: Easy
+ Reveal: Human blood is always some shade of red. Veins look blue because of how light passes through and reflects from skin.
+
+254. An old school diagram says the tip of your tongue tastes sweet, while other sections handle sour, salty and bitter. How accurate is that?
+A) Completely accurate
+ B) Mostly accurate
+ C) Basically a myth
+Answer: Basically a myth
+ Difficulty: Easy / Medium
+ Reveal: Taste receptors for all five basic tastes are distributed across the tongue, although some regions are slightly more sensitive than others.
+
+255. While you're breathing normally, do your two nostrils usually carry exactly the same amount of airflow?
+Answer: No — one is often more open than the other, and they alternate
+Type: Two-choice
+ Difficulty: Medium
+ Reveal: This is called the nasal cycle. Tissue inside each side naturally swells and shrinks over periods of hours, switching which nostril has lower resistance.
+
+256. The “lead” inside an ordinary pencil is primarily made from what?
+A) Lead
+ B) Graphite
+ C) Charcoal
+ D) Iron
+Answer: Graphite
+ Difficulty: Easy
+ Reveal: Pencil “lead” contains graphite, typically mixed with clay or similar material. Actual lead metal isn't involved.
+
+257. When ancient Greek marble statues were new, what did many of them look like?
+A) Plain white marble
+ B) Brightly painted
+ C) Covered entirely in gold
+ D) Mostly black
+Answer: Brightly painted
+ Difficulty: Easy / Medium
+ Reveal: Much ancient Greek and Roman sculpture was originally painted in vivid colors. Most pigment simply disappeared over the centuries, leaving the white marble we're familiar with today.
+
+258. Which helmet is more representative of an actual Viking-age warrior?
+A) Helmet with huge horns
+ B) Simple helmet without horns
+Answer: B — No horns
+ Difficulty: Easy
+ Reveal: The famous horned Viking helmet is largely a later cultural image. The one substantially preserved Viking-age helmet does not have horns.
+
+259. In the standard Roman numeral system, which symbol represents zero?
+A) Z
+ B) O
+ C) N
+ D) There isn't one
+Answer: There isn't one
+Difficulty: Easy / Medium
+ Reveal: Standard Roman numerals were designed for counting positive quantities and don't have a normal numeral equivalent to our zero.
+
+260. Which existed first?
+HARVARD UNIVERSITY
+ or
+ CALCULUS
+Answer: Harvard University
+ Difficulty: Medium
+ Reveal: Harvard was founded in 1636. Newton's major early work on what became calculus came in 1665–1666. A university could have enrolled you decades before calculus as we know it existed.
+
+261. Which was invented first?
+A TRAFFIC SIGNAL
+ or
+ THE MODERN AUTOMOBILE
+Answer: The traffic signal
+Difficulty: Medium
+ Reveal: London's first traffic signal appeared in 1868, controlling horses, carriages and pedestrians — well before the automobile era. It used semaphore arms and red/green gas lamps.
+
+262. Why does a pressure cooker cook food faster?
+A) The metal pot gets hotter than other pots
+ B) Pressure lets the water get hotter before boiling
+ C) Steam contains extra oxygen
+ D) The food is physically compressed
+Answer: B
+ Difficulty: Easy / Medium
+ Reveal: Increased pressure raises water's boiling temperature, letting the contents cook at temperatures above the normal 100°C sea-level boiling point.
+
+263. Why does the drainpipe under a sink usually have a U-shaped bend?
+A) It slows the water to stop splashing
+ B) It catches jewelry
+ C) It holds water that blocks sewer gases
+ D) It increases water pressure
+Answer: C — It blocks sewer gases
+Difficulty: Easy / Medium
+ Reveal: The bend traps a small amount of water, creating a simple barrier between your room and the gases in the sewer system.
+
+264. What ingredient is mainly responsible for making stainless steel resist rust much better than ordinary steel?
+A) Silver
+ B) Chromium
+ C) Aluminum
+ D) Tin
+Answer: Chromium
+ Difficulty: Medium
+ Reveal: Stainless steel contains enough chromium to develop a very thin protective oxide layer on its surface. If scratched, that layer can reform in the presence of oxygen.
+
+265. Where does sound travel faster?
+AIR or WATER
+Answer: Water
+Difficulty: Easy / Medium
+ Reveal: Sound travels around 340 m/s in air but roughly 1,500 m/s in seawater — more than four times faster.
+
+266. There is one temperature where Celsius and Fahrenheit give the same numerical reading. What is it?
+Answer: −40°
+Type: Numerical estimate
+ Difficulty: Medium
+ Reveal: −40°C = −40°F. It's the point where the two temperature scales cross.
+
+267. What actually triggers your eyes to water while cutting onions?
+A) Onion juice physically splashing into your eyes
+ B) A volatile sulfur compound released into the air
+ C) The smell psychologically triggers tears
+ D) Tiny onion dust particles
+Answer: B
+ Difficulty: Easy / Medium
+ Reveal: Damaging onion cells starts chemical reactions that release volatile sulfur compounds, including the famous tear-inducing “lachrymatory factor.”
+
+268. QR codes were originally developed primarily for what?
+A) Restaurant menus
+ B) Online payments
+ C) Tracking automotive parts during manufacturing
+ D) Airline boarding passes
+Answer: C — Automotive parts
+Difficulty: Medium
+ Reveal: Denso developed QR codes for production management in the automotive industry, where ordinary barcodes weren't holding enough information or scanning quickly enough.
+
+269. Why do modern passenger airplanes generally have rounded windows rather than square ones?
+A) They're easier to clean
+ B) Curved corners reduce dangerous stress concentrations
+ C) They improve aerodynamics
+ D) They make the cabin brighter
+Answer: B
+ Difficulty: Medium
+ Reveal: Sharp corners concentrate stress in a pressurized fuselage. Investigations of early de Havilland Comet failures showed how dangerous squarish window corners could be.
+
+270. What color is an airplane's famous “black box” flight recorder actually painted?
+A) Black
+ B) White
+ C) Bright orange
+ D) Silver
+Answer: Bright orange
+ Difficulty: Easy / Medium
+ Reveal: Flight recorders are intentionally painted bright orange or similar high-visibility colors so investigators can find them more easily after a crash.
+
+271. Bubble Wrap was originally invented while trying to create what product?
+A) Life jackets
+ B) Textured wallpaper
+ C) Greenhouse roofing
+ D) Packing material
+Answer: Textured wallpaper
+ Difficulty: Medium
+ Reveal: Its inventors sealed two plastic sheets together in 1957 while attempting to make a fashionable textured wallpaper. The packaging use came later.
+
+272. The idea behind Velcro-style hook-and-loop fasteners was inspired by what?
+A) Spiderwebs
+ B) Fish scales
+ C) Plant burrs sticking to clothing and fur
+ D) Bird feathers
+Answer: Plant burrs
+Difficulty: Easy / Medium
+ Reveal: George de Mestral examined burrs that had stuck to his clothes and his dog's fur and discovered tiny natural hooks catching on loops.
+
+273. The adhesive that eventually led to Post-it Notes was originally considered unusual because it was...
+A) Too weak
+ B) Too strong
+ C) Waterproof
+ D) Magnetic
+Answer: Too weak
+Difficulty: Easy / Medium
+ Reveal: Spencer Silver was trying to create a strong adhesive but instead produced one that stuck lightly and could peel away cleanly. Another 3M scientist later realized that was exactly what removable notes needed.
+
+274.  To which instrument family does the saxophone belong?
+ A) Brass
+ B) Woodwind
+ C) Percussion
+ D) Strings
+Answer: Woodwind
+Difficulty: Medium
+ Reveal: Classification is based on how the sound is produced. A saxophone uses a vibrating reed, so it's a woodwind despite its brass body.
+
+275. Where does the English word “alphabet” ultimately get its name?
+A) From the first two Greek letters
+ B) From a Roman emperor
+ C) From the Latin word for writing
+ D) From an ancient Egyptian city
+Answer: The first two Greek letters: alpha + beta
+Difficulty: Easy / Medium
+ Reveal: Alphabet ultimately comes from Greek alpha + beta — essentially the Greek equivalent of saying “the ABCs.”
+
+
+
+276. What does the “ZIP” in ZIP Code originally stand for?
+A) Zonal Identification Post
+ B) Zone Improvement Plan
+ C) Zip Information Protocol
+ D) It doesn't stand for anything
+Answer: Zone Improvement Plan
+Difficulty: Easy / Medium
+ Reveal: The U.S. Postal Service introduced ZIP Codes in 1963 to make rapidly growing mail volumes easier to sort and deliver.
+
+277. The first product ever scanned using a modern UPC barcode at a supermarket checkout was what?
+A) A can of soup
+ B) A pack of chewing gum
+ C) A bottle of Coca-Cola
+ D) A loaf of bread
+Answer: A pack of Wrigley's Juicy Fruit gum
+Difficulty: Medium
+ Reveal: On June 26, 1974, a 67-cent pack of Juicy Fruit became the first UPC-scanned retail purchase.
+
+278. The inventor of the supermarket shopping cart got the basic idea for its frame from what everyday object?
+A) A wheelbarrow
+ B) A baby stroller
+ C) Folding chairs
+ D) A bicycle
+Answer: Folding chairs
+Difficulty: Medium
+ Reveal: Sylvan Goldman's first shopping cart was essentially a folding-chair frame on wheels holding baskets. Customers initially hated the idea, so he hired people to push carts around the store until they caught on.
+
+279. When the Statue of Liberty was unveiled in 1886, what color was it?
+A) Green
+ B) Coppery brown
+ C) White
+ D) Dark gray
+Answer: Coppery brown
+Difficulty: Easy / Medium
+ Reveal: The outside is copper. Its famous green color formed gradually as the metal oxidized; it took roughly 30 years for the familiar patina to develop fully.
+
+280. What is the official name of the Golden Gate Bridge's distinctive color?
+A) California Red
+ B) Sunset Orange
+ C) International Orange
+ D) Golden Vermilion
+Answer: International Orange
+Difficulty: Easy / Medium
+ Reveal: The color was chosen partly because it suited the landscape and helped the enormous bridge remain visible in San Francisco's fog.
+
+281. What was the tiny pocket inside the front pocket of traditional jeans originally intended to hold?
+A) Coins
+ B) Matches
+ C) A pocket watch
+ D) A key
+Answer: A pocket watch
+Difficulty: Easy / Medium
+ Reveal: What we often call the coin pocket today was originally the watch pocket, designed for carrying a small pocket watch securely.
+
+282. The technology name Bluetooth was inspired by...
+A) A blue communications cable
+ B) A medieval Scandinavian king
+ C) The inventor's nickname
+ D) A Navy radio code
+Answer: A medieval Scandinavian king
+Difficulty: Medium
+ Reveal: It's named after Harald “Bluetooth” Gormsson, a 10th-century king associated with uniting Denmark and Norway. Engineers liked the analogy of one technology “uniting” different devices.
+
+283. What does SOS officially stand for?
+A) Save Our Ship
+ B) Save Our Souls
+ C) Signal Our Safety
+ D) Nothing
+Answer: Nothing
+Difficulty: Easy / Medium
+ Reveal: SOS wasn't created as an abbreviation. The continuous Morse pattern ...---... was selected because it was simple and extremely recognizable. “Save Our Ship” and “Save Our Souls” came later as memory aids.
+
+284. The dot above a lowercase i or j actually has a name. What is it?
+A) Tittle
+ B) Jot
+ C) Serif
+ D) Pip
+Answer: Tittle
+Difficulty: Medium
+ Reveal: Yes, really: the tiny dot is called a tittle. The word has existed in English since the Middle Ages.
+
+285. German chocolate cake is named after...
+A) Germany
+ B) A baker named German
+ C) A German royal family
+ D) A town called German
+Answer: A man named German
+Difficulty: Easy / Medium
+ Reveal: American chocolatier Samuel German developed a sweet baking chocolate in the 1800s. “German's Chocolate Cake” eventually lost the apostrophe, making the dessert sound German when it isn't.
+
+286. During a typical high-altitude passenger flight, the airplane cabin usually feels like you're standing at roughly what altitude?
+Answer: Around 6,000–8,000 feet / 1,800–2,400 m
+Type: Numerical estimate
+ Difficulty: Medium
+ Reveal: The cabin isn't usually pressurized all the way to sea-level pressure. Traditional airliners commonly maintain pressure equivalent to roughly 8,000 feet at high cruise altitude.
+
+287. What's the main purpose of the tiny hole you may notice near the bottom of an airplane passenger window?
+A) Drain rainwater
+ B) Equalize pressure between window panes
+ C) Let fresh air into the cabin
+ D) Stop the window fogging by heating it
+Answer: Equalize pressure between the panes
+Difficulty: Medium
+ Reveal: Airplane windows have multiple layers. The small vent hole lets cabin pressure reach the space between panes so the outer pane normally takes the pressure load.
+
+288. If microwave radiation is trapped inside a microwave oven, why can you still see through all those little holes in the door?
+A) The microwaves travel only downward
+ B) The holes are too small for the microwaves but visible light can pass through
+ C) The glass absorbs the radiation
+ D) The microwave shuts off whenever you look through it
+Answer: B
+Difficulty: Medium
+ Reveal: The metal screen's holes are tiny compared with the wavelength of the microwaves, so the screen behaves almost like a solid wall to them while much shorter-wavelength visible light gets through.
+
+289. Hit two otherwise identical golf balls equally hard — one perfectly smooth and one normally dimpled. Which should travel farther?
+Answer: The dimpled ball
+Difficulty: Easy / Medium
+ Reveal: Dimples aren't decoration. They alter airflow, reducing drag and helping generate lift, allowing the ball to stay airborne much longer.
+
+290. Take a sheet of standard A4 paper and cut it exactly in half across its long side. What is special about the two smaller sheets?
+A) They become square
+ B) They keep the same proportions as the original sheet
+ C) They're shaped like US Letter paper
+ D) Nothing special
+Answer: They keep the same proportions
+Difficulty: Medium
+ Reveal: The A-series uses an aspect ratio of 1 : √2. Halving a sheet produces the next size down while preserving exactly the same shape. That's why A4 → A5 → A6 scales so neatly.
+
+291. How many dot positions make up one standard Braille cell?
+Answer: 6
+Type: Numerical
+ Difficulty: Easy / Medium
+ Reveal: Traditional Braille uses a 2 × 3 arrangement of six possible raised dots, with different patterns representing letters, numbers and punctuation.
+
+292. How many keys does a standard modern piano have?
+Answer: 88
+Type: Numerical estimation
+ Difficulty: Easy
+ Reveal: The modern standard is 52 white keys + 36 black keys = 88. That layout became established by around the 1890s.
+
+293. Researchers asked hospital staff whether they'd ever felt their phone or pager vibrating when it actually wasn't. Roughly what percentage said yes?
+Answer: About 68%
+Type: Percentage estimate
+ Difficulty: Medium
+ Reveal: In one study, 115 of 169 respondents — 68% — reported phantom vibrations. Your brain can apparently become so accustomed to expecting notifications that it invents them.
+
+294. Around the year 1600 in England, which of these would have still been relatively unusual at the dinner table?
+A FORK or A SPOON
+Answer: A fork
+Difficulty: Medium
+ Reveal: Europeans had known forks for centuries, but their widespread acceptance as personal eating utensils came surprisingly late. They only really caught on in England during the 17th century.
+
+295. For a large air-conditioned building, which entrance generally does a better job of preventing outside air from rushing in?
+REVOLVING DOOR or NORMAL SWINGING DOOR
+Answer: Revolving door
+Difficulty: Easy / Medium
+ Reveal: A revolving door never creates one large unobstructed opening between indoors and outdoors, reducing unwanted air exchange. Energy-efficiency guidance for large buildings specifically recommends them as one way to reduce infiltration.
+
+296. Which U.S. banknote is expected to survive longer in circulation?
+$1 BILL or $100 BILL
+Answer: $100 bill — by a lot
+Difficulty: Easy / Medium
+ Reveal: Current Federal Reserve estimates put a $1 bill at about 7.2 years, versus roughly 24 years for a $100 bill. Hundreds tend to be handled less frequently.
+
+297. Will the year 2100 be a leap year?
+Answer: No
+Best input: YES / NO
+ Difficulty: Medium
+ Reveal: Being divisible by 4 isn't enough for century years. Years divisible by 100 are not leap years unless they're also divisible by 400.
+So:
+2000 ✅
+ 2100 ❌
+ 2400 ✅
+
+298. A standard double-six domino set contains every possible pair from 0–0 through 6–6. How many tiles are in the whole set?
+Answer: 28
+Type: Numerical logic
+ Difficulty: Medium
+ Reveal: There are seven possible values on each half, including blank. Counting every unique unordered pairing gives 28 dominoes.
+It's possible to reason toward this without knowing anything about dominoes.
+
+
+300. Which one normally begins reading information closer to the center and progresses outward?
+A VINYL RECORD or A COMPACT DISC
+Answer: A compact disc
+Difficulty: Medium
+ Reveal: Traditional vinyl records normally start near the outer edge and spiral inward. CDs reverse that basic direction: their data track begins near the inside and progresses toward the outside.
+
+
+
+
+
+301. What was the world's first webcam originally pointed at?
+A) A parking lot
+ B) A coffee pot
+ C) A laboratory entrance
+ D) A weather station
+Answer: A coffee pot
+ Difficulty: Medium
+ Reveal: Cambridge researchers set up a camera so they could check whether the shared Trojan Room coffee pot had fresh coffee without walking over to it. It later became the first webcam connected to the Web.
+
+302. Which is longer?
+A standard marathon
+ or
+ the shortest distance across the English Channel
+Answer: The marathon
+Difficulty: Medium
+ Reveal: A marathon is 42.195 km. Britain and France are only about 33 km apart at the narrowest part of the Strait of Dover.
+
+303. In which city is the Caesar salad generally credited with being created?
+A) Rome
+ B) New York
+ C) Tijuana
+ D) Paris
+Answer: Tijuana
+Difficulty: Easy / Medium
+ Reveal: The standard origin story places its creation at Caesar Cardini's restaurant in Tijuana, Mexico, in 1924.
+
+304. In reinforced concrete, what is the steel reinforcement mainly there to handle?
+A) Compression
+ B) Tension
+ C) Heat
+ D) Water absorption
+Answer: Tension
+Difficulty: Medium
+ Reveal: Concrete is excellent under compression but relatively poor under tension. Steel complements it by taking tensile forces.
+
+305. What did the first SMS text message say?
+A) Hello World
+ B) Test 123
+ C) Merry Christmas
+ D) Call me
+Answer: Merry Christmas
+Difficulty: Medium
+ Reveal: The first SMS was sent over Vodafone's network on December 3, 1992 and simply read “Merry Christmas.”
+
+306. How many countries share a land border with Germany?
+Answer: 9
+Type: Numerical estimate
+ Difficulty: Medium
+ Reveal: Germany borders Denmark, Poland, Czechia, Austria, Switzerland, France, Luxembourg, Belgium and the Netherlands.
+
+307. What causes the burning sensation from a hot chili pepper?
+A) A chemical activating heat/pain-sensitive receptors
+ B) Microscopic burns to your tongue
+ C) An acidic reaction with saliva
+ D) Taste buds becoming overheated
+Answer: A
+Difficulty: Easy / Medium
+ Reveal: Capsaicin activates TRPV1, a sensory receptor also activated by damaging heat. Your food isn't literally heating your mouth to burning temperature; your nervous system is receiving a similar warning signal.
+
+308. What is the main reason train wheel surfaces are made slightly conical rather than perfectly cylindrical?
+A) To reduce the train's weight
+ B) To help the wheels stay centered and negotiate curves
+ C) To make braking easier
+ D) To reduce noise
+Answer: B
+Difficulty: Medium
+ Reveal: The conical shape lets the effective wheel diameter change slightly as the axle shifts sideways, helping a wheelset self-center and travel around curves without excessive slipping.
+
+309. In which country was Hawaiian pizza created?
+A) United States
+ B) Italy
+ C) Canada
+ D) Australia
+Answer: Canada
+Difficulty: Easy / Medium
+ Reveal: Greek-Canadian restaurateur Sam Panopoulos is generally credited with putting ham and pineapple together on pizza in Chatham, Ontario, in 1962.
+
+310. Counting squares of every possible size, how many squares are on a normal 8×8 chessboard?
+Answer: 204
+Type: Numerical logic
+ Difficulty: Medium / Hard
+ Reveal: There are 64 little squares, but also larger ones:
+64 + 49 + 36 + 25 + 16 + 9 + 4 + 1 = 204
+The board contains far more than the obvious 64.
+
+311. At ordinary room temperature, window glass is best described as:
+A) A very slow-moving liquid
+ B) An amorphous solid
+ C) A crystalline solid
+ D) A gel
+Answer: An amorphous solid
+Difficulty: Medium
+ Reveal: Old windows aren't thicker at the bottom because their glass slowly flowed downward. Glass at room temperature behaves as an amorphous solid, and its flow is far too slow to explain medieval window shapes.
+
+312. The word robot comes from a Czech word originally associated with what?
+A) Metal
+ B) Intelligence
+ C) Forced labor
+ D) Machinery
+Answer: Forced labor
+Difficulty: Medium
+ Reveal: Robot comes from Czech robota, meaning compulsory or forced labor. The word entered international use through Karel Čapek's play R.U.R.
+
+313. How many sheets are in a standard modern ream of office paper?
+Answer: 500
+Difficulty: Easy / Medium
+ Reveal: The modern standard ream contains 500 sheets. Older and specialty definitions sometimes used different quantities.
+
+314. What material was used for the outer shell of the first computer mouse prototype?
+A) Aluminum
+ B) Rubber
+ C) Wood
+ D) Ceramic
+Answer: Wood
+Difficulty: Medium
+ Reveal: Douglas Engelbart's early mouse prototype was a small wooden box on wheels. The first prototype dates to 1964.
+
+315. Which cocoa-derived ingredient is used to make white chocolate?
+A) Cocoa powder
+ B) Cocoa butter
+ C) Roasted cocoa shell
+ D) Cocoa juice
+Answer: Cocoa butter
+Difficulty: Easy / Medium
+ Reveal: White chocolate contains cocoa butter, along with ingredients such as sugar and dairy, but not the cocoa solids that give milk and dark chocolate their brown color.
+
+316. How many official languages does the United Nations have?
+Answer: 6
+Difficulty: Easy / Medium
+ Reveal: They are Arabic, Chinese, English, French, Russian and Spanish.
+
+317. Why were ridged edges historically added to many gold and silver coins?
+A) To make them easier to stack
+ B) To reveal if someone had shaved metal from the edge
+ C) To make them easier to count
+ D) To stop them rolling
+Answer: B
+Difficulty: Medium
+ Reveal: People could secretly shave precious metal from smooth-edged coins and still spend them at face value. Reeding made that tampering much easier to detect.
+
+318. What does the Japanese word karaoke literally mean?
+A) Singing room
+ B) Empty orchestra
+ C) Recorded voice
+ D) Night music
+Answer: Empty orchestra
+Difficulty: Medium
+ Reveal: It combines Japanese kara — empty — with an abbreviation of orchestra.
+
+319. The expression “OK” originally came from a deliberately misspelled version of which phrase?
+A) All correct
+ B) Only kidding
+ C) Order known
+ D) Officially confirmed
+Answer: All correct
+Difficulty: Medium
+ Reveal: A Boston abbreviation craze in the 1830s produced “oll korrect” → O.K. Most of the era's joke abbreviations vanished. This one conquered the world.
+
+320. How many letters are in the standard Greek alphabet?
+Answer: 24
+Difficulty: Easy / Medium
+ Reveal: It runs from alpha to omega, with 24 letters in the standard alphabet.
+
+321. What number has its letters in alphabetical order when its English name is written out?
+Answer: 40
+Type: Word logic / Numeric answer
+ Difficulty: Medium
+ Reveal: FORTY
+F → O → R → T → Y
+Each successive letter comes later in the alphabet.
+
+322. Which city is farther north?
+LONDON or BERLIN
+Answer: Berlin
+Difficulty: Easy / Medium
+ Reveal: London sits at roughly 51.5° N, while Berlin is around 52.5° N. They're closer in latitude than many people picture, but Berlin is farther north.
+
+323. The Japanese word emoji is formed from words meaning what?
+A) Emotion + symbol
+ B) Picture + character
+ C) Face + feeling
+ D) Message + drawing
+Answer: Picture + character
+Difficulty: Medium
+ Reveal: Japanese e means picture or drawing, while moji means character or letter. Its resemblance to the English word emotion is coincidental.
+
+324. What material were the LEGO Group's earliest toys primarily made from?
+A) Plastic
+ B) Tin
+ C) Wood
+ D) Rubber
+Answer: Wood
+Difficulty: Easy / Medium
+ Reveal: Ole Kirk Kristiansen began producing wooden toys in 1932. Plastic LEGO bricks didn't arrive until much later.
+
+325. An analog clock viewed in a mirror appears to read 8:20. What time is the clock actually showing?
+Answer: 3:40
+Type: Visual logic
+ Difficulty: Medium
+ Reveal: A mirror reverses the clock face. One way to reason it out is to reflect each hand's position around the vertical 12–6 axis: the apparent 8:20 corresponds to 3:40.
+
+
+
+
+
+
+326. From the normal starting position in chess, how many different legal first moves can White make?
+Answer: 20
+Difficulty: Medium
+ Reveal: Each of the eight pawns has two possible opening moves, giving 16, and the two knights each have two, giving another 4. Total: 20.
+
+327. What is the maximum number of colors needed to color any ordinary flat map so that no two regions sharing a border have the same color?
+Answer: 4
+Difficulty: Medium
+ Reveal: This is the famous Four Color Theorem. No matter how complicated the map becomes, four colors are enough, provided regions that only touch at a point don't count as neighbors.
+
+328. How many sides does a Möbius strip have?
+Answer: 1
+Difficulty: Easy / Medium
+ Reveal: Start tracing one surface without lifting your finger and you'll eventually return to where you began having covered the entire strip. It also has just one edge.
+
+329. Which letter of the alphabet does not appear in the name of any U.S. state?
+Answer: Q
+Difficulty: Medium
+ Reveal: Every other letter from A to Z appears somewhere among the 50 state names. Q is the lone holdout.
+
+330. When cooking with ordinary aluminum foil, which side should normally face the food?
+A) Shiny
+ B) Dull
+ C) Either one
+Answer: Either one
+Difficulty: Easy / Medium
+ Reveal: For ordinary foil, the shiny and dull sides cook essentially the same. The two finishes come from how foil is rolled during manufacturing. Special non-stick foil is an exception.
+
+331. Why does your recorded voice usually sound different from the voice you hear while speaking?
+A) Microphones raise the pitch
+ B) You normally hear part of your voice through your skull
+ C) Your ears temporarily change sensitivity while speaking
+ D) Recordings remove echoes from your mouth
+Answer: B — Bone conduction
+Difficulty: Easy / Medium
+ Reveal: While speaking, you hear yourself through both air conduction and vibrations through your head. A recording mostly gives you the air-conducted version, which tends to sound less deep and familiar.
+
+332. What does a gasoline's octane rating mainly describe?
+A) How much energy it contains
+ B) How cleanly it burns
+ C) How resistant it is to engine knock
+ D) How quickly it evaporates
+Answer: C — Resistance to engine knock
+Difficulty: Medium
+ Reveal: Higher octane means the fuel is more resistant to unwanted spontaneous ignition under pressure. It doesn't simply mean “more powerful fuel.”
+
+333. Why does food rotate inside many microwave ovens?
+A) To keep food from sticking to the plate
+ B) To move it through hotter and cooler regions of microwave energy
+ C) To circulate hot air around it
+ D) To stop the microwaves from escaping
+Answer: B
+Difficulty: Easy / Medium
+ Reveal: The microwave field forms uneven hot and cold spots. Rotating the food spreads its exposure across those regions and makes heating more even.
+
+334. Why is the water tank in a water tower placed so high above the ground?
+Answer: To create water pressure using gravity
+Type: Multiple choice works well
+ Difficulty: Easy / Medium
+ Reveal: The height of the water creates hydrostatic pressure in the pipes below. Pumps fill the tower; gravity can then help deliver pressurized water around the system.
+
+335. What is one of the most important jobs of the grooves in car tire tread?
+A) Trap warm air
+ B) Channel water away from under the tire
+ C) Make the tire softer
+ D) Increase its diameter
+Answer: B
+Difficulty: Easy
+ Reveal: Tread grooves give water somewhere to escape, helping the rubber stay in contact with the road and reducing the risk of hydroplaning.
+
+336. What actually tells a gasoline pump nozzle to automatically click off when your tank becomes full?
+A) Your car sends an electronic signal
+ B) A timer inside the pump
+ C) Rising fuel blocks a small sensing opening in the nozzle
+ D) The nozzle detects the weight of the fuel
+Answer: C
+Difficulty: Medium
+ Reveal: A small sensing opening near the nozzle tip is part of a pressure/vacuum system. When rising fuel covers it, the change triggers the mechanical shutoff.
+
+337. What is between the inner and outer walls of a traditional vacuum flask or Thermos?
+A) Compressed air
+ B) Water
+ C) A near-vacuum
+ D) Cotton
+Answer: A near-vacuum
+Difficulty: Easy
+ Reveal: Removing most of the air greatly reduces conduction and convection, which is why the same basic design can keep drinks hot or cold for hours.
+
+338. What are polarized sunglasses primarily designed to reduce?
+A) Blue light from screens
+ B) Glare reflected from surfaces
+ C) All ultraviolet radiation
+ D) Peripheral vision
+Answer: Reflected glare
+Difficulty: Easy / Medium
+ Reveal: Polarization is especially useful against strong glare reflecting from roads, water and other roughly horizontal surfaces. UV protection is a separate property.
+
+339. Why does a normal pair of fabric gloves often stop a smartphone touchscreen from responding?
+A) The screen detects body heat
+ B) The screen needs electrical interaction from a conductive object
+ C) The fabric blocks infrared light
+ D) The phone detects fingerprints
+Answer: B
+Difficulty: Easy / Medium
+ Reveal: Most smartphones use capacitive touchscreens. Ordinary fabric insulates your finger, while touchscreen-compatible gloves add conductive material that lets the screen detect the touch.
+
+340. What substance does a laser printer put onto paper to create the image?
+A) Liquid ink
+ B) Powdered toner
+ C) Graphite
+ D) Wax
+Answer: Powdered toner
+Difficulty: Easy / Medium
+ Reveal: A laser printer uses static charge to position toner powder, then hot rollers melt and fuse it onto the paper.
+
+341. You leave a running refrigerator's door wide open in a closed room for a long time. What happens to the room overall?
+Answer: It gets slightly warmer
+Best input: COOLER / SAME / WARMER
+Difficulty: Medium
+ Reveal: The refrigerator moves heat around, but its compressor also uses electrical energy. With the door open, the whole appliance ultimately dumps more heat into the room than it removes.
+
+342. A normal flat mirror physically reverses which direction?
+A) Left and right
+ B) Up and down
+ C) Front and back
+Answer: Front and back
+Difficulty: Medium
+ Reveal: Your left side remains on the left side of the mirror image. What actually reverses is the axis perpendicular to the mirror — toward the mirror versus away from it.
+
+343. How many different basic piece shapes are there in standard Tetris?
+Answer: 7
+Difficulty: Easy / Medium
+ Reveal: Every piece is made from four squares, and there are seven distinct Tetrimino shapes in the standard game.
+
+344. What gas creates the characteristic holes in Swiss-style cheese?
+A) Oxygen
+ B) Nitrogen
+ C) Carbon dioxide
+ D) Hydrogen
+Answer: Carbon dioxide
+Difficulty: Easy / Medium
+ Reveal: Bacteria produce CO₂ during ripening. Bubbles of that gas form the cavities cheesemakers call the cheese's “eyes.”
+
+345. Why do many crackers have regularly spaced little holes punched into them before baking?
+A) To let steam escape
+ B) To absorb more salt
+ C) To make them break evenly
+ D) To cool them faster afterward
+Answer: To let steam escape
+Difficulty: Easy / Medium
+ Reveal: Bakers call this docking. It keeps large bubbles from puffing the cracker up and helps it stay thin and crisp.
+
+346. What is the world's largest country with no permanent natural river?
+A) Mongolia
+ B) Saudi Arabia
+ C) Libya
+ D) Kazakhstan
+Answer: Saudi Arabia
+Difficulty: Medium
+ Reveal: Saudi Arabia is enormous, but its surface drainage is dominated by wadis, which carry water intermittently rather than flowing year-round.
+
+347. Which country's national flag has an officially different emblem on its front and back?
+A) Paraguay
+ B) Portugal
+ C) Thailand
+ D) Croatia
+Answer: Paraguay
+Difficulty: Medium
+ Reveal: One side bears Paraguay's national coat of arms; the reverse carries a different treasury seal featuring a lion and the words Paz y Justicia.
+
+348. What did Nintendo originally manufacture when the company began in 1889?
+A) Board games
+ B) Playing cards
+ C) Radios
+ D) Mechanical toys
+Answer: Playing cards
+Difficulty: Easy / Medium
+ Reveal: Nintendo began in Kyoto making traditional Japanese hanafuda playing cards — almost a century before the Nintendo Entertainment System.
+
+349. Before becoming a children's modeling toy, the material later sold as Play-Doh was used for what?
+A) Sealing windows
+ B) Cleaning wallpaper
+ C) Repairing shoes
+ D) Polishing furniture
+Answer: Cleaning wallpaper
+Difficulty: Medium
+ Reveal: The putty was used to remove soot from wallpaper. As cleaner heating systems made that job obsolete, someone realized children could use the same material for modeling.
+
+350. What does the 40 in the name WD-40 refer to?
+A) It contains 40 ingredients
+ B) It works at temperatures down to −40°
+ C) The successful formula was the 40th attempt
+ D) The original can held 40 ounces
+Answer: The successful formula was the 40th attempt
+Difficulty: Easy / Medium
+ Reveal: WD stood for Water Displacement. The team finally got the formula they wanted on attempt number 40.
+
+
+

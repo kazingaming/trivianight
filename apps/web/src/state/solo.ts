@@ -38,6 +38,7 @@ import {
   type SoloRecord,
 } from '../lib/storage.js';
 import { useSettings } from './settings.js';
+import { useAccount } from './account.js';
 
 export type SoloPhase = 'idle' | 'question' | 'reveal' | 'over';
 
@@ -238,11 +239,18 @@ function resolve(guess: Guess): void {
 function finish(reason: 'lives' | 'pool'): void {
   const state = useSolo.getState();
   rememberQuestions(state.history.map((entry) => entry.questionId));
-  const record = saveSoloRecord({
+  const run = {
     score: state.score,
     rounds: state.history.length,
     streak: state.bestStreak,
-  });
+  };
+  const record = saveSoloRecord(run);
+  /*
+   * Also push the run at the account, if there is one. Deliberately not
+   * awaited: the device's copy is already saved, so the game-over screen must
+   * not wait on a network round trip to appear.
+   */
+  void useAccount.getState().reportSoloRun(run);
   useSolo.setState({
     phase: 'over',
     endedBecause: reason,

@@ -2,7 +2,7 @@
   "name": "trivia-night",
   "private": true,
   "version": "0.1.0",
-  "description": "Trivia Night - a reasoning-first estimation trivia game",
+  "description": "Close Enough - a reasoning-first estimation trivia game",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -22,7 +22,8 @@
     "launch": "node scripts/launch.mjs",
     "test": "vitest run",
     "typecheck": "tsc -b --pretty",
-    "content:check": "tsx packages/content/scripts/check.ts"
+    "content:check": "tsx packages/content/scripts/check.ts",
+    "content:import": "tsx packages/content/scripts/import-questions.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

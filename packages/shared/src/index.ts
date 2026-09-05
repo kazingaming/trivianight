@@ -3,6 +3,7 @@ export * from './numbers.js';
 export * from './scoring.js';
 export * from './feedback.js';
 export * from './curve.js';
+export * from './timeline.js';
 export * from './protocol.js';
 export * from './wire.js';
 export * from './present.js';

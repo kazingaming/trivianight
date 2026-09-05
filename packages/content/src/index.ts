@@ -9,7 +9,10 @@
 import {
   createRng,
   rollDifficulty,
+  randomSeed,
   shuffle,
+  YEAR_AXIS_LATEST,
+  YEAR_AXIS_OLDEST,
   type Difficulty,
   type GameMode,
   type Question,
@@ -26,6 +29,7 @@ import { spaceQuestions } from './packs/core/space.js';
 import { historyQuestions } from './packs/core/history.js';
 import { everydayQuestions } from './packs/core/everyday.js';
 import { logicQuestions } from './packs/core/logic.js';
+import { wideQuestions } from './packs/wide/questions.js';
 
 export interface Pack {
   id: string;
@@ -88,6 +92,12 @@ export const PACKS: Pack[] = [
     name: 'Wildcards',
     description: 'The deep end. Absurd quantities that are still reachable.',
     questions: wildcardQuestions,
+  },
+  {
+    id: 'wide.core',
+    name: 'Wide',
+    description: 'The second bank: hundreds more, across every format the game has.',
+    questions: wideQuestions,
   },
 ];
 
@@ -189,11 +199,8 @@ export function validateQuestion(question: Question): ValidationIssue[] {
       break;
     case 'year':
       if (!Number.isFinite(question.answer)) error('year answer must be a finite number');
-      if (question.range && question.range.min >= question.range.max) {
-        error('range.min must be below range.max');
-      }
-      if (question.range && (question.answer < question.range.min || question.answer > question.range.max)) {
-        error('answer falls outside its own range');
+      if (question.answer < YEAR_AXIS_OLDEST || question.answer > YEAR_AXIS_LATEST) {
+        error('year answer falls outside the shared timeline axis');
       }
       break;
     case 'higher-lower':
@@ -279,52 +286,78 @@ export interface PoolOptions {
 /**
  * Draws questions for a match.
  *
- * Rolls the target difficulty from the mode's curve, then takes the nearest
- * available tier if that one is exhausted — so a small bank degrades into
- * "close enough" rather than repeating or running dry.
+ * Two things have to be true at once: the difficulty arc has to be the one the
+ * mode intends, and two runs must not open the same way. So the *tier* is
+ * rolled from the mode's curve, and the *question* is then drawn uniformly at
+ * random from whatever is left in that tier. The curve shapes the run; nothing
+ * about it makes any individual question predictable.
+ *
+ * A drawn question leaves its bucket, so a match can never repeat one. If the
+ * rolled tier is empty the draw walks outward to the nearest tier that is not,
+ * which is how a small bank degrades into "close enough" rather than running
+ * dry mid-gauntlet.
  */
 export class QuestionPool {
   private readonly rng: Rng;
   private readonly used = new Set<string>();
-  private readonly available: Question[];
+  /** What is left to draw, split by tier. Drawing removes from a bucket. */
+  private readonly tiers: Map<Difficulty, Question[]>;
   private readonly mode: GameMode;
+  private count: number;
 
   constructor(options: PoolOptions) {
     this.mode = options.mode;
-    this.rng = createRng(options.seed ?? Math.random());
+    this.rng = createRng(options.seed ?? randomSeed());
     const packs = options.packIds?.length
       ? PACKS.filter((pack) => options.packIds!.includes(pack.id))
       : PACKS;
     const excluded = new Set(options.exclude ?? []);
-    this.available = shuffle(
+    const questions = shuffle(
       packs.flatMap((pack) => pack.questions).filter((question) => !excluded.has(question.id)),
       this.rng,
     );
+
+    this.tiers = new Map(
+      ([1, 2, 3, 4, 5] as Difficulty[]).map((tier) => [
+        tier,
+        questions.filter((question) => question.difficulty === tier),
+      ]),
+    );
+    this.count = questions.length;
   }
 
   get remaining(): number {
-    return this.available.length - this.used.size;
+    return this.count;
   }
 
   /** Mark a question as spent without drawing it (used when resuming). */
   markUsed(id: string): void {
+    if (this.used.has(id)) return;
+    for (const bucket of this.tiers.values()) {
+      const index = bucket.findIndex((question) => question.id === id);
+      if (index === -1) continue;
+      bucket.splice(index, 1);
+      this.used.add(id);
+      this.count--;
+      return;
+    }
+    // Not in this pool (excluded, or from another pack). Remember it anyway.
     this.used.add(id);
   }
 
   /** Draw the next question for a round, or null when the bank runs dry. */
   next(round: number): Question | null {
-    if (this.remaining <= 0) return null;
+    if (this.count <= 0) return null;
     const target = rollDifficulty(this.mode, round, this.rng);
 
     // Walk outward from the target tier: 3 -> 3,2,4,1,5
     for (const tier of tiersByDistance(target)) {
-      const candidate = this.available.find(
-        (question) => question.difficulty === tier && !this.used.has(question.id),
-      );
-      if (candidate) {
-        this.used.add(candidate.id);
-        return candidate;
-      }
+      const bucket = this.tiers.get(tier);
+      if (!bucket || bucket.length === 0) continue;
+      const [question] = bucket.splice(Math.floor(this.rng() * bucket.length), 1);
+      this.used.add(question.id);
+      this.count--;
+      return question;
     }
     return null;
   }

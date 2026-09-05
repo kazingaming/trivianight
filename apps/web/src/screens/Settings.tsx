@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { PLAYER_COLORS, TIMER_LABELS, type TimerPreference } from '@trivia/shared';
 import { Segmented } from '../components/primitives.js';
 import { useSettings } from '../state/settings.js';
+import { useAccount } from '../state/account.js';
 import { sfx } from '../lib/audio.js';
 import { clearSoloRecord, loadSoloRecord, clearRecentQuestions } from '../lib/storage.js';
 import { useState } from 'react';
@@ -13,6 +14,8 @@ export function SettingsScreen() {
   const setIdentity = useSettings((state) => state.setIdentity);
   const [record, setRecord] = useState(loadSoloRecord);
   const [cleared, setCleared] = useState(false);
+  const accountStatus = useAccount((state) => state.status);
+  const accountAvailable = useAccount((state) => state.config.available);
 
   return (
     <div className="stack" style={{ maxWidth: '58ch', margin: '0 auto', gap: 'var(--sp-5)' }}>
@@ -170,9 +173,19 @@ export function SettingsScreen() {
       <section className="card stack">
         <h2 style={{ fontSize: 'var(--step-1)' }}>Your data</h2>
         <p className="muted" style={{ fontSize: 'var(--step--1)' }}>
-          Everything is stored in this browser only. Best solo score:{' '}
+          {accountStatus === 'signed-in'
+            ? 'Settings stay in this browser; your best runs are also saved to your account.'
+            : 'Everything is stored in this browser only.'}{' '}
+          Best solo score on this device:{' '}
           <strong>{record.score.toLocaleString('en-US')}</strong> over {record.rounds} rounds.
         </p>
+        {accountAvailable ? (
+          <div className="row row-wrap">
+            <Link to="/account" className="btn btn--sm">
+              {accountStatus === 'signed-in' ? 'Manage your account' : 'Sign in to keep your scores'}
+            </Link>
+          </div>
+        ) : null}
         <div className="row row-wrap">
           <button
             type="button"

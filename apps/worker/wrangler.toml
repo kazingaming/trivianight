@@ -1,11 +1,11 @@
-# Trivia Night — Cloudflare Worker
+# Close Enough — Cloudflare Worker
 #
 # One Worker serves everything: the built client as static assets, the HTTP
 # API, and the WebSocket upgrades. Authoritative game state lives in Durable
 # Objects, which is what lets multiplayer be server-authoritative without a
 # long-running server process.
 
-name = "trivianight"
+name = "close-enough"
 main = "src/index.ts"
 compatibility_date = "2024-12-05"
 
@@ -31,11 +31,28 @@ class_name = "RoomDO"
 name = "MATCHMAKER"
 class_name = "MatchmakerDO"
 
+# One per signed-in account. Accounts are optional; this binding is harmless
+# and unused until Google credentials are configured.
+[[durable_objects.bindings]]
+name = "USER"
+class_name = "UserDO"
+
 # SQLite-backed Durable Objects are the class available on the Workers free
 # plan. Do not change this to new_classes — that variant requires a paid plan.
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["RoomDO", "MatchmakerDO"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["UserDO"]
+
+# Optional accounts. GOOGLE_CLIENT_ID is public information and lives here;
+# GOOGLE_CLIENT_SECRET and SESSION_SECRET are secrets and must be set with
+# `wrangler secret put`, never written into this file. With none of the three
+# set, the game runs exactly as before and simply does not offer sign-in.
+# [vars]
+# GOOGLE_CLIENT_ID = "…apps.googleusercontent.com"
 
 [observability]
 enabled = true

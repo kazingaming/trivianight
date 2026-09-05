@@ -1,4 +1,4 @@
-# Deploying Trivia Night
+# Deploying Close Enough
 
 The whole game — client, API, matchmaking and live multiplayer — deploys as a
 **single Cloudflare Worker**. Read "Surprise-billing protection" before you add a
@@ -14,7 +14,8 @@ Backend:      Cloudflare Workers
 Realtime:     WebSockets terminated by Durable Objects
 Matchmaking:  MatchmakerDO — one global Durable Object holding the queues
 Game rooms:   RoomDO — one Durable Object per match, authoritative
-Persistence:  none beyond each room's own lifetime
+Accounts:     UserDO — one Durable Object per signed-in player (optional)
+Persistence:  none beyond each room's own lifetime, plus account profiles
 ```
 
 **Initial expected cost: $0/month** on the Workers Free plan.
@@ -90,7 +91,7 @@ The first deploy asks you to confirm creating a `workers.dev` subdomain. Accept
 it. You will get a URL like:
 
 ```
-https://trivianight.<your-subdomain>.workers.dev
+https://close-enough.<your-subdomain>.workers.dev
 ```
 
 That URL is the entire game.
@@ -103,6 +104,8 @@ That URL is the entire game.
 - Refresh mid-match: you should return to your seat with your score.
 - Create a private room on one device and join by code on the other.
 - `https://your-url/api/health` should return JSON with live queue counts.
+- If you set up accounts, sign in, change your name, play a solo run, then sign in from a
+  different browser and check the score followed you.
 
 ### 5. Redeploying
 
@@ -128,6 +131,7 @@ your dashboard** — these move, and I would rather you check than trust a doc.
 | Worker CPU | 10 ms per invocation | Long invocations are terminated |
 | Durable Objects | Included on the free plan, **SQLite-backed classes only** | Requests rejected past the allowance |
 | DO storage | Small free allowance | This game stores almost nothing |
+| Account storage | Part of the DO allowance | A profile is a name plus a ~10 KB avatar |
 | Static assets | Unlimited requests, not billed | — |
 
 **What counts as a request here.** Each WebSocket *message* to a Durable Object
@@ -143,6 +147,83 @@ few kilobytes.
 **The one real constraint:** `wrangler.toml` uses `new_sqlite_classes` for the
 Durable Object migration. That is the class of Durable Object available on the
 free plan. Changing it to `new_classes` would require a paid plan, so do not.
+
+---
+
+## Optional: Google sign-in
+
+Accounts are entirely optional. Skip this section and the game works exactly as described
+above — it simply will not offer signing in. Nothing here costs anything.
+
+### 1. Create an OAuth client
+
+1. Go to <https://console.cloud.google.com/> and create a project (any name).
+2. **APIs & Services -> OAuth consent screen.** Choose **External**, fill in the app name,
+   your email, and save. While the app is in *Testing* only accounts you list under **Test
+   users** can sign in — add your own. Publishing it later removes that limit; for a
+   sign-in that only asks for name, email and picture, Google does not require
+   verification.
+3. **APIs & Services -> Credentials -> Create credentials -> OAuth client ID.**
+   Application type **Web application**.
+4. Under **Authorised redirect URIs**, add both of these, exactly:
+
+   ```
+   http://localhost:8787/api/auth/google/callback
+   https://close-enough.<your-subdomain>.workers.dev/api/auth/google/callback
+   ```
+
+   The path matters. A mismatch here is the single most common cause of
+   `redirect_uri_mismatch`.
+5. Copy the **client ID** and **client secret**.
+
+### 2. Tell the Worker
+
+The client ID is public; put it in `apps/worker/wrangler.toml`:
+
+```toml
+[vars]
+GOOGLE_CLIENT_ID = "…apps.googleusercontent.com"
+```
+
+The other two are secrets and must never be written into a file in this repository:
+
+```bash
+npx wrangler secret put GOOGLE_CLIENT_SECRET
+```
+
+```bash
+npx wrangler secret put SESSION_SECRET
+```
+
+`SESSION_SECRET` is any long random string — it signs session cookies, so changing it signs
+everyone out. Generate one with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+```
+
+Then redeploy:
+
+```bash
+npm run deploy
+```
+
+### 3. Locally
+
+Copy `.dev.vars.example` to `apps/worker/.dev.vars` and fill in the same three values.
+That file is gitignored.
+
+Without it, a **local** server offers a "sign in as a local tester" shortcut instead, so
+the account screens can be exercised without registering an OAuth client. That shortcut
+requires both an unconfigured deployment *and* a loopback hostname, which together cannot
+describe anything reachable from the internet.
+
+### What an account holds
+
+A display name, a small avatar image, a palette colour, and three numbers: best solo score,
+best round count, best streak. No email is stored, no match history, no analytics. Display
+names are not reserved, so two players can share one — the game already disambiguates
+duplicates for display.
 
 ---
 
@@ -172,10 +253,10 @@ Roughly in the order you would hit them:
    limits by orders of magnitude. No code changes.
 2. **You want a custom domain.** Free with any domain on Cloudflare; add it
    under the Worker's **Settings → Domains & Routes**.
-3. **You add accounts and Elo.** That is when you need real storage. Matchmaking
-   is already behind a `MatchmakingPolicy` interface, and the ticket type
-   already carries optional `rating`, `region` and `ranked` fields that nothing
-   reads yet. Durable Objects can hold this themselves, or add D1.
+3. **You add Elo.** Matchmaking is already behind a `MatchmakingPolicy` interface,
+   and the ticket type already carries optional `rating`, `region` and `ranked`
+   fields that nothing reads yet. A rating would live in the account's own
+   `UserDO` alongside its records.
 4. **Matchmaking becomes a bottleneck.** A single `MatchmakerDO` is nowhere near
    its ceiling at this scale, but sharding it by mode or region is a small
    change: it is one object with one interface.

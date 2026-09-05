@@ -14,7 +14,7 @@ const warnings = issues.filter((issue) => issue.severity === 'warning');
 const stats = contentStats();
 
 console.log('');
-console.log('  Trivia Night — content check');
+console.log('  Close Enough — content check');
 console.log('  ' + '-'.repeat(46));
 console.log(`  Packs      ${PACKS.length}`);
 console.log(`  Questions  ${stats.total}`);
@@ -65,9 +65,20 @@ if (stats.volatile > 0) {
   console.log('');
 }
 
+// Grouped rather than listed: "no source" alone runs to hundreds of lines,
+// and a wall of identical warnings hides the one that is actually unusual.
 if (warnings.length) {
+  const grouped = new Map<string, string[]>();
+  for (const warning of warnings) {
+    const ids = grouped.get(warning.message) ?? [];
+    ids.push(warning.questionId);
+    grouped.set(warning.message, ids);
+  }
   console.log(`  Warnings (${warnings.length})`);
-  for (const warning of warnings) console.log(`    ! ${warning.questionId}: ${warning.message}`);
+  for (const [message, ids] of [...grouped].sort((a, b) => b[1].length - a[1].length)) {
+    console.log(`    ! ${ids.length} x ${message}`);
+    console.log(`      e.g. ${ids.slice(0, 4).join(', ')}${ids.length > 4 ? ', …' : ''}`);
+  }
   console.log('');
 }
 

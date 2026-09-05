@@ -63,7 +63,6 @@ export const historyQuestions: Question[] = [
     answer: -1700,
     displayAnswer: 'about 1700 BCE',
     tolerance: 1200,
-    range: { min: -40000, max: 2000 },
     reveal: {
       headline: 'about 1700 BCE',
       explanation:
@@ -85,7 +84,6 @@ export const historyQuestions: Question[] = [
     answer: -2560,
     displayAnswer: 'about 2560 BCE',
     tolerance: 700,
-    range: { min: -6000, max: 500 },
     reveal: {
       headline: 'about 2560 BCE',
       explanation:
@@ -108,7 +106,6 @@ export const historyQuestions: Question[] = [
     answer: 476,
     displayAnswer: '476 CE',
     tolerance: 150,
-    range: { min: -500, max: 1500 },
     reveal: {
       headline: '476 CE',
       explanation:
@@ -130,7 +127,6 @@ export const historyQuestions: Question[] = [
     answer: 1440,
     displayAnswer: 'about 1440',
     tolerance: 90,
-    range: { min: 800, max: 1900 },
     reveal: {
       headline: 'about 1440',
       explanation:
@@ -152,7 +148,6 @@ export const historyQuestions: Question[] = [
     answer: 1000,
     displayAnswer: 'about 1000 CE',
     tolerance: 200,
-    range: { min: -500, max: 1900 },
     reveal: {
       headline: 'about 1000 CE',
       explanation:

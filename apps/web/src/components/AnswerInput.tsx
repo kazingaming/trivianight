@@ -1,8 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
+  clampYear,
   formatYear,
   parseHumanNumber,
   shuffle,
+  sliderFromYear,
+  YEAR_AXIS_LATEST,
+  YEAR_AXIS_OLDEST,
+  YEAR_SLIDER_DEFAULT,
+  YEAR_SLIDER_DEFAULT_YEAR,
+  YEAR_SLIDER_STEPS,
+  yearFromSlider,
   type ChoiceOption,
   type Guess,
   type OrderItem,
@@ -170,15 +178,29 @@ function PercentAnswer({
 
 /* --- Year --------------------------------------------------------------- */
 
+/**
+ * Year input.
+ *
+ * The slider runs along one shared timeline for every year question and always
+ * opens in the same place on it, so its starting position says nothing about
+ * the answer. Typing is the precise route; the slider is the exploratory one.
+ */
 function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: AnswerInputProps) {
-  const range = question.range ?? { min: -3000, max: new Date().getFullYear() };
-  const [year, setYear] = useState(() => Math.round((range.min + range.max) / 2));
+  const [position, setPosition] = useState(YEAR_SLIDER_DEFAULT);
+  const [year, setYear] = useState(YEAR_SLIDER_DEFAULT_YEAR);
   const [text, setText] = useState('');
+
+  const commitYear = (next: number) => {
+    const clamped = clampYear(next);
+    setYear(clamped);
+    setPosition(sliderFromYear(clamped));
+    return clamped;
+  };
 
   useEffect(() => {
     if (!injectedValue) return;
-    setYear(Math.round(injectedValue.value));
-    setText(String(Math.round(injectedValue.value)));
+    setText(formatYear(commitYear(injectedValue.value)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [injectedValue]);
 
   useEffect(() => {
@@ -191,8 +213,11 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
     const parsed = parseHumanNumber(raw.replace(/\s*(bce|bc)\s*$/i, ''));
     if (!parsed.ok) return;
     const negative = /bce|bc/i.test(raw);
-    const next = negative ? -Math.abs(parsed.value) : parsed.value;
-    setYear(Math.round(Math.min(range.max, Math.max(range.min, next))));
+    commitYear(negative ? -Math.abs(parsed.value) : parsed.value);
+  };
+
+  const nudge = (step: number) => {
+    setText(formatYear(commitYear(year + step)));
   };
 
   return (
@@ -224,15 +249,17 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
 
       <input
         type="range"
-        min={range.min}
-        max={range.max}
+        min={0}
+        max={YEAR_SLIDER_STEPS}
         step={1}
-        value={year}
+        value={position}
         disabled={disabled}
         onChange={(event) => {
           const next = Number(event.target.value);
-          setYear(next);
-          setText(formatYear(next));
+          setPosition(next);
+          const asYear = yearFromSlider(next);
+          setYear(asYear);
+          setText(formatYear(asYear));
         }}
         aria-label={`${question.prompt} — slider`}
         aria-valuetext={formatYear(year)}
@@ -241,7 +268,7 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
 
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <span className="faint" style={{ fontSize: 'var(--step--1)' }}>
-          {formatYear(range.min)}
+          {formatYear(YEAR_AXIS_OLDEST)}
         </span>
         <div className="numfield__chips">
           {[-100, -10, +10, +100].map((step) => (
@@ -250,18 +277,14 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
               type="button"
               className="magchip magchip--tool"
               disabled={disabled}
-              onClick={() => {
-                const next = Math.min(range.max, Math.max(range.min, year + step));
-                setYear(next);
-                setText(formatYear(next));
-              }}
+              onClick={() => nudge(step)}
             >
               {step > 0 ? `+${step}` : step}
             </button>
           ))}
         </div>
         <span className="faint" style={{ fontSize: 'var(--step--1)' }}>
-          {formatYear(range.max)}
+          {formatYear(YEAR_AXIS_LATEST)}
         </span>
       </div>
     </div>

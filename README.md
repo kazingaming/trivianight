@@ -1,4 +1,4 @@
-# Trivia Night
+# Close Enough
 
 A reasoning-first trivia game. You usually **won't** know the answer — the point is to
 work out roughly where it must be, and find out how close you got.
@@ -12,7 +12,7 @@ work out roughly where it must be, and find out how close you got.
 
 ## Play it (one click)
 
-Double-click **`Launch Trivia Night.bat`**.
+Double-click **`Launch Close Enough.bat`**.
 
 It checks your setup, installs and builds anything missing, starts the game server and
 opens your browser at <http://localhost:8787>. Close the window to stop the game.
@@ -81,6 +81,7 @@ refresh still returns you to your own seat with your score intact.
 | `npm test` | Full suite: unit tests plus real multi-client matches |
 | `npm run typecheck` | Typechecks every package |
 | `npm run content:check` | Validates the question bank and prints its shape |
+| `npm run content:import` | Rebuilds the generated pack from a plain-text question list |
 | `npm run build` | Builds the client |
 | `npm run deploy` | Build and deploy to Cloudflare |
 
@@ -101,7 +102,7 @@ uses.
 npm test
 ```
 
-53 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
+91 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
 Worker under `wrangler dev` and drives real WebSocket clients through complete matches —
 matchmaking, hidden guesses, reveals, reconnection, disconnects, abandoned games, private
 rooms and queue lifecycle. Nothing there reaches past the wire, so a passing test means a
@@ -162,15 +163,27 @@ backoff, and a returning player reclaims their seat and score by client id. A pu
 that drops below its minimum player count for 25 seconds ends honestly with "your opponent
 left" rather than stranding anyone.
 
-**Identity.** No accounts. A random client id in `sessionStorage` identifies you for as
-long as the tab lives; your display name and colour persist in `localStorage`. Duplicate
-display names are disambiguated for display only ("Ada", "Ada 2") and never affect internal
-identity.
+**Identity.** Playing needs no account, ever. A random client id in `sessionStorage`
+identifies you for as long as the tab lives; your display name and colour persist in
+`localStorage`. Duplicate display names are disambiguated for display only ("Ada", "Ada 2")
+and never affect internal identity. Signing in changes none of that — it only adds a copy
+of your name, picture and best runs that follows you between devices. See
+**[Optional accounts](#optional-accounts)**.
 
 **Persistence.** Rooms hold their live state in memory and are kept alive by their open
 WebSockets for exactly as long as a match is being played; only a room's claim on its code
 is persisted, which is what stops two matches being handed the same code. Personal bests
-and settings live in your browser. There is no database.
+and settings live in your browser, and additionally in your account if you have one. There
+is no database.
+
+**Optional accounts.** <a id="optional-accounts"></a>Sign-in is a convenience and never a
+requirement: no mode asks whether you have an account, and nothing waits on the answer.
+Google is the only identity provider, so this codebase never handles a password. A session
+is a signed cookie rather than a stored record, so verifying one is a single HMAC and
+touches no storage. Profiles live in a **`UserDO`** keyed by the Google subject id — one
+Durable Object per player, holding a display name, a small avatar and three best-run
+numbers, and nothing else. With no credentials configured, `/api/auth/config` reports the
+feature as unavailable and the client simply never offers it.
 
 **The engine is runtime-agnostic.** `packages/engine` — the room state machine and the
 matchmaker — is pure TypeScript with no platform imports. It takes callbacks for
@@ -178,6 +191,22 @@ broadcasting, which is what lets the same logic run inside a Durable Object and 
 test harness unchanged, and what would let it move again if it ever needed to.
 
 ---
+
+## How questions are chosen
+
+Two things have to be true at once: the difficulty arc has to be the one the mode intends,
+and no two runs may open the same way.
+
+So the **tier** is rolled from the mode's curve — a distribution centred on a moving
+target, not a fixed table — and the **question** is then drawn uniformly at random from
+whatever is left in that tier. The curve shapes the run; nothing about it makes any
+individual question predictable. A drawn question leaves its bucket, so a match can never
+repeat one, and if a tier is exhausted the draw walks outward to the nearest one that is
+not.
+
+Solo additionally excludes the questions from your recent runs, and a room seeds its pool
+from its own code and start time so a reconnecting player rejoins the same match rather
+than a different one.
 
 ## Environment configuration
 
@@ -189,9 +218,22 @@ origin, so there are no URLs to wire together and no CORS to set up.
 | `VITE_SERVER_URL` | Client build | empty | Where the browser opens its socket. Empty = same origin, correct for local dev, the launcher and production. Set it **only** if you host the frontend somewhere other than the Worker. |
 | `SERVER_PORT` | Dev only | `8787` | Port the Vite dev proxy forwards `/ws` and `/api` to. Change only alongside a matching `--port` for wrangler. |
 
-**There are no secrets, no API keys and no database credentials.** Deployment authenticates
-through `wrangler login`, which stores its credential in your user profile, outside this
-repository. Nothing sensitive should ever end up in a file here.
+Optional accounts add three more. They are **Worker** configuration, not client
+configuration, and none of them is read from `.env`:
+
+| Variable | Kind | Where it goes |
+| --- | --- | --- |
+| `GOOGLE_CLIENT_ID` | Public | `[vars]` in `apps/worker/wrangler.toml`, and `apps/worker/.dev.vars` locally |
+| `GOOGLE_CLIENT_SECRET` | Secret | `npx wrangler secret put GOOGLE_CLIENT_SECRET` |
+| `SESSION_SECRET` | Secret | `npx wrangler secret put SESSION_SECRET` |
+
+With none of them set the game runs exactly as it always has and does not offer sign-in.
+See `.dev.vars.example` for the local setup and **[DEPLOYMENT.md](DEPLOYMENT.md)** for the
+Google Cloud Console steps.
+
+**No secret is ever committed.** `.dev.vars` is gitignored; only `.dev.vars.example` is
+tracked. Deployment itself authenticates through `wrangler login`, which stores its
+credential in your user profile, outside this repository.
 
 The Worker's own shape — its name and its Durable Object bindings — lives in
 `apps/worker/wrangler.toml` rather than in environment variables, because it is part of the
@@ -219,6 +261,8 @@ so nothing sleeps between games.
 
 ## Adding questions
 
+The bank holds **368 questions** across nine formats.
+
 Add an entry to a file in `packages/content/src/packs/core/`, or create a new pack file and
 register it in `packages/content/src/index.ts`. Then:
 
@@ -226,9 +270,25 @@ register it in `packages/content/src/index.ts`. Then:
 npm run content:check
 ```
 
-The checker refuses anything malformed — a missing reveal, an answer outside its own range,
-a duplicate id, an undated statistic marked as changing over time — and prints the
+The checker refuses anything malformed — a missing reveal, an answer off the timeline, a
+duplicate id, an undated statistic marked as changing over time — and prints the
 distribution across difficulty, format and category so gaps are obvious.
+
+### Importing a plain-text list
+
+`packages/content/src/packs/wide/questions.ts` is **generated**. It comes from a plain-text
+question list — the format a person actually writes questions in — via:
+
+```bash
+npm run content:import [path-to-text-file]
+```
+
+The importer is deliberately conservative: anything it cannot convert with confidence is
+skipped and reported rather than guessed at, because a silently mis-keyed answer is far
+worse for a player than a missing question. It also refuses anything that duplicates a
+question already in the bank. Corrections belong in the `OVERRIDES` table in
+`packages/content/scripts/import-questions.ts`, not in the generated file — a re-run would
+undo those.
 
 ```ts
 {
@@ -297,7 +357,7 @@ hair is never worth zero.
 
 ## Troubleshooting
 
-**"Port 8787 is already in use"** — Trivia Night is probably already running; check your
+**"Port 8787 is already in use"** — Close Enough is probably already running; check your
 browser and other windows. Otherwise close whatever is using the port, or set
 `TRIVIA_PORT=8788` before launching.
 

@@ -12,9 +12,16 @@ export function hashString(input: string): number {
 
 export type Rng = () => number;
 
-/** mulberry32 — tiny, fast, good enough for shuffling a question pool. */
+/**
+ * mulberry32 — tiny, fast, good enough for shuffling a question pool.
+ *
+ * Fractional seeds are scaled before truncation. Without that, the obvious
+ * `createRng(Math.random())` collapses to a single stream: `0.4 >>> 0` is 0
+ * for every value Math.random can return, so every "random" pool would come
+ * back in exactly the same order.
+ */
 export function createRng(seed: number | string): Rng {
-  let state = (typeof seed === 'string' ? hashString(seed) : seed >>> 0) || 1;
+  let state = (typeof seed === 'string' ? hashString(seed) : toSeedInt(seed)) || 1;
   return function next(): number {
     state |= 0;
     state = (state + 0x6d2b79f5) | 0;
@@ -22,6 +29,18 @@ export function createRng(seed: number | string): Rng {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+}
+
+function toSeedInt(seed: number): number {
+  if (!Number.isFinite(seed)) return 1;
+  // Anything below 1 (Math.random's whole output) would truncate to zero.
+  const scaled = Math.abs(seed) < 1 ? seed * 0x100000000 : seed;
+  return Math.floor(Math.abs(scaled)) >>> 0;
+}
+
+/** A fresh 32-bit seed. Use this rather than passing Math.random() around. */
+export function randomSeed(): number {
+  return Math.floor(Math.random() * 0x100000000) >>> 0;
 }
 
 /** Fisher-Yates. Returns a new array; never mutates the input. */

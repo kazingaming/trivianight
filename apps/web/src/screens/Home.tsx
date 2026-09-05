@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ALL_QUESTIONS } from '@trivia/content';
+import { useAccount } from '../state/account.js';
 import { loadSoloRecord } from '../lib/storage.js';
 
 /**
@@ -37,7 +38,10 @@ const PRIMARY = [
 ];
 
 export function Home() {
-  const record = loadSoloRecord();
+  // The best of the two places a run can be recorded: this device, and the
+  // account if there is one.
+  const remote = useAccount((state) => state.records?.soloScore ?? 0);
+  const best = Math.max(loadSoloRecord().score, remote);
 
   return (
     <div className="home">
@@ -107,7 +111,7 @@ export function Home() {
 
       <p className="center faint" style={{ fontSize: 'var(--step--1)' }}>
         {ALL_QUESTIONS.length} questions in the bank
-        {record.score > 0 ? ` · your best solo run: ${record.score.toLocaleString('en-US')}` : ''}
+        {best > 0 ? ` · your best solo run: ${best.toLocaleString('en-US')}` : ''}
       </p>
     </div>
   );

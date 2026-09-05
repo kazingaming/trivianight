@@ -1,5 +1,5 @@
 /**
- * Trivia Night — content model.
+ * Close Enough — content model.
  *
  * Questions are *data*, never code. Everything the game needs to present,
  * score, reveal and cite a question lives in these structures, so the content
@@ -126,8 +126,6 @@ export interface YearQuestion extends QuestionCommon {
   displayAnswer?: string;
   /** Years of error scoring roughly 37%. Ancient questions need a wider window. */
   tolerance?: number;
-  /** Bounds for the slider/stepper affordance. */
-  range?: { min: number; max: number };
 }
 
 /** Is the true value above or below a stated reference? */
@@ -226,7 +224,6 @@ export type PublicQuestion = {
   tags?: string[];
   unit?: string;
   magnitude?: NumericQuestion['magnitude'];
-  range?: YearQuestion['range'];
   reference?: string;
   instruction?: string;
   options?: ChoiceOption[] | string[];
