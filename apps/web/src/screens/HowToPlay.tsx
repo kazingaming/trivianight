@@ -63,31 +63,41 @@ export function HowToPlay() {
             </p>
           </div>
           <div>
-            <h3 style={{ fontSize: 'var(--step-1)', color: 'var(--cyan)' }}>{MODES.duel.label}</h3>
+            <h3 style={{ fontSize: 'var(--step-1)', color: 'var(--cyan)' }}>Quick 1v1</h3>
             <p className="muted">
-              Two players, same questions, {MODES.duel.rounds} rounds. Neither of you sees the
+              Press the button and you are put in a queue. As soon as one other person is
+              searching, you are matched and the game starts — no code, no lobby, nobody waiting
+              on a host. {MODES.duel.rounds} rounds, 30 seconds each. Neither of you sees the
               other’s number until both have locked in. The closest guess takes a bonus, but
               everyone scores on accuracy — a near miss is never worth nothing.
             </p>
           </div>
           <div>
-            <h3 style={{ fontSize: 'var(--step-1)', color: 'var(--magenta)' }}>
-              {MODES.ffa.label}
-            </h3>
+            <h3 style={{ fontSize: 'var(--step-1)', color: 'var(--magenta)' }}>Quick FFA</h3>
             <p className="muted">
-              Up to four players in a room. The difficulty ramps most gently here, so everyone gets
-              to settle in before the ridiculous questions arrive.
+              The same idea for a group. Matchmaking gathers up to four players, then starts.
+              The difficulty ramps most gently here, so everyone gets to settle in before the
+              ridiculous questions arrive. If the queue is quiet it will start with three, and
+              it tells you when it does — there are no bots.
+            </p>
+          </div>
+          <div>
+            <h3 style={{ fontSize: 'var(--step-1)' }}>Private game</h3>
+            <p className="muted">
+              For playing with people you already know. One person creates a room and reads out
+              the four-character code; everyone else joins with it. The creator picks the pace
+              and presses start.
             </p>
           </div>
         </div>
       </section>
 
       <section className="card stack">
-        <h2 style={{ fontSize: 'var(--step-2)' }}>Playing with other people</h2>
+        <h2 style={{ fontSize: 'var(--step-2)' }}>Connection and identity</h2>
         <p className="muted">
-          One person creates a room and reads out the four-character code. Everyone else joins with
-          it. No accounts, no sign-up. If someone drops out their seat is held for a minute and a
-          half, and a refresh puts them straight back in with their score intact.
+          No accounts, no sign-up — just pick a name. Everything is run by the server, so nobody
+          needs to open ports or host anything. If you drop out, your seat is held and a refresh
+          puts you straight back in with your score intact.
         </p>
       </section>
 
@@ -104,6 +114,9 @@ export function HowToPlay() {
       <div className="row row-wrap" style={{ justifyContent: 'center' }}>
         <Link to="/solo" className="btn btn--primary btn--lg">
           Start a solo run
+        </Link>
+        <Link to="/quick/duel" className="btn btn--accent">
+          Find a 1v1
         </Link>
         <Link to="/" className="btn btn--ghost">
           Back home

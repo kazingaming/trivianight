@@ -161,7 +161,8 @@ export function SettingsScreen() {
             }))}
           />
           <span className="field__hint">
-            Applies to solo runs. In a room, the host sets the pace for everyone.
+            Applies to solo runs. Quick matches always use 30 seconds so both sides get the same
+            clock; in a private room, the person who made it sets the pace.
           </span>
         </div>
       </section>
