@@ -1,15 +1,14 @@
 /**
  * Matchmaking client.
  *
- * Owns the queue lifecycle only. The server decides who plays whom; this
- * tracks what to show while waiting, and hands off to the room store the
- * moment a match exists.
+ * Holds a WebSocket to the matchmaker Durable Object for exactly as long as
+ * the player is searching. Closing it is how you leave the queue — which means
+ * a closed tab or a dead network removes the ticket without needing a timeout.
  */
 
 import { create } from 'zustand';
 import {
   MODES,
-  type Ack,
   type MatchFound,
   type QueueMode,
   type QueuePhase,
@@ -17,7 +16,7 @@ import {
   type RoomError,
 } from '@trivia/shared';
 
-import { getSocket, getStatus, onStatusChange, type ConnectionStatus } from '../lib/socket.js';
+import { GameConnection, type Ack, type ConnectionStatus } from '../lib/connection.js';
 import { useSettings } from './settings.js';
 import { sfx } from '../lib/audio.js';
 
@@ -33,49 +32,14 @@ interface MatchmakingState {
 
   join: (mode: QueueMode) => Promise<Ack<QueueStatus>>;
   cancel: () => void;
-  /** Clear a finished/failed search without touching the server. */
   reset: () => void;
 }
 
-let wired = false;
+let connection: GameConnection | null = null;
 
-/** Attach the queue listeners exactly once, to the app's shared socket. */
-function ensureWired(): ReturnType<typeof getSocket> {
-  const socket = getSocket();
-  if (wired) return socket;
-  wired = true;
-
-  socket.on('queue:update', (status) => {
-    const state = useMatchmaking.getState();
-    // Ignore stray updates for a queue we have already left.
-    if (state.phase !== 'searching' || state.mode !== status.mode) return;
-    useMatchmaking.setState({
-      status,
-      clockOffset: status.serverTime - Date.now(),
-    });
-  });
-
-  socket.on('queue:matched', (match) => {
-    sfx.play('join');
-    useMatchmaking.setState({ phase: 'matched', match, status: null });
-  });
-
-  socket.on('disconnect', () => {
-    // The ticket dies with the socket, so the search is genuinely over.
-    const state = useMatchmaking.getState();
-    if (state.phase === 'searching') {
-      useMatchmaking.setState({
-        phase: 'failed',
-        error: {
-          code: 'QUEUE_UNAVAILABLE',
-          message: 'Lost contact with the server while searching.',
-        },
-      });
-    }
-  });
-
-  onStatusChange((connection) => useMatchmaking.setState({ connection }));
-  return socket;
+function disconnect(): void {
+  connection?.close();
+  connection = null;
 }
 
 export const useMatchmaking = create<MatchmakingState>((set, get) => ({
@@ -84,20 +48,20 @@ export const useMatchmaking = create<MatchmakingState>((set, get) => ({
   status: null,
   match: null,
   error: null,
-  connection: getStatus(),
+  connection: 'idle',
   clockOffset: 0,
 
   join: (mode) => {
-    const socket = ensureWired();
-    const { identity } = useSettings.getState();
-
-    // Already in a match: there is nothing to search for.
+    // Already matched: there is nothing left to search for.
     if (get().phase === 'matched') {
       return Promise.resolve({
         ok: false,
         error: { code: 'GAME_IN_PROGRESS', message: 'You are already in a match.' },
       } satisfies Ack<QueueStatus>);
     }
+
+    const { identity } = useSettings.getState();
+    const name = identity.name || 'Player';
 
     set({
       phase: 'searching',
@@ -117,58 +81,94 @@ export const useMatchmaking = create<MatchmakingState>((set, get) => ({
       },
     });
 
+    // Reuse the socket when re-searching; otherwise open a fresh one.
+    if (!connection) {
+      connection = new GameConnection({
+        path: '/ws/queue',
+        params: { clientId: identity.clientId, name, color: identity.color },
+        onStatus: (status) => {
+          set({ connection: status });
+          if (status === 'failed' && get().phase === 'searching') {
+            set({
+              phase: 'failed',
+              error: {
+                code: 'QUEUE_UNAVAILABLE',
+                message: 'Lost contact with the server while searching.',
+              },
+            });
+          }
+        },
+        // Re-announce after a reconnect: the old ticket died with the socket.
+        onOpen: () => {
+          const state = useMatchmaking.getState();
+          if (state.phase === 'searching' && state.mode) {
+            connection?.send('queue:join', { mode: state.mode, name });
+          }
+        },
+      });
+
+      connection.on('queue:update', (data) => {
+        const status = data as QueueStatus;
+        const state = useMatchmaking.getState();
+        if (state.phase !== 'searching' || state.mode !== status.mode) return;
+        set({ status, clockOffset: status.serverTime - Date.now() });
+      });
+
+      connection.on('queue:matched', (data) => {
+        sfx.play('join');
+        set({ phase: 'matched', match: data as MatchFound, status: null });
+        // The queue has done its job; the room takes over from here.
+        disconnect();
+      });
+
+      connection.connect();
+    }
+
     return new Promise<Ack<QueueStatus>>((resolve) => {
-      let settled = false;
-      const finish = (result: Ack<QueueStatus>) => {
-        if (settled) return;
-        settled = true;
-        resolve(result);
+      // The socket may still be opening; onOpen re-sends, so a failure here is
+      // not fatal and the queue:update stream is the real source of truth.
+      const attempt = () => {
+        if (!connection) {
+          resolve({ ok: false, error: { code: 'QUEUE_UNAVAILABLE', message: 'Not connected.' } });
+          return;
+        }
+        void connection.request<QueueStatus>('queue:join', { mode, name }).then((result) => {
+          const state = get();
+          if (result.ok) {
+            if (state.phase === 'searching' && state.mode === mode) {
+              set({ status: result.data, clockOffset: result.data.serverTime - Date.now() });
+            }
+          } else if (state.phase !== 'matched' && state.phase !== 'searching') {
+            set({ phase: 'failed', error: result.error });
+          }
+          resolve(result);
+        });
       };
 
-      const timer = setTimeout(
-        () =>
-          finish({
-            ok: false,
-            error: { code: 'QUEUE_UNAVAILABLE', message: 'The server did not respond.' },
-          }),
-        8000,
-      );
-
-      socket.emit('queue:join', { mode, ...identity, name: identity.name || 'Player' }, (result) => {
-        clearTimeout(timer);
-        if (result?.ok) {
-          // Only adopt the server's view if we are still searching for it.
-          if (get().phase === 'searching' && get().mode === mode) {
-            set({ status: result.data, clockOffset: result.data.serverTime - Date.now() });
-          }
-        } else if (get().phase !== 'matched') {
-          // A rejection that arrives after we were matched is stale noise —
-          // the match already happened, and it wins.
-          set({ phase: 'failed', error: result?.error ?? null });
-        }
-        finish(result ?? { ok: false, error: { code: 'SERVER_ERROR', message: 'No response.' } });
-      });
+      if (connection?.state === 'connected') attempt();
+      else setTimeout(attempt, 350);
     });
   },
 
   cancel: () => {
-    const socket = ensureWired();
-    socket.emit('queue:leave');
-    set({ phase: 'cancelled', status: null, match: null, error: null });
+    connection?.send('queue:leave');
+    disconnect();
+    set({ phase: 'cancelled', status: null, match: null, error: null, connection: 'idle' });
   },
 
-  reset: () => set({ phase: 'idle', mode: null, status: null, match: null, error: null }),
+  reset: () => {
+    set({ phase: 'idle', mode: null, status: null, match: null, error: null });
+  },
 }));
 
 /**
  * Leaving the queue must survive the tab closing.
  *
- * The server also evicts tickets whose socket has gone, so this is belt and
- * braces — but it makes the queue depth other players see accurate instantly.
+ * Closing the socket is itself the cancel, so this mostly just makes the queue
+ * depth other players see accurate a fraction sooner.
  */
 if (typeof window !== 'undefined') {
   window.addEventListener('pagehide', () => {
-    const state = useMatchmaking.getState();
-    if (state.phase === 'searching') state.cancel();
+    if (useMatchmaking.getState().phase === 'searching') useMatchmaking.getState().cancel();
   });
 }

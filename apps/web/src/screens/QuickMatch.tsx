@@ -55,7 +55,7 @@ export function QuickMatchScreen() {
 
   const config = MODES[mode];
   const found = phase === 'matched' ? (match?.players.length ?? config.maxPlayers) : (status?.found ?? 1);
-  const target = phase === 'matched' ? found : (status?.target ?? config.maxPlayers);
+  // The party size is fixed, so there is only one number to show.
   const ideal = status?.idealTarget ?? config.maxPlayers;
 
   if (phase === 'matched' && match) {
@@ -132,9 +132,9 @@ export function QuickMatchScreen() {
           : `${found} / ${ideal} players`}
       </p>
 
-      {mode === 'ffa' && target < ideal ? (
+      {mode === 'ffa' ? (
         <p className="muted queue__note">
-          Quiet right now — this will start as a {target}-player game.
+          Free For All needs all four players. No bots — it waits for real people.
         </p>
       ) : null}
 

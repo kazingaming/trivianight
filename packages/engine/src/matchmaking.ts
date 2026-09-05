@@ -43,51 +43,38 @@ export interface MatchmakingPolicy {
    * acceptable gap as `now - enqueuedAt` grows.
    */
   isCompatible(a: Ticket, b: Ticket, now: number): boolean;
-  /**
-   * How large a party the oldest waiting ticket will currently accept.
-   * This is where "wait for four, but settle for three after a while" lives.
-   */
+  /** How large a party this mode requires. */
   progressFor(oldest: Ticket, now: number): SearchProgress;
 }
 
 /**
- * The only policy today: pair whoever has been waiting longest.
+ * The only policy today: pair whoever has been waiting longest, once exactly
+ * enough people are present.
  *
- * For Free For All the target starts at the ideal party size and relaxes on a
- * schedule, because a four-player queue that never fills is worse than a
- * three-player game. It never fills seats with bots — every player in a match
- * is a real one, and the UI says how many are in.
+ * The party size is fixed and never relaxes. A Free For All is a four-player
+ * game, so it waits for four real players however long that takes — it will
+ * not quietly downgrade itself to a three-player match, and it never fills
+ * seats with bots. The player can always cancel.
  */
-export class FirstComePolicy implements MatchmakingPolicy {
+export class ExactPartyPolicy implements MatchmakingPolicy {
   constructor(
     readonly mode: QueueMode,
-    /** [millisecondsWaited, acceptableSize] pairs, largest size first. */
-    private readonly relaxation: Array<[number, number]>,
+    /** Humans required. Nothing shrinks this. */
+    private readonly partySize: number,
   ) {}
 
   isCompatible(): boolean {
     return true;
   }
 
-  progressFor(oldest: Ticket, now: number): SearchProgress {
-    const waited = now - oldest.enqueuedAt;
-    const ideal = MODES[this.mode as GameMode].maxPlayers;
-    let target = ideal;
-    for (const [after, size] of this.relaxation) {
-      if (waited >= after) target = size;
-    }
-    return { target: Math.max(MODES[this.mode as GameMode].minPlayers, target), idealTarget: ideal };
+  progressFor(): SearchProgress {
+    return { target: this.partySize, idealTarget: this.partySize };
   }
 }
 
 export const DEFAULT_POLICIES: Record<QueueMode, MatchmakingPolicy> = {
-  // A duel needs exactly two, so there is nothing to relax.
-  duel: new FirstComePolicy('duel', []),
-  // Four is the flagship party. After 40s take three, after 75s take two.
-  ffa: new FirstComePolicy('ffa', [
-    [40_000, 3],
-    [75_000, 2],
-  ]),
+  duel: new ExactPartyPolicy('duel', MODES.duel.maxPlayers),
+  ffa: new ExactPartyPolicy('ffa', MODES.ffa.maxPlayers),
 };
 
 /** How long a ticket may sit before we assume the client is gone. */
@@ -106,25 +93,24 @@ export class Matchmaker {
   private readonly queues = new Map<QueueMode, Ticket[]>();
   /** clientId -> ticket, so a player can never hold two places at once. */
   private readonly byClient = new Map<string, Ticket>();
-  private ticker: ReturnType<typeof setInterval> | null = null;
-
   constructor(
     private readonly hooks: MatchmakerHooks,
     private readonly policies: Record<QueueMode, MatchmakingPolicy> = DEFAULT_POLICIES,
-    private readonly tickMs = 500,
   ) {
     for (const mode of ['duel', 'ffa'] as QueueMode[]) this.queues.set(mode, []);
   }
 
-  start(): void {
-    if (this.ticker) return;
-    this.ticker = setInterval(() => this.tick(), this.tickMs);
-    this.ticker.unref?.();
-  }
-
-  stop(): void {
-    if (this.ticker) clearInterval(this.ticker);
-    this.ticker = null;
+  /**
+   * No internal timer, deliberately.
+   *
+   * Party sizes are fixed, so a match can only become possible when the queue
+   * changes — `tick()` runs on every join and leave and that is enough. The
+   * host schedules `tick()` periodically only to sweep stale tickets, and only
+   * while somebody is actually waiting. On a serverless runtime a background
+   * interval would keep the process billable forever for no benefit.
+   */
+  get isEmpty(): boolean {
+    return this.byClient.size === 0;
   }
 
   depth(mode: QueueMode): number {
@@ -286,7 +272,6 @@ export class Matchmaker {
   }
 
   dispose(): void {
-    this.stop();
     this.queues.forEach((_, mode) => this.queues.set(mode, []));
     this.byClient.clear();
   }

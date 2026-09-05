@@ -1,16 +1,13 @@
 /**
- * Multiplayer client.
+ * Room client.
  *
- * The server owns the game; this store owns the socket, the latest snapshot
- * and enough local echo (what *I* just locked in) to keep the UI responsive
- * while the room catches up.
+ * Holds one WebSocket to the room's Durable Object for as long as the player
+ * is in that room. The server owns the game; this owns the latest snapshot and
+ * enough local echo (what *I* just locked in) to keep the UI responsive.
  */
 
 import { create } from 'zustand';
 import {
-  ERROR_MESSAGES,
-  type Ack,
-  type ClientToServerEvents,
   type GameMode,
   type Guess,
   type RoomError,
@@ -21,34 +18,26 @@ import {
 import { saveLastRoom } from '../lib/storage.js';
 import { useSettings } from './settings.js';
 import { sfx } from '../lib/audio.js';
-import {
-  closeSocket,
-  getSocket,
-  getStatus,
-  onStatusChange,
-  type ConnectionStatus,
-  type GameSocket,
-} from '../lib/socket.js';
+import { apiPost, GameConnection, type Ack, type ConnectionStatus } from '../lib/connection.js';
 
 export type { ConnectionStatus };
 
 interface RoomState {
-  socket: GameSocket | null;
   status: ConnectionStatus;
   snapshot: RoomSnapshot | null;
   /** serverTime - clientTime, so countdowns survive a wrong device clock. */
   clockOffset: number;
   error: RoomError | null;
-  /** The code we believe we belong to, used to re-join after a reconnect. */
+  /** The code we believe we belong to. */
   joinedCode: string | null;
   /** What this player locked in, echoed locally until the reveal. */
   myGuess: Guess | null;
-  /** Round the echo belongs to, so it clears on the next question. */
   myGuessRound: number;
   allLockedRound: number | null;
 
-  ensureSocket: () => GameSocket;
-  createRoom: (mode: GameMode, settings?: Partial<RoomSettings>) => Promise<Ack<RoomSnapshot>>;
+  /** Ask the server for a fresh private room. */
+  createRoom: (mode: GameMode) => Promise<Ack<{ code: string }>>;
+  /** Open (or reuse) a connection to a room. */
   joinRoom: (code: string) => Promise<Ack<RoomSnapshot>>;
   leave: () => void;
   startGame: () => Promise<Ack<RoomSnapshot>>;
@@ -58,17 +47,16 @@ interface RoomState {
   updateSettings: (patch: Partial<RoomSettings>) => void;
   rename: (name: string) => void;
   clearError: () => void;
-  reset: () => void;
 }
 
-const TIMEOUT_MS = 8000;
+let connection: GameConnection | null = null;
 
-function timeoutError<T>(): Ack<T> {
-  return { ok: false, error: { code: 'SERVER_ERROR', message: 'The server did not respond.' } };
+function disconnect(): void {
+  connection?.close();
+  connection = null;
 }
 
 export const useRoom = create<RoomState>((set, get) => ({
-  socket: null,
   status: 'idle',
   snapshot: null,
   clockOffset: 0,
@@ -78,27 +66,46 @@ export const useRoom = create<RoomState>((set, get) => ({
   myGuessRound: -1,
   allLockedRound: null,
 
-  ensureSocket: () => {
-    const existing = get().socket;
-    if (existing) return existing;
+  createRoom: async (mode) => {
+    const result = await apiPost<{ code: string }>('/api/rooms', { mode });
+    if (!result.ok) set({ error: result.error });
+    return result;
+  },
 
-    const socket = getSocket();
-    set({ socket, status: getStatus() });
-    onStatusChange((status) => set({ status }));
+  joinRoom: (code) => {
+    const { identity } = useSettings.getState();
+    const params = {
+      clientId: identity.clientId,
+      name: identity.name || 'Player',
+      color: identity.color,
+    };
 
-    socket.on('connect', () => {
-      // A reconnect gets a new socket id, so reclaim the seat by client id.
-      const { joinedCode } = get();
-      if (joinedCode) void get().joinRoom(joinedCode);
+    // Already connected to this room: nothing to do.
+    if (connection && get().joinedCode === code && get().status === 'connected') {
+      const snapshot = get().snapshot;
+      if (snapshot) return Promise.resolve({ ok: true, data: snapshot });
+    }
+
+    disconnect();
+    set({ joinedCode: code, snapshot: null, error: null, myGuess: null, allLockedRound: null });
+
+    connection = new GameConnection({
+      path: `/ws/room/${code}`,
+      params,
+      onStatus: (status) => set({ status }),
     });
 
-    socket.on('room:state', (snapshot) => {
+    connection.on('room:state', (data) => {
+      const snapshot = data as RoomSnapshot;
       const previous = get().snapshot;
-      const clockOffset = snapshot.serverTime - Date.now();
-
-      // Clear the local echo when a new question opens.
       const roundChanged = previous?.round !== snapshot.round || previous?.phase !== snapshot.phase;
-      const patch: Partial<RoomState> = { snapshot, clockOffset, joinedCode: snapshot.code };
+
+      const patch: Partial<RoomState> = {
+        snapshot,
+        clockOffset: snapshot.serverTime - Date.now(),
+        joinedCode: snapshot.code,
+      };
+      // Clear the local echo when a new question opens.
       if (snapshot.phase === 'question' && roundChanged) {
         patch.myGuess = null;
         patch.myGuessRound = -1;
@@ -108,162 +115,91 @@ export const useRoom = create<RoomState>((set, get) => ({
       announce(previous, snapshot);
     });
 
-    socket.on('round:allLocked', ({ round }) => {
-      set({ allLockedRound: round });
+    connection.on('round:allLocked', (data) => {
+      set({ allLockedRound: (data as { round: number }).round });
     });
 
-    socket.on('room:error', (error) => set({ error }));
-
-    socket.on('room:closed', ({ reason }) => {
+    connection.on('room:closed', (data) => {
+      const reason = (data as { reason?: string }).reason;
       set({
         snapshot: null,
         joinedCode: null,
-        error: { code: 'ROOM_CLOSED', message: reason || ERROR_MESSAGES.ROOM_CLOSED },
+        error: { code: 'ROOM_CLOSED', message: reason || 'The room closed.' },
       });
+      disconnect();
     });
 
-    return socket;
-  },
+    connection.connect();
+    saveLastRoom(code);
 
-  createRoom: (mode, settings) => {
-    const socket = get().ensureSocket();
-    const { identity } = useSettings.getState();
-    return request<RoomSnapshot>(socket, 'room:create', {
-      mode,
-      settings,
-      clientId: identity.clientId,
-      name: identity.name || 'Player',
-      color: identity.color,
-    }).then((result) => {
-      if (result.ok) {
-        set({ snapshot: result.data, joinedCode: result.data.code, error: null });
-        saveLastRoom(result.data.code);
-      } else {
-        set({ error: result.error });
-      }
-      return result;
-    });
-  },
+    /*
+     * The room pushes its state as soon as it accepts the socket, so "joined"
+     * means "the first snapshot arrived". A rejected upgrade closes the socket
+     * instead, which surfaces as a failed connection.
+     */
+    return new Promise<Ack<RoomSnapshot>>((resolve) => {
+      let settled = false;
+      const finish = (result: Ack<RoomSnapshot>) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        stop();
+        resolve(result);
+      };
 
-  joinRoom: (code) => {
-    const socket = get().ensureSocket();
-    const { identity } = useSettings.getState();
-    return request<RoomSnapshot>(socket, 'room:join', {
-      code,
-      clientId: identity.clientId,
-      name: identity.name || 'Player',
-      color: identity.color,
-    }).then((result) => {
-      if (result.ok) {
-        set({ snapshot: result.data, joinedCode: result.data.code, error: null });
-        saveLastRoom(result.data.code);
-      } else {
-        // A failed re-join means the seat is gone; stop trying to reclaim it.
-        set({ error: result.error, joinedCode: null });
-      }
-      return result;
+      const stop = connection!.on('room:state', (data) => {
+        finish({ ok: true, data: data as RoomSnapshot });
+      });
+
+      const timer = setTimeout(() => {
+        const error: RoomError = {
+          code: 'ROOM_NOT_FOUND',
+          message: 'That room is not available.',
+        };
+        set({ error, joinedCode: null });
+        finish({ ok: false, error });
+      }, 9000);
     });
   },
 
   leave: () => {
-    const { socket } = get();
-    socket?.emit('room:leave');
-    set({ snapshot: null, joinedCode: null, myGuess: null, allLockedRound: null, error: null });
+    connection?.send('room:leave');
+    disconnect();
+    set({
+      snapshot: null,
+      joinedCode: null,
+      myGuess: null,
+      allLockedRound: null,
+      error: null,
+      status: 'idle',
+    });
   },
 
-  startGame: () => {
-    const socket = get().ensureSocket();
-    return request<RoomSnapshot>(socket, 'game:start', undefined).then(withError(set));
-  },
+  startGame: () => request<RoomSnapshot>('game:start'),
+  rematch: () => request<RoomSnapshot>('game:rematch'),
 
-  rematch: () => {
-    const socket = get().ensureSocket();
-    return request<RoomSnapshot>(socket, 'game:rematch', undefined).then(withError(set));
-  },
-
-  submitGuess: (questionId, guess) => {
-    const socket = get().ensureSocket();
+  submitGuess: async (questionId, guess) => {
     const round = get().snapshot?.round ?? -1;
     // Echo immediately: the player should see "Locked in" without a round trip.
     set({ myGuess: guess, myGuessRound: round });
-    return request<{ locked: true }>(socket, 'round:guess', { questionId, guess }).then((result) => {
-      if (!result.ok) set({ myGuess: null, myGuessRound: -1, error: result.error });
-      return result;
-    });
+    const result = await request<{ locked: true }>('round:guess', { questionId, guess });
+    if (!result.ok) set({ myGuess: null, myGuessRound: -1, error: result.error });
+    return result;
   },
 
-  markReady: () => {
-    get().socket?.emit('round:ready');
-  },
-
-  updateSettings: (patch) => {
-    get().socket?.emit('room:settings', patch);
-  },
-
-  rename: (name) => {
-    get().socket?.emit('room:rename', { name });
-  },
-
+  markReady: () => connection?.send('round:ready'),
+  updateSettings: (patch) => connection?.send('room:settings', patch),
+  rename: (name) => connection?.send('room:rename', { name }),
   clearError: () => set({ error: null }),
-
-  reset: () => {
-    closeSocket();
-    set({
-      socket: null,
-      status: 'idle',
-      snapshot: null,
-      error: null,
-      joinedCode: null,
-      myGuess: null,
-      myGuessRound: -1,
-      allLockedRound: null,
-    });
-  },
 }));
 
-/**
- * Promise wrapper around an acknowledged emit, with a timeout.
- * The response type is given explicitly at each call site — it cannot be
- * inferred from the arguments.
- */
-function request<R>(
-  socket: GameSocket,
-  event: keyof ClientToServerEvents,
-  payload: unknown,
-): Promise<Ack<R>> {
-  return new Promise((resolve) => {
-    let settled = false;
-    const done = (result: Ack<R>) => {
-      if (settled) return;
-      settled = true;
-      resolve(result);
-    };
-
-    const timer = setTimeout(() => done(timeoutError<R>()), TIMEOUT_MS);
-    const callback = (result: Ack<R>) => {
-      clearTimeout(timer);
-      done(result ?? timeoutError<R>());
-    };
-
-    // Events with no payload still take an acknowledgement callback.
-    if (payload === undefined) {
-      (socket.emit as (name: string, ack: unknown) => void)(event as string, callback);
-    } else {
-      (socket.emit as (name: string, data: unknown, ack: unknown) => void)(
-        event as string,
-        payload,
-        callback,
-      );
-    }
-  });
-}
-
-function withError(set: (patch: Partial<RoomState>) => void) {
-  return (result: Ack<RoomSnapshot>) => {
-    if (result.ok) set({ snapshot: result.data, error: null });
-    else set({ error: result.error });
-    return result;
-  };
+async function request<T>(type: string, data?: unknown): Promise<Ack<T>> {
+  if (!connection) {
+    return { ok: false, error: { code: 'ROOM_NOT_FOUND', message: 'You are not in a room.' } };
+  }
+  const result = await connection.request<T>(type, data);
+  if (!result.ok) useRoom.setState({ error: result.error });
+  return result;
 }
 
 /** Small audio cues driven by phase changes rather than by every component. */

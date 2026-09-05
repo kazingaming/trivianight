@@ -1,214 +1,166 @@
 # Deploying Trivia Night
 
-Everything you need to put the game online for **$0/month**. Read the whole of
-"Surprise-billing protection" before you connect a payment method anywhere.
+The whole game — client, API, matchmaking and live multiplayer — deploys as a
+**single Cloudflare Worker**. Read "Surprise-billing protection" before you add a
+payment method anywhere.
 
 ---
 
-## Recommended stack
+## The stack
 
 ```
-Frontend:     served by the backend (one Node process, one origin)
-Backend:      Render — Free Web Service (Node)
-Realtime:     Socket.IO over WebSockets, on that same service
-Matchmaking:  in-memory, inside the backend process
-Persistence:  none server-side; player settings live in the browser
+Frontend:     Workers Static Assets (the built client, served from the edge)
+Backend:      Cloudflare Workers
+Realtime:     WebSockets terminated by Durable Objects
+Matchmaking:  MatchmakerDO — one global Durable Object holding the queues
+Game rooms:   RoomDO — one Durable Object per match, authoritative
+Persistence:  none beyond each room's own lifetime
 ```
 
-**Initial expected cost: $0/month**, no credit card required.
+**Initial expected cost: $0/month** on the Workers Free plan.
 
-### The one caveat you must know about
-
-Render's free web services **sleep after 15 minutes with no traffic**, and take roughly
-**30–60 seconds to wake up**. The first person to arrive after a quiet spell waits for that
-cold start before they can queue.
-
-This is the honest price of a genuinely free, always-available-on-the-internet backend that
-holds WebSocket connections. It is not a bug and there is no free way around it on Render —
-free instances cannot be kept awake, and pinging them yourself burns the same free hours
-and is against the spirit of the tier.
-
-If that becomes unacceptable, the upgrade is **$7/month** for a Render Starter instance,
-which never sleeps. Nothing in the code changes. See "Scaling later".
+There is no server to keep awake, so there are **no cold starts of the kind a
+sleeping container has**. A Worker starts in single-digit milliseconds, and a
+Durable Object wakes on the first request to it.
 
 ---
 
-## Why this architecture
+## Why this shape
 
-The game is already **one Node process that serves its own client**. Deploying it is
-therefore a single service with a single origin: no CORS, no split configuration, no second
-provider, no environment variables required at all.
+Authoritative multiplayer needs one place that owns the truth for a match.
+Durable Objects are exactly that primitive: a single-threaded, addressable
+object that every player in a room routes to, that can hold WebSockets, and that
+exists only while it is needed.
 
-The alternative worth naming is **Cloudflare Workers + Durable Objects**, which would be
-always-warm at $0 and is genuinely well-suited to authoritative game rooms — one Durable
-Object per room is almost exactly the shape of the existing `Room` class. It was **not**
-chosen because it would require replacing Socket.IO with a hand-rolled WebSocket protocol
-on both client and server, and rewriting the runtime, in exchange for removing a cold start
-on a game with no players yet. That is a rewrite of working, tested code to solve a problem
-you do not have.
+- **One `RoomDO` per room code.** It owns the question, the clock, the guesses
+  and the scoreboard. Players connect to it directly, so there is no relay hop
+  and no shared-state problem.
+- **One global `MatchmakerDO`.** Matchmaking is a rendezvous problem, so a
+  single agreed-upon object is the correct answer. Keeping both queues in one
+  object is also what makes "a player can only hold one place in one queue"
+  true by construction.
+- **Static assets from the same Worker.** One origin means no CORS, no second
+  provider, and no environment variables to keep in sync.
 
-The code has been kept portable in case you want that later: the game logic is transport-
-agnostic (`Room` takes `broadcast`/`notify` callbacks; `Matchmaker` takes hooks), so a
-Durable Objects port would mean writing a new transport, not a new game.
-
-Firebase and Supabase were not chosen because neither gives you an authoritative game loop.
-You would end up writing the same server anyway and paying a database to relay messages
-between players.
+Rooms hold their live state in memory and are kept alive by their open
+WebSockets for exactly as long as a match is being played. Only the room's claim
+on its code is persisted, which is what stops two matches being handed the same
+code.
 
 ---
 
-## Accounts you need to create
+## Accounts you need
 
-Exactly two, both free, neither needs a card:
+Two, both free, neither needs a card:
 
 1. **GitHub** — to host the code. <https://github.com>
-2. **Render** — to run the server. <https://render.com> (sign in with GitHub)
+2. **Cloudflare** — to run it. <https://dash.cloudflare.com/sign-up>
 
-That is the complete list. No domain, no database, no payment method.
+No domain, no database, no payment method.
 
 ---
 
-## Deployment sequence
+## Deployment steps
 
-### 1. Create the GitHub repository
+### 1. Push the repository
 
-On <https://github.com/new>: name it (e.g. `trivia-night`), choose Public or Private, and
-**do not** initialise it with a README, .gitignore or licence — the project already has
-them.
+The repo is already initialised and committed on `main`. See the README for the
+exact push commands.
 
-### 2. Push the project
-
-The repo is already initialised and committed on `main`. From the project folder:
+### 2. Sign in to Cloudflare from your machine
 
 ```bash
-git remote add origin https://github.com/YOUR-USERNAME/trivia-night.git
+npx wrangler login
 ```
+
+This opens a browser, asks you to authorise Wrangler, and stores the credential
+in your user profile — **not** in this repository. There is no API token to
+paste anywhere.
+
+### 3. Deploy
 
 ```bash
-git push -u origin main
+npm run deploy
 ```
 
-Git will ask you to sign in; use the browser prompt or a personal access token.
+That builds the client and runs `wrangler deploy`, which uploads the Worker, the
+static assets and the Durable Object migration in one step.
 
-> The commit is currently authored as `Kazin <kazin.gaming.gg@gmail.com>` (set for this
-> repository only, not globally). To change it:
-> ```bash
-> git config user.name "Your Name" && git config user.email "you@example.com" && git commit --amend --reset-author --no-edit
-> ```
+The first deploy asks you to confirm creating a `workers.dev` subdomain. Accept
+it. You will get a URL like:
 
-### 3. Create the Render service
+```
+https://trivianight.<your-subdomain>.workers.dev
+```
 
-1. Go to <https://dashboard.render.com> and sign in with GitHub.
-2. **New → Web Service**, then connect your `trivia-night` repository.
-3. Fill in:
-
-| Field | Value |
-| --- | --- |
-| Name | `trivia-night` (this becomes your URL) |
-| Region | whichever is closest to your players |
-| Branch | `main` |
-| Runtime | **Node** |
-| Build Command | `npm install && npm run build` |
-| Start Command | `npm start` |
-| Instance Type | **Free** |
-
-4. Under **Environment**, add one variable:
-
-| Key | Value |
-| --- | --- |
-| `NODE_ENV` | `production` |
-
-That is the only variable required. Render provides `PORT` automatically and the server
-reads it.
-
-5. Click **Create Web Service**.
-
-The first build takes a few minutes. When it finishes you get a URL like
-`https://trivia-night.onrender.com` — that is the whole game, frontend and multiplayer.
+That URL is the entire game.
 
 ### 4. Test production
 
-Open the URL and check:
-
-- Home screen loads, Solo Gauntlet plays a round.
-- Open the URL in a **second device or browser**, put both into Quick 1v1, and confirm they
-  match, both see the same question, and the reveal happens together.
-- Refresh mid-match and confirm you return to your seat with your score.
-- Create a private room on one device and join it by code on the other.
-
-Health check: `https://your-app.onrender.com/api/health` should return JSON with room and
-queue counts.
+- Open the URL; play a Solo round.
+- Open it on a **second device or browser**, put both into Quick 1v1, and check
+  they match, get the same question, and reveal together.
+- Refresh mid-match: you should return to your seat with your score.
+- Create a private room on one device and join by code on the other.
+- `https://your-url/api/health` should return JSON with live queue counts.
 
 ### 5. Redeploying
 
-Push to `main`. Render rebuilds and redeploys automatically.
+```bash
+npm run deploy
+```
 
----
-
-## If you later split frontend and backend
-
-You do not need this, but if you ever want the static site on a CDN (Cloudflare Pages,
-Netlify, Vercel) with the backend on Render:
-
-1. Deploy the frontend with build command `npm install && npm run build` and publish
-   directory `apps/web/dist`.
-2. Set `VITE_SERVER_URL=https://your-backend.onrender.com` in the **frontend's** build
-   environment.
-3. Set `ALLOWED_ORIGINS=https://your-frontend-domain` in the **backend's** environment.
-
-Both variables exist and are wired up; nothing needs code changes.
+There is no automatic deploy on push, deliberately — a single explicit command
+is less machinery than a CI pipeline for a project this size. If you want
+push-to-deploy later, connect the repo under **Workers & Pages → Create → Connect
+to Git** in the Cloudflare dashboard.
 
 ---
 
 ## Free-tier limits that matter
 
-**Render Free Web Service**
+Cloudflare's free plan, at the time of writing. **Verify the current numbers in
+your dashboard** — these move, and I would rather you check than trust a doc.
 
-| Limit | Value | What happens at the edge |
+| Resource | Free allowance | What happens at the edge |
 | --- | --- | --- |
-| Instance hours | 750/month across all free services | Service is suspended until the next month |
-| Sleep | After 15 min of no traffic | 30–60s cold start on the next request |
-| RAM | 512 MB | Process restarts if exceeded |
-| CPU | 0.1 shared | Slower under load; no charge |
-| Bandwidth | 100 GB/month | Throttled, not billed |
-| Build minutes | 500/month | Builds queue until next month |
+| Worker requests | 100,000/day | Further requests are rejected until reset |
+| Worker CPU | 10 ms per invocation | Long invocations are terminated |
+| Durable Objects | Included on the free plan, **SQLite-backed classes only** | Requests rejected past the allowance |
+| DO storage | Small free allowance | This game stores almost nothing |
+| Static assets | Unlimited requests, not billed | — |
 
-750 hours is just over a full month for **one** service, so a single free web service can
-in principle run continuously — but it will still sleep when idle regardless.
+**What counts as a request here.** Each WebSocket *message* to a Durable Object
+counts, as does each HTTP request. A single Quick 1v1 match is on the order of a
+few hundred messages across both players for all eight rounds. 100,000
+requests/day is therefore roughly **a few hundred full matches a day**, which is
+far more than a game with no players yet will see.
 
-**What would actually stress this**
+**What would stress it first.** Request count, long before CPU or storage. The
+game does no heavy computation — scoring is arithmetic — and each room holds a
+few kilobytes.
 
-The game sends tiny messages: a few hundred bytes per player per round. Realistically:
-
-- **RAM** is the first thing you would hit, and it is generous — rooms are small objects
-  and there is no database. Hundreds of concurrent matches would fit.
-- **Bandwidth** at ~50 KB per player per full match means 100 GB is roughly two million
-  matches a month. You will not reach it.
-- **Cold starts** are what people will actually notice, from day one, at zero traffic.
-
-In other words: the free tier is limited by *responsiveness*, not by capacity. You are far
-more likely to want to escape the sleep than to run out of anything.
+**The one real constraint:** `wrangler.toml` uses `new_sqlite_classes` for the
+Durable Object migration. That is the class of Durable Object available on the
+free plan. Changing it to `new_classes` would require a paid plan, so do not.
 
 ---
 
 ## Surprise-billing protection
 
-**Render's free tier cannot bill you.** It requires no payment method, and when you exceed
-a limit the service is suspended or throttled — never charged. If you never add a card,
-there is no path to a bill.
+**The Workers Free plan cannot bill you.** It requires no payment method, and
+exceeding a limit returns errors rather than generating charges.
 
 To keep it that way:
 
-1. **Do not add a payment method** to your Render account unless you intend to upgrade.
-2. **Do not upgrade the instance type** from Free. The dashboard will offer this.
-3. If you do add a card later, check **Account Settings → Billing** and confirm no other
-   services are running on paid plans.
+1. **Do not add a payment method** to your Cloudflare account unless you intend
+   to upgrade.
+2. **Do not enable the Workers Paid plan** ($5/month). The dashboard will offer
+   it; nothing here needs it.
+3. If you ever do add a card, check **Workers & Pages → Plans** and confirm you
+   are still on Free.
 
-GitHub is free for public and private repositories at this scale and has no billing path
-you can trip over by accident.
-
-**Do not** enable any provider's "auto-scale", "usage-based pricing" or "spend and grow"
-options. Nothing in this project needs them.
+GitHub is free at this scale with no billing path you can trip over.
 
 ---
 
@@ -216,22 +168,22 @@ options. Nothing in this project needs them.
 
 Roughly in the order you would hit them:
 
-1. **Cold starts annoy you.** Render Starter, **$7/month**. No code changes, no sleep.
-2. **You want it fast worldwide.** Put Cloudflare (free) in front for static assets, or
-   move the frontend to Cloudflare Pages and keep the backend on Render — see the split
-   section above.
-3. **One process is not enough.** Today all rooms live in one process's memory, which is
-   correct and simple for this scale. Going multi-instance needs either sticky sessions
-   plus a shared matchmaking queue (Redis), or the Durable Objects port described above.
-   Both are real work; neither is needed below roughly a thousand concurrent players.
-4. **You add accounts and Elo.** That is when you need a real database. Matchmaking is
-   already behind a policy interface for exactly this, and the ticket type already carries
-   optional `rating`, `region` and `ranked` fields that nothing reads yet.
+1. **You pass 100,000 requests/day.** Workers Paid, **$5/month**, which raises
+   limits by orders of magnitude. No code changes.
+2. **You want a custom domain.** Free with any domain on Cloudflare; add it
+   under the Worker's **Settings → Domains & Routes**.
+3. **You add accounts and Elo.** That is when you need real storage. Matchmaking
+   is already behind a `MatchmakingPolicy` interface, and the ticket type
+   already carries optional `rating`, `region` and `ranked` fields that nothing
+   reads yet. Durable Objects can hold this themselves, or add D1.
+4. **Matchmaking becomes a bottleneck.** A single `MatchmakerDO` is nowhere near
+   its ceiling at this scale, but sharding it by mode or region is a small
+   change: it is one object with one interface.
 
 ---
 
 ## What is deliberately not here
 
-No CI pipeline, no containers, no monitoring stack, no analytics. A single Node service
-that rebuilds on push is the right amount of infrastructure for a game with no players yet,
-and every one of those things can be added later without changing the application.
+No CI pipeline, no containers, no monitoring stack, no analytics. A single
+Worker deployed by one command is the right amount of infrastructure for a game
+with no players yet, and none of those things need application changes to add.

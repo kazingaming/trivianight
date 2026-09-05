@@ -22,7 +22,8 @@ const isWindows = process.platform === 'win32';
 const npm = isWindows ? 'npm.cmd' : 'npm';
 
 const MIN_NODE_MAJOR = 20;
-const DEFAULT_PORT = 3001;
+/** Wrangler's own default, kept so the local URL matches the docs. */
+const DEFAULT_PORT = 8787;
 
 const c = {
   reset: '\u001b[0m',
@@ -191,22 +192,47 @@ async function main() {
 
   const url = `http://localhost:${port}`;
   say();
-  say(`  ${c.cyan}${c.bold}${url}${c.reset}`);
-  say(`  ${c.dim}Opening your browser. Close this window to stop the game.${c.reset}`);
-  say();
+  say(`  ${c.dim}Starting the game server…${c.reset}`);
 
-  const server = spawn(npm, ['run', 'start'], {
-    cwd: root,
-    stdio: 'inherit',
-    shell: isWindows,
-    env: { ...process.env, NODE_ENV: 'production', TRIVIA_PORT: String(port) },
-  });
+  /*
+   * Runs the real Cloudflare runtime locally: workerd, with Durable Objects,
+   * exactly as production does. No account and no login are needed for this —
+   * only `npm run deploy` talks to Cloudflare.
+   */
+  const server = spawn(
+    process.execPath,
+    [
+      resolve(root, 'node_modules/wrangler/bin/wrangler.js'),
+      'dev',
+      '--local',
+      '--port',
+      String(port),
+    ],
+    {
+      cwd: resolve(root, 'apps', 'worker'),
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: { ...process.env, WRANGLER_SEND_METRICS: 'false' },
+    },
+  );
 
-  // Give the server a moment to bind before the browser asks for the page.
-  const opener = setTimeout(() => openBrowser(url), 1200);
+  // Open the browser once the runtime says it is actually listening.
+  let opened = false;
+  const watch = (chunk) => {
+    const text = chunk.toString();
+    process.stdout.write(text);
+    if (!opened && /Ready on https?:\/\//i.test(text)) {
+      opened = true;
+      say();
+      say(`  ${c.cyan}${c.bold}${url}${c.reset}`);
+      say(`  ${c.dim}Close this window to stop the game.${c.reset}`);
+      say();
+      setTimeout(() => openBrowser(url), 400);
+    }
+  };
+  server.stdout?.on('data', watch);
+  server.stderr?.on('data', watch);
 
   const shutdown = () => {
-    clearTimeout(opener);
     if (!server.killed) server.kill();
   };
   process.on('SIGINT', () => {
@@ -216,7 +242,6 @@ async function main() {
   process.on('SIGTERM', shutdown);
 
   server.on('close', (code) => {
-    clearTimeout(opener);
     if (code && code !== 0) {
       fail('The game server stopped unexpectedly', [
         'The error above explains why.',

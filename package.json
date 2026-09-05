@@ -12,12 +12,13 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "concurrently -n server,web -c magenta,cyan \"npm:dev:server\" \"npm:dev:web\"",
-    "dev:server": "npm run dev --workspace @trivia/server",
+    "dev": "concurrently -n worker,web -c magenta,cyan \"npm:dev:worker\" \"npm:dev:web\"",
+    "dev:worker": "npm run dev --workspace @trivia/worker",
     "dev:web": "npm run dev --workspace @trivia/web",
     "build": "npm run build --workspace @trivia/web",
-    "start": "cross-env NODE_ENV=production npm run start --workspace @trivia/server",
-    "serve": "npm run build && npm run start",
+    "start": "npm run build && npm run dev --workspace @trivia/worker",
+    "serve": "npm run start",
+    "deploy": "npm run build && npm run deploy --workspace @trivia/worker",
     "launch": "node scripts/launch.mjs",
     "test": "vitest run",
     "typecheck": "tsc -b --pretty",
@@ -27,9 +28,10 @@
     "@types/node": "^22.10.2",
     "concurrently": "^9.1.0",
     "cross-env": "^7.0.3",
-    "socket.io-client": "^4.8.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "ws": "^8.18.0",
+    "@types/ws": "^8.5.13"
   }
 }

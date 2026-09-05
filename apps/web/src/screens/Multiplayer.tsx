@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { MODES, normalizeRoomCode, type GameMode } from '@trivia/shared';
 import { Banner, Segmented } from '../components/primitives.js';
@@ -25,18 +25,12 @@ export function MultiplayerScreen() {
   const setIdentity = useSettings((state) => state.setIdentity);
   const createRoom = useRoom((state) => state.createRoom);
   const joinRoom = useRoom((state) => state.joinRoom);
-  const ensureSocket = useRoom((state) => state.ensureSocket);
   const status = useRoom((state) => state.status);
 
   const [mode, setMode] = useState<PrivateMode>(params.mode === 'ffa' ? 'ffa' : 'duel');
   const [name, setName] = useState(identity.name);
   const [code, setCode] = useState(() => normalizeRoomCode(search.get('code') ?? ''));
   const [busy, setBusy] = useState<'create' | 'join' | null>(null);
-
-  // Open the connection as soon as the screen mounts so the first click is fast.
-  useEffect(() => {
-    ensureSocket();
-  }, [ensureSocket]);
 
   const commitName = () => {
     const trimmed = name.trim().slice(0, 14);

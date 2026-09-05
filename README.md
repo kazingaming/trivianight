@@ -14,11 +14,15 @@ work out roughly where it must be, and find out how close you got.
 
 Double-click **`Launch Trivia Night.bat`**.
 
-It checks your setup, installs and builds anything missing, starts the server and opens
-your browser at <http://localhost:3001>. Close the window to stop the game.
+It checks your setup, installs and builds anything missing, starts the game server and
+opens your browser at <http://localhost:8787>. Close the window to stop the game.
 
 The first launch takes a minute or two while dependencies install. After that it is a few
 seconds.
+
+The launcher runs the **real Cloudflare runtime** (workerd) on your machine, so what you
+play locally is what deploys. No Cloudflare account or login is needed for this — only
+`npm run deploy` talks to Cloudflare.
 
 ## First-time setup
 
@@ -40,13 +44,15 @@ Nothing else is required: no database, no accounts, no API keys, no port forward
 | --- | --- | --- | --- | --- |
 | **Solo Gauntlet** | 1 | Endless, 3 lives | 45s | Instant |
 | **Quick 1v1** | 2 | 8 | 30s | Public matchmaking |
-| **Quick FFA** | up to 4 | 10 | 30s | Public matchmaking |
+| **Quick FFA** | exactly 4 | 10 | 30s | Public matchmaking |
 | **Private game** | 2–4 | Configurable | Configurable | Room code |
 
 **Solo Gauntlet** climbs the fastest and runs until three wildly wrong answers end it.
 **Quick 1v1** opens around medium difficulty and rises to hard. **Quick FFA** has the
-gentlest ramp so a room can settle in. **Private games** are still there for playing with
-people you know — they are just no longer what "multiplayer" means by default.
+gentlest ramp so a room can settle in, and needs **all four players** — it waits for real
+people however long that takes, never shrinks the party, and never uses bots. Cancel any
+time. **Private games** are still there for playing with people you know — they are just
+no longer what "multiplayer" means by default.
 
 ---
 
@@ -60,8 +66,8 @@ npm install
 npm run dev
 ```
 
-Vite on <http://localhost:5173> with hot reload, and the game server on `3001`. Vite
-proxies `/socket.io` and `/api` through, so everything is same-origin with no config.
+Vite on <http://localhost:5173> with hot reload, and the Worker under `wrangler dev` on
+`8787`. Vite proxies `/ws` and `/api` through, so everything is same-origin with no config.
 
 To play multiplayer locally, open a **second browser tab**. Each tab is a separate player:
 the seat token lives in `sessionStorage`, so tabs do not fight over one identity, while a
@@ -69,25 +75,25 @@ refresh still returns you to your own seat with your score intact.
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Dev servers with hot reload |
+| `npm run dev` | Vite with hot reload plus the Worker |
 | `npm run launch` | The one-click launcher, from a terminal |
+| `npm start` | Build the client, then serve everything from the Worker |
 | `npm test` | Full suite: unit tests plus real multi-client matches |
 | `npm run typecheck` | Typechecks every package |
 | `npm run content:check` | Validates the question bank and prints its shape |
 | `npm run build` | Builds the client |
-| `npm run serve` | Build, then run the production server on `3001` |
-
-Set `TRIVIA_DEBUG=1` for verbose room join/leave logging when chasing a multiplayer bug.
+| `npm run deploy` | Build and deploy to Cloudflare |
 
 ## Production build
 
 ```bash
-npm run serve
+npm start
 ```
 
-Builds the client and serves it from the game server on <http://localhost:3001> — one
-process, one port, no Vite. This is the same path the launcher uses and the same path
-production uses, so if it works here it works deployed.
+Builds the client and serves it from the Worker on <http://localhost:8787> — one process,
+one port, no Vite. `wrangler dev` runs **workerd**, the same runtime Cloudflare runs, with
+real Durable Objects, so if it works here it works deployed. This is what the launcher
+uses.
 
 ## Testing
 
@@ -95,9 +101,15 @@ production uses, so if it works here it works deployed.
 npm test
 ```
 
-51 tests. The interesting ones are not unit tests: `apps/server/test/` boots the real
-server binary and drives real socket clients through complete matches — matchmaking,
-hidden guesses, reveals, disconnects, abandoned games and queue lifecycle.
+53 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
+Worker under `wrangler dev` and drives real WebSocket clients through complete matches —
+matchmaking, hidden guesses, reveals, reconnection, disconnects, abandoned games, private
+rooms and queue lifecycle. Nothing there reaches past the wire, so a passing test means a
+browser would have worked too.
+
+The integration files run one at a time (`fileParallelism: false`): each starts its own
+workerd instance, and running several at once starves them of CPU badly enough to make
+round timing flaky.
 
 ---
 
@@ -114,12 +126,12 @@ Elo, regions or a ranked split later means writing a new policy, not touching th
 the protocol or the room lifecycle.
 
 One ticket per player, always: a duplicate request returns your existing place, switching
-modes moves you, and a disconnect or closed tab removes you. Ghosts are swept on a timer
-and on every disconnect.
+modes moves you, and a disconnect or closed tab removes you. Since the ticket lives and
+dies with the WebSocket, a closed tab cannot leave a ghost behind; a sweep runs alongside
+that for sockets that die without a close frame, and only while somebody is waiting.
 
-Free For All wants four players. If the queue is quiet it will start with three after 40
-seconds and two after 75, and the UI says so. It never fills seats with bots — every player
-in a match is a real person.
+**Free For All requires exactly four players.** It waits indefinitely for four real people
+and never shrinks the party — no three-player fallback, no bots. Cancel any time.
 
 **Game rooms.** A room owns the question, the clock and the scoreboard. Guesses are held
 server-side until every connected player has locked in; they are not sent to other clients
@@ -131,38 +143,59 @@ configure or rematch them, and the server starts the match itself once the party
 Private rooms keep a party leader who picks settings and presses start. That is a social
 role only — the leader's browser has no more authority than anyone else's.
 
-**Realtime.** Socket.IO over WebSockets, with polling fallback for restrictive networks.
-Traffic is tiny: queue status, question ids, guesses, locks, deadlines and score deltas.
-Reconnection is automatic, and a returning player reclaims their seat and score by client
-id. A public match that drops below its minimum player count for 25 seconds ends honestly
-with "your opponent left" rather than stranding anyone.
+**Where it runs.** A single Cloudflare Worker serves the built client, the HTTP API and the
+WebSocket upgrades. Authoritative state lives in Durable Objects:
+
+- **`MatchmakerDO`** — one global instance holding both queues. Matchmaking is a rendezvous
+  problem, so a single agreed-upon object is the right answer, and keeping both queues
+  together is what makes "one place per player" true by construction.
+- **`RoomDO`** — one instance per room code, owning that match. Players connect to it
+  directly, so there is no relay hop.
+
+Players hold a queue socket while searching and a room socket while playing — one at a
+time, never both.
+
+**Realtime.** Plain WebSockets with a small JSON envelope (`{ i, t, d }` for requests,
+`{ i, ok, d }` for acknowledgements, `{ t, d }` for events). Traffic is tiny: queue status,
+question ids, guesses, locks, deadlines and score deltas. Reconnection is automatic with
+backoff, and a returning player reclaims their seat and score by client id. A public match
+that drops below its minimum player count for 25 seconds ends honestly with "your opponent
+left" rather than stranding anyone.
 
 **Identity.** No accounts. A random client id in `sessionStorage` identifies you for as
 long as the tab lives; your display name and colour persist in `localStorage`. Duplicate
 display names are disambiguated for display only ("Ada", "Ada 2") and never affect internal
 identity.
 
-**Persistence.** None on the server, by design — a party game room is worthless once
-everyone has gone home. Personal bests and settings live in your browser. Swapping rooms
-for a shared store later touches one file, `apps/server/src/rooms.ts`.
+**Persistence.** Rooms hold their live state in memory and are kept alive by their open
+WebSockets for exactly as long as a match is being played; only a room's claim on its code
+is persisted, which is what stops two matches being handed the same code. Personal bests
+and settings live in your browser. There is no database.
+
+**The engine is runtime-agnostic.** `packages/engine` — the room state machine and the
+matchmaker — is pure TypeScript with no platform imports. It takes callbacks for
+broadcasting, which is what lets the same logic run inside a Durable Object and inside the
+test harness unchanged, and what would let it move again if it ever needed to.
 
 ---
 
 ## Environment configuration
 
-Every value has a working default. Copy `.env.example` to `.env` only if you want to
-override something locally; in production, set these in your host's dashboard.
+There is almost nothing to configure. The Worker serves the client and the backend from one
+origin, so there are no URLs to wire together and no CORS to set up.
 
 | Variable | Where | Default | What it does |
 | --- | --- | --- | --- |
-| `TRIVIA_PORT` | Server | `3001` | Port to listen on. Wins over `PORT` so a launcher's ambient `PORT` cannot collide with the web dev server. |
-| `PORT` | Server | — | Used if `TRIVIA_PORT` is unset. Hosts that inject this (Render, Railway, Fly) work unchanged. |
-| `NODE_ENV` | Server | `development` | `production` serves the built client from the game server. The npm scripts set it. |
-| `ALLOWED_ORIGINS` | Server | unset | Comma-separated origins allowed to open a socket. Only needed for a **split** deployment. Unset means any origin, which is safe here (no cookies, no credentials, no accounts) but worth setting in production. |
-| `VITE_SERVER_URL` | Client | empty | Where the browser opens its socket. Empty = same origin, correct for local dev and single-process production. Set it **only** for a split deployment. |
+| `VITE_SERVER_URL` | Client build | empty | Where the browser opens its socket. Empty = same origin, correct for local dev, the launcher and production. Set it **only** if you host the frontend somewhere other than the Worker. |
+| `SERVER_PORT` | Dev only | `8787` | Port the Vite dev proxy forwards `/ws` and `/api` to. Change only alongside a matching `--port` for wrangler. |
 
-There are no secrets, no API keys and no database credentials. Nothing sensitive should
-ever end up in this file.
+**There are no secrets, no API keys and no database credentials.** Deployment authenticates
+through `wrangler login`, which stores its credential in your user profile, outside this
+repository. Nothing sensitive should ever end up in a file here.
+
+The Worker's own shape — its name and its Durable Object bindings — lives in
+`apps/worker/wrangler.toml` rather than in environment variables, because it is part of the
+application rather than its configuration.
 
 ---
 
@@ -171,10 +204,16 @@ ever end up in this file.
 See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full handoff: recommended free stack,
 accounts to create, exact steps, free-tier limits and how to avoid surprise billing.
 
-Short version: the whole game is one Node process that serves its own client, so any host
-that runs Node and keeps a WebSocket open will do. The recommended $0 option is
-**Render's free web service**, with the honest caveat that free instances sleep after 15
-minutes of inactivity.
+Short version: the whole game — client, API, matchmaking and live multiplayer — is one
+**Cloudflare Worker** with two Durable Object classes. Sign in once with `wrangler login`,
+then:
+
+```bash
+npm run deploy
+```
+
+That runs on the Workers **free plan** at $0/month, and there is no server to keep awake,
+so nothing sleeps between games.
 
 ---
 
@@ -258,20 +297,24 @@ hair is never worth zero.
 
 ## Troubleshooting
 
-**"Port 3001 is already in use"** — Trivia Night is probably already running; check your
+**"Port 8787 is already in use"** — Trivia Night is probably already running; check your
 browser and other windows. Otherwise close whatever is using the port, or set
-`TRIVIA_PORT=3002` before launching.
+`TRIVIA_PORT=8788` before launching.
+
+**A `workerd.exe` keeps running after closing the launcher** — on Windows the runtime can
+outlive its parent. Close it from Task Manager, or run
+`taskkill /IM workerd.exe /F` in a terminal.
 
 **The launcher closes instantly** — Node is not installed or not on your PATH. Install the
 LTS build from [nodejs.org](https://nodejs.org) and try again.
 
-**"Matchmaking is unavailable"** — the client cannot reach the server. In dev, check that
-`npm run dev` is running both processes. In production, the backend may be waking from
-sleep (see DEPLOYMENT.md); wait ~50 seconds and retry.
+**"Matchmaking is unavailable"** — the client cannot reach the Worker. In dev, check that
+`npm run dev` is running both processes. Locally, `wrangler dev` takes a few seconds to
+boot on first start.
 
 **Quick Match never finds anyone** — Quick 1v1 needs one other real person searching at the
-same time, and FFA wants up to four. There are no bots. To test alone, open a second
-browser tab and queue in both.
+same time, and **Quick FFA needs all four**. There are no bots and no smaller fallback. To
+test alone, open several browser tabs and queue in each.
 
 **Two tabs act like the same player** — they shouldn't; identity is per-tab. If it happens,
 one tab is probably a duplicate of the other (`Ctrl`+`K`-style tab duplication copies
@@ -280,8 +323,8 @@ one tab is probably a duplicate of the other (`Ctrl`+`K`-style tab duplication c
 **Changes to questions don't show up** — the launcher runs a production build. Either
 relaunch, or use `npm run dev` while editing content.
 
-**Tests time out** — the multiplayer suite starts real servers and plays real rounds; the
-full run takes about 90 seconds. That is expected.
+**Tests time out** — the multiplayer suites start real Worker runtimes and play real rounds
+at real speed; the full run takes about two and a half minutes. That is expected.
 
 ---
 
@@ -291,13 +334,18 @@ full run takes about 90 seconds. That is expected.
 packages/
   shared/     Types, scoring, number parsing, difficulty curves, wire protocol
   content/    The question bank, its validator, and the pool selector
+  engine/     Room state machine and matchmaker. Pure logic, no platform.
 apps/
-  server/     Express + Socket.IO. Authoritative for matchmaking and every room.
+  worker/     Cloudflare Worker + Durable Objects. Authoritative for everything.
   web/        Vite + React client
 scripts/
   launch.mjs  The one-click launcher
 ```
 
-Workspace packages are consumed straight from TypeScript source — Vite aliases them and the
-server runs under `tsx` — so there is no build step between editing shared code and seeing
-it work.
+Workspace packages are consumed straight from TypeScript source — Vite aliases them and
+Wrangler bundles them — so there is no build step between editing shared code and seeing it
+work.
+
+The split between `engine` and `worker` is the important one: `engine` is the game, and
+`worker` is where it happens to run. Keeping platform types out of the engine is what made
+this migration a transport change rather than a rewrite.
