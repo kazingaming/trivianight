@@ -75,6 +75,34 @@ button {
   padding: 0;
 }
 
+/*
+ * Taps should be taps.
+ *
+ * Without `touch-action: manipulation`, a mobile browser holds every tap for
+ * a few hundred milliseconds to see whether a second one is coming (double-tap
+ * to zoom), then replays it as a synthetic click. That delay is why controls
+ * felt unreliable, and the replayed click is why an answer could land on
+ * whatever had taken that spot on screen in the meantime. Declaring that these
+ * elements never zoom removes both.
+ */
+button,
+a,
+input,
+select,
+textarea,
+label,
+[role='button'],
+[role='radio'],
+summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A range slider still needs to own horizontal drags. */
+input[type='range'] {
+  touch-action: pan-y;
+}
+
 a {
   color: var(--cyan);
   text-decoration-thickness: 1px;

@@ -71,8 +71,18 @@
   text-decoration: none;
   max-width: 42vw;
 }
-.topbar__account:hover {
-  border-color: var(--accent);
+/*
+ * Hover is a pointer state, and a finger is not a pointer. Touch browsers fake
+ * one anyway: the last thing tapped keeps its hover styles until something
+ * else is tapped, so a row of answer buttons ends up with one permanently
+ * lit — which reads as a selection that is not there. Gating these on a real
+ * hovering device leaves the desktop styling untouched and stops the phone
+ * lying about what is selected.
+ */
+@media (hover: hover) {
+  .topbar__account:hover {
+    border-color: var(--accent);
+  }
 }
 .topbar__account-name {
   font-size: var(--step--1);
@@ -132,9 +142,11 @@
     opacity var(--dur-fast) linear;
 }
 
-.btn:hover:not(:disabled) {
-  --btn-bg: var(--ink-400);
-  transform: translateY(calc(-1px * var(--motion)));
+@media (hover: hover) {
+  .btn:hover:not(:disabled) {
+    --btn-bg: var(--ink-400);
+    transform: translateY(calc(-1px * var(--motion)));
+  }
 }
 
 .btn:active:not(:disabled) {
@@ -152,8 +164,10 @@
   --btn-border: transparent;
   box-shadow: 0 8px 26px -10px color-mix(in srgb, var(--amber) 80%, transparent);
 }
-.btn--primary:hover:not(:disabled) {
-  --btn-bg: #ffe27a;
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled) {
+    --btn-bg: #ffe27a;
+  }
 }
 
 .btn--accent {
@@ -161,8 +175,10 @@
   --btn-fg: var(--cyan);
   --btn-border: color-mix(in srgb, var(--cyan) 32%, transparent);
 }
-.btn--accent:hover:not(:disabled) {
-  --btn-bg: color-mix(in srgb, var(--cyan) 24%, var(--ink-600));
+@media (hover: hover) {
+  .btn--accent:hover:not(:disabled) {
+    --btn-bg: color-mix(in srgb, var(--cyan) 24%, var(--ink-600));
+  }
 }
 
 .btn--ghost {
@@ -170,9 +186,11 @@
   --btn-fg: var(--text-mid);
   --btn-border: transparent;
 }
-.btn--ghost:hover:not(:disabled) {
-  --btn-bg: var(--ink-600);
-  --btn-fg: var(--text-hi);
+@media (hover: hover) {
+  .btn--ghost:hover:not(:disabled) {
+    --btn-bg: var(--ink-600);
+    --btn-fg: var(--text-hi);
+  }
 }
 
 .btn--danger {

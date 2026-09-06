@@ -16,9 +16,13 @@ import { App } from './App.js';
 import { applyMotionAttribute, useSettings } from './state/settings.js';
 import { sfx } from './lib/audio.js';
 
-// Apply persisted preferences before the first paint.
+// Apply persisted preferences before the first paint, and start listening for
+// the gesture that unlocks audio. Mobile browsers keep an AudioContext
+// suspended until one arrives, and suspend it again whenever the page is
+// backgrounded, so the kit watches for both rather than trying once.
 const { settings } = useSettings.getState();
 sfx.configure(settings.sound, settings.volume);
+sfx.install();
 applyMotionAttribute();
 
 const container = document.getElementById('root');

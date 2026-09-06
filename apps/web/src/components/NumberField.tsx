@@ -125,6 +125,13 @@ export function NumberField({
           placeholder={placeholder}
           disabled={disabled}
           autoFocus={autoFocus}
+          onFocus={(event) => {
+            // The on-screen keyboard shrinks the visual viewport, which can
+            // leave the field under it or push the question off the top.
+            // Centring on focus keeps both the prompt and the input visible.
+            const input = event.currentTarget;
+            setTimeout(() => input.scrollIntoView({ block: 'center', behavior: 'smooth' }), 250);
+          }}
           aria-label={label}
           aria-describedby={echoId}
           aria-invalid={hasText && !parsed.ok}

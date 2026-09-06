@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   MODES,
   TIMER_LABELS,
   normalizeRoomCode,
+  resolveTimeLimit,
   type Guess,
   type PublicPlayer,
+  type RoomSettings,
   type RoomSnapshot,
   type TimerPreference,
 } from '@trivia/shared';
@@ -15,8 +17,16 @@ import { AnswerInput } from '../components/AnswerInput.js';
 import { Calculator } from '../components/Calculator.js';
 import { Reveal, type RevealPlayer } from '../components/Reveal.js';
 import { Timer } from '../components/Timer.js';
-import { Avatar, Banner, IconCheck, IconCopy, Segmented, Stat } from '../components/primitives.js';
-import { useCopy, useCountdown, useHotkeys } from '../lib/hooks.js';
+import {
+  Avatar,
+  Banner,
+  IconCheck,
+  IconCopy,
+  NO_TRANSLATE,
+  Segmented,
+  Stat,
+} from '../components/primitives.js';
+import { useArmed, useCopy, useCountdown, useHotkeys } from '../lib/hooks.js';
 import { ordinal } from '../lib/format.js';
 import { play, useSettings } from '../state/settings.js';
 import { useIsHost, useMySeat, useRoom } from '../state/room.js';
@@ -125,7 +135,11 @@ function Lobby({ snapshot, onLeave }: { snapshot: RoomSnapshot; onLeave: () => v
     <div className="lobby">
       <div className="roomcode">
         <span className="eyebrow">{config.label} · room code</span>
-        <span className="roomcode__value" aria-label={`Room code ${snapshot.code.split('').join(' ')}`}>
+        <span
+          className="roomcode__value notranslate"
+          aria-label={`Room code ${snapshot.code.split('').join(' ')}`}
+          {...NO_TRANSLATE}
+        >
           {snapshot.code}
         </span>
         <div className="row">
@@ -163,35 +177,7 @@ function Lobby({ snapshot, onLeave }: { snapshot: RoomSnapshot; onLeave: () => v
       </div>
 
       {isHost ? (
-        <div className="card stack">
-          <h2 style={{ fontSize: 'var(--step-1)' }}>Match settings</h2>
-          <div className="field">
-            <span className="field__label">Thinking time</span>
-            <Segmented
-              block
-              label="Thinking time"
-              value={snapshot.settings.timer}
-              onChange={(timer: TimerPreference) => updateSettings({ timer })}
-              options={(['relaxed', 'standard', 'blitz'] as TimerPreference[]).map((value) => ({
-                value,
-                label: TIMER_LABELS[value],
-              }))}
-            />
-          </div>
-          <div className="field">
-            <span className="field__label">Rounds — {snapshot.settings.rounds}</span>
-            <input
-              type="range"
-              min={3}
-              max={16}
-              step={1}
-              value={snapshot.settings.rounds}
-              onChange={(event) => updateSettings({ rounds: Number(event.target.value) })}
-              style={{ accentColor: 'var(--cyan)' }}
-              aria-label="Number of rounds"
-            />
-          </div>
-        </div>
+        <MatchSettings snapshot={snapshot} />
       ) : (
         <p className="center muted">
           Waiting for {snapshot.players.find((p) => p.isHost)?.name ?? 'the host'} to start.
@@ -219,6 +205,100 @@ function Lobby({ snapshot, onLeave }: { snapshot: RoomSnapshot; onLeave: () => v
           Leave room
         </button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The host's controls.
+ *
+ * Two things this has to get right, both learned from real play. The thinking
+ * time is named rather than numbered, so the only way to tell whether picking
+ * one did anything is to show the seconds it actually buys. And the rounds
+ * slider fires an event per step, so it is held locally while the finger is
+ * down and committed once — a stream of updates used to be able to outrun the
+ * socket and leave the room on a value the host only dragged through.
+ */
+function MatchSettings({ snapshot }: { snapshot: RoomSnapshot }) {
+  const updateSettings = useRoom((state) => state.updateSettings);
+  const [rounds, setRounds] = useState(snapshot.settings.rounds);
+  const [failed, setFailed] = useState(false);
+
+  // Follow the server unless this player is mid-drag.
+  const dragging = useRef(false);
+  useEffect(() => {
+    if (!dragging.current) setRounds(snapshot.settings.rounds);
+  }, [snapshot.settings.rounds]);
+
+  const commit = async (patch: Partial<RoomSettings>) => {
+    const result = await updateSettings(patch);
+    setFailed(!result.ok);
+  };
+
+  const seconds = (preference: TimerPreference) =>
+    resolveTimeLimit(snapshot.mode, preference);
+
+  return (
+    <div className="card stack">
+      <h2 style={{ fontSize: 'var(--step-1)' }}>Match settings</h2>
+
+      <div className="field">
+        <span className="field__label">Thinking time</span>
+        <Segmented
+          block
+          label="Thinking time"
+          value={snapshot.settings.timer}
+          onChange={(timer: TimerPreference) => void commit({ timer })}
+          options={(['relaxed', 'standard', 'blitz'] as TimerPreference[]).map((value) => ({
+            value,
+            label: TIMER_LABELS[value],
+            hint: `${seconds(value)} seconds a question`,
+          }))}
+        />
+        <span className="field__hint">
+          {seconds(snapshot.settings.timer)} seconds for every question this match.
+        </span>
+      </div>
+
+      <div className="field">
+        <span className="field__label">Rounds — {rounds}</span>
+        <input
+          type="range"
+          min={3}
+          max={16}
+          step={1}
+          value={rounds}
+          onChange={(event) => {
+            dragging.current = true;
+            setRounds(Number(event.target.value));
+          }}
+          onPointerUp={() => {
+            dragging.current = false;
+            void commit({ rounds });
+          }}
+          onKeyUp={() => {
+            dragging.current = false;
+            void commit({ rounds });
+          }}
+          onBlur={() => {
+            dragging.current = false;
+            void commit({ rounds });
+          }}
+          style={{ accentColor: 'var(--cyan)' }}
+          aria-label="Number of rounds"
+        />
+        <span className="field__hint">
+          {snapshot.settings.rounds === rounds
+            ? `The match will run ${snapshot.settings.rounds} rounds.`
+            : 'Release to apply.'}
+        </span>
+      </div>
+
+      {failed ? (
+        <Banner tone="error">
+          That setting did not reach the room. Check the connection and try again.
+        </Banner>
+      ) : null}
     </div>
   );
 }
@@ -270,7 +350,9 @@ function Seat({ player, isYou }: { player: PublicPlayer; isYou: boolean }) {
             }}
           />
         ) : (
-          <span className="seat__name">{player.name}</span>
+          <span className="seat__name notranslate" {...NO_TRANSLATE}>
+            {player.name}
+          </span>
         )}
         <span className="seat__meta">
           {player.isHost ? 'Host' : 'Ready'}
@@ -328,6 +410,7 @@ function QuestionPhase({ snapshot }: { snapshot: RoomSnapshot }) {
   const [draft, setDraft] = useState<Guess | null>(null);
   const [calculatorOpen, setCalculatorOpen] = useState(false);
   const [injected, setInjected] = useState<{ value: number; nonce: number } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const question = snapshot.question;
   const locked = myGuess !== null;
@@ -335,13 +418,20 @@ function QuestionPhase({ snapshot }: { snapshot: RoomSnapshot }) {
   useEffect(() => {
     setDraft(null);
     setInjected(null);
+    setSubmitting(false);
   }, [question?.id]);
 
   const lockIn = useCallback(() => {
-    if (!question || !draft || locked) return;
+    if (!question || !draft || locked || submitting) return;
+    // The clock is the server's, but the client knows when it has run out.
+    // Sending a guess it can see is too late only earns a rejection and a
+    // scary error; better to let the round close quietly.
+    const deadline = snapshot.deadline;
+    if (deadline !== undefined && Date.now() + clockOffset > deadline + 1200) return;
     play('lock');
-    void submitGuess(question.id, draft);
-  }, [draft, locked, question, submitGuess]);
+    setSubmitting(true);
+    void submitGuess(question.id, draft).finally(() => setSubmitting(false));
+  }, [clockOffset, draft, locked, question, snapshot.deadline, submitGuess, submitting]);
 
   useHotkeys(
     {
@@ -397,29 +487,37 @@ function QuestionPhase({ snapshot }: { snapshot: RoomSnapshot }) {
               </span>
             </div>
           </div>
-        ) : (
-          <>
-            <AnswerInput
-              key={question.id}
-              question={question}
-              onDraft={setDraft}
-              onSubmit={lockIn}
-              onOpenCalculator={() => setCalculatorOpen(true)}
-              injectedValue={injected}
-            />
-            <div className="lockbar">
-              <button
-                type="button"
-                className="btn btn--primary btn--lg btn--block"
-                onClick={lockIn}
-                disabled={!draft}
-              >
-                {draft ? 'Lock it in' : 'Make a guess'}
-              </button>
-            </div>
-            <p className="lockbar__hint center">Enter to lock in · C for the calculator</p>
-          </>
-        )}
+        ) : null}
+
+        {/*
+          Kept mounted, and hidden rather than unmounted, while locked. The
+          input owns the player's selection; throwing it away meant that a
+          lock-in the server refused — because the round had just closed, or
+          the last opponent dropped — left them staring at a cleared question
+          with no idea what happened.
+        */}
+        <div hidden={locked}>
+          <AnswerInput
+            key={question.id}
+            question={question}
+            disabled={locked}
+            onDraft={setDraft}
+            onSubmit={lockIn}
+            onOpenCalculator={() => setCalculatorOpen(true)}
+            injectedValue={injected}
+          />
+          <div className="lockbar">
+            <button
+              type="button"
+              className="btn btn--primary btn--lg btn--block"
+              onClick={lockIn}
+              disabled={!draft || submitting}
+            >
+              {draft ? 'Lock it in' : 'Make a guess'}
+            </button>
+          </div>
+          <p className="lockbar__hint center">Enter to lock in · C for the calculator</p>
+        </div>
       </div>
 
       <Calculator
@@ -461,7 +559,13 @@ function PlayerStatuses({ players, myId }: { players: PublicPlayer[]; myId: stri
                     : 'var(--accent)',
             }}
           />
-          {player.id === myId ? 'You' : player.name}
+          {player.id === myId ? (
+            'You'
+          ) : (
+            <span className="notranslate" {...NO_TRANSLATE}>
+              {player.name}
+            </span>
+          )}
           <span className="faint">{label(player.activity)}</span>
         </span>
       ))}
@@ -488,6 +592,10 @@ function RevealPhase({ snapshot }: { snapshot: RoomSnapshot }) {
     () => new Map(snapshot.players.map((player) => [player.id, player])),
     [snapshot.players],
   );
+
+  // Same hazard as Solo: this button replaces "Lock it in" in place, so a
+  // stray second tap would skip the reveal for everyone who is already ready.
+  const readyArmed = useArmed(650, snapshot.round);
 
   if (!reveal) return null;
 
@@ -528,7 +636,9 @@ function RevealPhase({ snapshot }: { snapshot: RoomSnapshot }) {
           {standings.map((player, index) => (
             <div className="standing" key={player.id} data-color={player.color}>
               <span className="standing__rank">{index + 1}</span>
-              <span className="standing__name">{player.name}</span>
+              <span className="standing__name notranslate" {...NO_TRANSLATE}>
+                {player.name}
+              </span>
               <span className="standing__score">{player.score.toLocaleString('en-US')}</span>
             </div>
           ))}
@@ -543,7 +653,7 @@ function RevealPhase({ snapshot }: { snapshot: RoomSnapshot }) {
             play('advance');
             markReady();
           }}
-          disabled={seat?.ready}
+          disabled={seat?.ready || !readyArmed}
         >
           {seat?.ready
             ? `Waiting for others · ${Math.ceil(remainingMs / 1000)}s`
@@ -602,7 +712,9 @@ function FinalPhase({ snapshot, onLeave }: { snapshot: RoomSnapshot; onLeave: ()
             <span className="podium__rank">{ordinal(standing.rank)}</span>
             <Avatar name={standing.name} color={standing.color} size={46} />
             <span className="podium__name">
-              {standing.name}
+              <span className="notranslate" {...NO_TRANSLATE}>
+                {standing.name}
+              </span>
               {standing.playerId === identity.clientId ? ' (you)' : ''}
             </span>
             <span className="podium__score">{standing.score.toLocaleString('en-US')}</span>
@@ -619,7 +731,11 @@ function FinalPhase({ snapshot, onLeave }: { snapshot: RoomSnapshot; onLeave: ()
           {rest.map((standing) => (
             <div className="standing" key={standing.playerId} data-color={standing.color}>
               <span className="standing__rank">{standing.rank}</span>
-              <span className="standing__name">{standing.name}</span>
+              <span className="standing__name notranslate" {...NO_TRANSLATE}>
+                <span className="notranslate" {...NO_TRANSLATE}>
+                {standing.name}
+              </span>
+              </span>
               <span className="standing__score">{standing.score.toLocaleString('en-US')}</span>
             </div>
           ))}

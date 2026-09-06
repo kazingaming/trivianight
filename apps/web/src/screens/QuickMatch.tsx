@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MODES, type QueueMode } from '@trivia/shared';
 
-import { Avatar, Banner } from '../components/primitives.js';
+import { Avatar, Banner, NO_TRANSLATE } from '../components/primitives.js';
 import { useSettings } from '../state/settings.js';
 import { useMatchmaking } from '../state/matchmaking.js';
 
@@ -233,7 +233,9 @@ function MatchFoundPanel({ mode, match }: { mode: QueueMode; match: { players: A
             transition={{ delay: 0.08 * index, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             <Avatar name={player.name} color={player.color} size={46} />
-            <span className="queue__player-name">{player.name}</span>
+            <span className="queue__player-name notranslate" {...NO_TRANSLATE}>
+              {player.name}
+            </span>
           </motion.div>
         ))}
       </div>

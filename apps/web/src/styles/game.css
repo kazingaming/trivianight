@@ -107,15 +107,27 @@
   pointer-events: none;
 }
 
-.mode-card:hover,
-.mode-card:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  transform: translateY(calc(-3px * var(--motion)));
+/*
+ * Hover is a pointer state, and a finger is not a pointer. Touch browsers fake
+ * one anyway: the last thing tapped keeps its hover styles until something
+ * else is tapped, so a row of answer buttons ends up with one permanently
+ * lit — which reads as a selection that is not there. Gating these on a real
+ * hovering device leaves the desktop styling untouched and stops the phone
+ * lying about what is selected.
+ */
+@media (hover: hover) {
+  .mode-card:hover,
+  .mode-card:focus-visible {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    transform: translateY(calc(-3px * var(--motion)));
+  }
 }
 
-.mode-card:hover::after,
-.mode-card:focus-visible::after {
-  opacity: 1;
+@media (hover: hover) {
+  .mode-card:hover::after,
+  .mode-card:focus-visible::after {
+    opacity: 1;
+  }
 }
 
 .mode-card__kicker {
@@ -175,12 +187,14 @@
     transform calc(var(--dur-fast) * var(--motion)) var(--ease-out);
 }
 
-.home__private:hover,
-.home__private:focus-visible {
-  border-color: var(--border-strong);
-  background: var(--ink-500);
-  color: var(--text-hi);
-  transform: translateY(calc(-1px * var(--motion)));
+@media (hover: hover) {
+  .home__private:hover,
+  .home__private:focus-visible {
+    border-color: var(--border-strong);
+    background: var(--ink-500);
+    color: var(--text-hi);
+    transform: translateY(calc(-1px * var(--motion)));
+  }
 }
 
 .home__private strong {
@@ -220,10 +234,12 @@
   text-decoration: none;
 }
 
-.home__links a:hover {
-  color: var(--text-hi);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+@media (hover: hover) {
+  .home__links a:hover {
+    color: var(--text-hi);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 /* --- Matchmaking queue ----------------------------------------------- */
@@ -602,9 +618,11 @@
   transition: background-color var(--dur-fast) linear, color var(--dur-fast) linear;
 }
 
-.magchip:hover {
-  background: var(--ink-400);
-  color: var(--text-hi);
+@media (hover: hover) {
+  .magchip:hover {
+    background: var(--ink-400);
+    color: var(--text-hi);
+  }
 }
 
 .magchip--tool {
@@ -649,10 +667,12 @@
     transform calc(var(--dur-fast) * var(--motion)) var(--ease-out);
 }
 
-.choice:hover:not(:disabled) {
-  border-color: var(--border-strong);
-  background: var(--ink-500);
-  transform: translateY(calc(-2px * var(--motion)));
+@media (hover: hover) {
+  .choice:hover:not(:disabled) {
+    border-color: var(--border-strong);
+    background: var(--ink-500);
+    transform: translateY(calc(-2px * var(--motion)));
+  }
 }
 
 .choice[aria-pressed='true'] {
@@ -766,9 +786,11 @@
   transition: background-color var(--dur-fast) linear, color var(--dur-fast) linear;
 }
 
-.orderitem__move:hover:not(:disabled) {
-  background: var(--ink-400);
-  color: var(--text-hi);
+@media (hover: hover) {
+  .orderitem__move:hover:not(:disabled) {
+    background: var(--ink-400);
+    color: var(--text-hi);
+  }
 }
 
 .orderitem__move:disabled {
@@ -1448,8 +1470,10 @@
   transition: background-color 90ms linear;
 }
 
-.calc__key:hover {
-  background: var(--ink-500);
+@media (hover: hover) {
+  .calc__key:hover {
+    background: var(--ink-500);
+  }
 }
 .calc__key:active {
   background: var(--ink-400);
@@ -1471,8 +1495,10 @@
   background: color-mix(in srgb, var(--amber) 18%, var(--ink-600));
   color: var(--amber);
 }
-.calc__key--use:hover {
-  background: color-mix(in srgb, var(--amber) 26%, var(--ink-600));
+@media (hover: hover) {
+  .calc__key--use:hover {
+    background: color-mix(in srgb, var(--amber) 26%, var(--ink-600));
+  }
 }
 
 /* --- Connection banner ------------------------------------------------ */

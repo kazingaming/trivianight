@@ -59,17 +59,6 @@ export function App() {
     applyMotionAttribute();
   }, [systemReduced, setSystemReducedMotion]);
 
-  // Audio contexts may only start from a gesture; arm it on the first one.
-  useEffect(() => {
-    const unlock = () => sfx.unlock();
-    window.addEventListener('pointerdown', unlock, { once: true });
-    window.addEventListener('keydown', unlock, { once: true });
-    return () => {
-      window.removeEventListener('pointerdown', unlock);
-      window.removeEventListener('keydown', unlock);
-    };
-  }, []);
-
   const inGame = location.pathname.startsWith('/solo') || location.pathname.startsWith('/room');
 
   return (

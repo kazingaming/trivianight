@@ -12,7 +12,7 @@ import {
 
 import { NumberLine, type LineMarker, type LineScale } from './NumberLine.js';
 import { ReactionScene } from './ReactionScene.js';
-import { Avatar } from './primitives.js';
+import { Avatar, NO_TRANSLATE } from './primitives.js';
 import { formatPoints } from '../lib/format.js';
 import { bandSound } from '../lib/audio.js';
 import { play, useReactionsEnabled } from '../state/settings.js';
@@ -218,7 +218,8 @@ export function ResultRow({ player }: { player: RevealPlayer }) {
       <Avatar name={player.name} color={player.color} />
       <div className="result__who">
         <span className="result__name">
-          {player.isYou ? `${player.name} (you)` : player.name}
+          <span className="notranslate" {...NO_TRANSLATE}>{player.name}</span>
+          {player.isYou ? ' (you)' : ''}
           {player.closest ? <span className="chip chip--accent">Closest</span> : null}
         </span>
         <span className="result__guess">
@@ -276,7 +277,9 @@ function NonNumericAnswer({
             key={side}
             className={`choice ${payload.correctSide === side ? 'choice--correct' : ''}`}
           >
-            <span className="choice__key">{side === 'higher' ? '↑' : '↓'}</span>
+            <span className="choice__key notranslate" {...NO_TRANSLATE}>
+              {side === 'higher' ? '↑' : '↓'}
+            </span>
             <span>
               {side === 'higher' ? 'Higher' : 'Lower'}
               {payload.correctSide === side && payload.actual ? (
@@ -300,7 +303,9 @@ function NonNumericAnswer({
         const correct = payload.correctIndex === index;
         return (
           <div key={label} className={`choice ${correct ? 'choice--correct' : ''}`}>
-            <span className="choice__key">{correct ? '✓' : String.fromCharCode(65 + index)}</span>
+            <span className="choice__key notranslate" {...NO_TRANSLATE}>
+              {correct ? '✓' : String.fromCharCode(65 + index)}
+            </span>
             <span>
               {label}
               {detail ? <span className="choice__detail">{detail}</span> : null}

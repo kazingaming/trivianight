@@ -87,16 +87,34 @@ export const Logo = ({ size = 26 }: IconProps) => (
   />
 );
 
+/* --- Never translate this ------------------------------------------------ */
+
+/**
+ * Marks text that machine translation must leave alone.
+ *
+ * Generated initials are the reason this exists: "Carol" becomes the avatar
+ * "CA", and a page-level auto-translate will happily turn that into
+ * "California". The same applies to anything else that only looks like a word
+ * — room codes, option letters, and names people chose for themselves.
+ *
+ * Both signals are needed: `translate="no"` is the HTML standard, and the
+ * `notranslate` class is what Google Translate actually honours.
+ */
+export const NO_TRANSLATE = { translate: 'no' as const, lang: 'zxx' };
+
 /* --- Avatar ------------------------------------------------------------ */
 
 export function Avatar({ name, color, size = 36 }: { name: string; color: number; size?: number }) {
-  const initials = name.trim().slice(0, 2).toUpperCase() || '??';
+  // Code points, not code units: slicing an emoji or an astral character in
+  // half would render a replacement box rather than an initial.
+  const initials = [...name.trim()].slice(0, 2).join('').toUpperCase() || '??';
   return (
     <span
-      className="result__avatar"
+      className="result__avatar notranslate"
       data-color={color}
       style={{ width: size, height: size, fontSize: size * 0.38 }}
       aria-hidden
+      {...NO_TRANSLATE}
     >
       {initials}
     </span>

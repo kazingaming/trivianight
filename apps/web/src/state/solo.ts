@@ -151,6 +151,8 @@ export const useSolo = create<SoloState>((set, get) => ({
   next: () => {
     const state = get();
     if (state.phase !== 'reveal') return;
+    // The last life is not a special case: the reveal is shown for it exactly
+    // as for any other round, and only ending it is different.
     if (state.lives <= 0) return finish('lives');
     advance();
   },

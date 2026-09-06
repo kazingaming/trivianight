@@ -44,16 +44,24 @@ interface RoomState {
   rematch: () => Promise<Ack<RoomSnapshot>>;
   submitGuess: (questionId: string, guess: Guess) => Promise<Ack<{ locked: true }>>;
   markReady: () => void;
-  updateSettings: (patch: Partial<RoomSettings>) => void;
+  updateSettings: (patch: Partial<RoomSettings>) => Promise<Ack<RoomSnapshot>>;
   rename: (name: string) => void;
   clearError: () => void;
 }
 
 let connection: GameConnection | null = null;
+/**
+ * What the host last asked for, so a reconnect can restate it.
+ *
+ * The room is authoritative, but a settings change that was in flight when the
+ * socket dropped would otherwise be lost without anyone noticing.
+ */
+let desiredSettings: Partial<RoomSettings> = {};
 
 function disconnect(): void {
   connection?.close();
   connection = null;
+  desiredSettings = {};
 }
 
 export const useRoom = create<RoomState>((set, get) => ({
@@ -93,6 +101,14 @@ export const useRoom = create<RoomState>((set, get) => ({
       path: `/ws/room/${code}`,
       params,
       onStatus: (status) => set({ status }),
+      onOpen: () => {
+        // Restate anything the host chose that a dropped socket may have eaten.
+        const snapshot = get().snapshot;
+        const stillMine = snapshot?.phase === 'lobby' || snapshot?.phase === 'final';
+        if (stillMine && Object.keys(desiredSettings).length > 0) {
+          connection?.send('room:settings', desiredSettings);
+        }
+      },
     });
 
     connection.on('room:state', (data) => {
@@ -182,13 +198,46 @@ export const useRoom = create<RoomState>((set, get) => ({
     const round = get().snapshot?.round ?? -1;
     // Echo immediately: the player should see "Locked in" without a round trip.
     set({ myGuess: guess, myGuessRound: round });
-    const result = await request<{ locked: true }>('round:guess', { questionId, guess });
-    if (!result.ok) set({ myGuess: null, myGuessRound: -1, error: result.error });
+
+    const result = await connection?.request<{ locked: true }>('round:guess', {
+      questionId,
+      guess,
+    });
+    if (!result) {
+      set({ myGuess: null, myGuessRound: -1 });
+      return { ok: false, error: { code: 'ROOM_NOT_FOUND', message: 'You are not in a room.' } };
+    }
+
+    if (!result.ok) {
+      set({ myGuess: null, myGuessRound: -1 });
+      // If the round has already moved on, the refusal is expected and the
+      // player has nothing to act on. Shouting "Too late" at someone whose
+      // screen has already changed only reads as a fault.
+      const current = get().snapshot;
+      const movedOn = !current || current.round !== round || current.phase !== 'question';
+      if (!movedOn) set({ error: result.error });
+    }
     return result;
   },
 
   markReady: () => connection?.send('round:ready'),
-  updateSettings: (patch) => connection?.send('room:settings', patch),
+
+  /*
+   * Acknowledged, not fire-and-forget.
+   *
+   * This used to be `send()`, which silently does nothing when the socket is
+   * mid-reconnect — so on a phone the host's chosen thinking time or round
+   * count could vanish with no sign, and the match would quietly run on the
+   * mode defaults instead. `desiredSettings` is what the host asked for, and
+   * it is re-sent whenever the socket comes back.
+   */
+  updateSettings: async (patch) => {
+    desiredSettings = { ...desiredSettings, ...patch };
+    const result = await request<RoomSnapshot>('room:settings', patch);
+    if (result.ok) desiredSettings = { ...desiredSettings, ...result.data.settings };
+    return result;
+  },
+
   rename: (name) => connection?.send('room:rename', { name }),
   clearError: () => set({ error: null }),
 }));

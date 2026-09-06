@@ -102,7 +102,7 @@ uses.
 npm test
 ```
 
-91 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
+112 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
 Worker under `wrangler dev` and drives real WebSocket clients through complete matches —
 matchmaking, hidden guesses, reveals, reconnection, disconnects, abandoned games, private
 rooms and queue lifecycle. Nothing there reaches past the wire, so a passing test means a
@@ -111,6 +111,13 @@ browser would have worked too.
 The integration files run one at a time (`fileParallelism: false`): each starts its own
 workerd instance, and running several at once starves them of CPU badly enough to make
 round timing flaky.
+
+Two suites deliberately fake a platform rather than a server. `apps/web/test/audio.test.ts`
+stands in a mobile autoplay policy — a context that starts suspended, refuses to resume
+without a gesture, and is suspended again on backgrounding — because a desktop browser
+already has activation and would skip every path that matters on a phone.
+`apps/web/test/solo.test.ts` drives the Solo store directly, which is where the rule that
+the last life still gets its reveal actually lives.
 
 ---
 

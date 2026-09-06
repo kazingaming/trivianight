@@ -17,7 +17,8 @@ import {
   type PublicQuestion,
 } from '@trivia/shared';
 import { NumberField } from './NumberField.js';
-import { IconDown, IconUp } from './primitives.js';
+import { useIsTouch } from '../lib/hooks.js';
+import { IconDown, IconUp, NO_TRANSLATE } from './primitives.js';
 import { play } from '../state/settings.js';
 
 /**
@@ -63,6 +64,19 @@ export function AnswerInput(props: AnswerInputProps) {
 
 /* --- Numeric ----------------------------------------------------------- */
 
+/**
+ * Autofocus is a desktop courtesy and a mobile ambush.
+ *
+ * On a phone, focusing the field the instant a question appears throws up the
+ * on-screen keyboard: the viewport resizes, the prompt scrolls away, and the
+ * player is reading half a question through a keyboard they did not ask for.
+ * On a desktop it just means you can start typing. So it is offered on one and
+ * not the other, and the player taps the field when they are ready.
+ */
+function useAutoFocus(): boolean {
+  return !useIsTouch();
+}
+
 function NumericAnswer({
   question,
   disabled,
@@ -72,6 +86,7 @@ function NumericAnswer({
   injectedValue,
 }: AnswerInputProps) {
   const [text, setText] = useState('');
+  const autoFocus = useAutoFocus();
   const parsed = useMemo(() => parseHumanNumber(text), [text]);
 
   useEffect(() => {
@@ -95,7 +110,7 @@ function NumericAnswer({
       unit={question.unit}
       magnitude={question.magnitude}
       disabled={disabled}
-      autoFocus
+      autoFocus={autoFocus}
     />
   );
 }
@@ -113,6 +128,7 @@ function PercentAnswer({
   injectedValue,
 }: AnswerInputProps) {
   const [text, setText] = useState('');
+  const autoFocus = useAutoFocus();
   const parsed = useMemo(() => parseHumanNumber(text), [text]);
   const value = parsed.ok ? Math.min(100, Math.max(0, parsed.value)) : 50;
   const valid = parsed.ok && parsed.value >= 0 && parsed.value <= 100;
@@ -143,7 +159,7 @@ function PercentAnswer({
         placeholder={isProbability ? 'Chance out of 100' : 'Percentage'}
         disabled={disabled}
         bounds={{ min: 0, max: 100 }}
-        autoFocus
+        autoFocus={autoFocus}
       />
       <input
         type="range"
@@ -189,6 +205,7 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
   const [position, setPosition] = useState(YEAR_SLIDER_DEFAULT);
   const [year, setYear] = useState(YEAR_SLIDER_DEFAULT_YEAR);
   const [text, setText] = useState('');
+  const autoFocus = useAutoFocus();
 
   const commitYear = (next: number) => {
     const clamped = clampYear(next);
@@ -237,7 +254,7 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
           placeholder="Year"
           disabled={disabled}
           aria-label={`${question.prompt} — type a year`}
-          autoFocus
+          autoFocus={autoFocus}
         />
         <span className="numfield__unit">{year < 0 ? 'BCE' : 'CE'}</span>
       </div>
@@ -293,7 +310,7 @@ function YearAnswer({ question, disabled, onDraft, onSubmit, injectedValue }: An
 
 /* --- Higher / lower ------------------------------------------------------ */
 
-function HigherLowerAnswer({ question, disabled, onDraft, onSubmit }: AnswerInputProps) {
+function HigherLowerAnswer({ question, disabled, onDraft }: AnswerInputProps) {
   const [choice, setChoice] = useState<'higher' | 'lower' | null>(null);
 
   const pick = (next: 'higher' | 'lower') => {
@@ -316,9 +333,8 @@ function HigherLowerAnswer({ question, disabled, onDraft, onSubmit }: AnswerInpu
             aria-pressed={choice === option}
             disabled={disabled}
             onClick={() => pick(option)}
-            onDoubleClick={onSubmit}
           >
-            <span className="choice__key">{index + 1}</span>
+            <span className="choice__key notranslate" {...NO_TRANSLATE}>{index + 1}</span>
             <span>{option === 'higher' ? 'Higher' : 'Lower'}</span>
           </button>
         ))}
@@ -329,7 +345,7 @@ function HigherLowerAnswer({ question, disabled, onDraft, onSubmit }: AnswerInpu
 
 /* --- Two-option comparison ------------------------------------------------ */
 
-function ChoiceAnswer({ question, disabled, onDraft, onSubmit }: AnswerInputProps) {
+function ChoiceAnswer({ question, disabled, onDraft }: AnswerInputProps) {
   const [choice, setChoice] = useState<0 | 1 | null>(null);
   const options = (question.options ?? []) as ChoiceOption[];
 
@@ -349,9 +365,8 @@ function ChoiceAnswer({ question, disabled, onDraft, onSubmit }: AnswerInputProp
           aria-pressed={choice === index}
           disabled={disabled}
           onClick={() => pick(index as 0 | 1)}
-          onDoubleClick={onSubmit}
         >
-          <span className="choice__key">{index === 0 ? 'A' : 'B'}</span>
+          <span className="choice__key notranslate" {...NO_TRANSLATE}>{index === 0 ? 'A' : 'B'}</span>
           <span>{option.label}</span>
         </button>
       ))}
@@ -361,7 +376,7 @@ function ChoiceAnswer({ question, disabled, onDraft, onSubmit }: AnswerInputProp
 
 /* --- Multiple choice -------------------------------------------------------- */
 
-function MultipleChoiceAnswer({ question, disabled, onDraft, onSubmit }: AnswerInputProps) {
+function MultipleChoiceAnswer({ question, disabled, onDraft }: AnswerInputProps) {
   const [choice, setChoice] = useState<number | null>(null);
   const options = (question.options ?? []) as string[];
 
@@ -381,9 +396,10 @@ function MultipleChoiceAnswer({ question, disabled, onDraft, onSubmit }: AnswerI
           aria-pressed={choice === index}
           disabled={disabled}
           onClick={() => pick(index)}
-          onDoubleClick={onSubmit}
         >
-          <span className="choice__key">{String.fromCharCode(65 + index)}</span>
+          <span className="choice__key notranslate" {...NO_TRANSLATE}>
+            {String.fromCharCode(65 + index)}
+          </span>
           <span>{option}</span>
         </button>
       ))}

@@ -8,7 +8,7 @@ import { Calculator } from '../components/Calculator.js';
 import { Reveal, type RevealPlayer } from '../components/Reveal.js';
 import { Timer } from '../components/Timer.js';
 import { Lives, Stat } from '../components/primitives.js';
-import { useHotkeys } from '../lib/hooks.js';
+import { useArmed, useHotkeys } from '../lib/hooks.js';
 import { play, useSettings } from '../state/settings.js';
 import { summarise, useSolo } from '../state/solo.js';
 
@@ -21,6 +21,14 @@ export function SoloScreen() {
   const identity = useSettings((s) => s.identity);
 
   const { phase, question, publicQuestion, result } = state;
+
+  /*
+   * The reveal's button occupies the same place as "Lock it in" did a moment
+   * ago. Without a short arming delay, the synthetic click a mobile browser
+   * fires after a tap — or a second Enter — advances straight past the reveal,
+   * which on the last life meant the run ended without ever showing the answer.
+   */
+  const advanceArmed = useArmed(650, phase === 'reveal' ? state.round : null);
 
   useEffect(() => {
     setDraft(null);
@@ -43,7 +51,7 @@ export function SoloScreen() {
     {
       Enter: () => {
         if (phase === 'question') lockIn();
-        else if (phase === 'reveal') next();
+        else if (phase === 'reveal' && advanceArmed) next();
       },
       c: () => {
         if (phase === 'question') setCalculatorOpen((open) => !open);
@@ -207,7 +215,12 @@ export function SoloScreen() {
             </p>
           ) : null}
           <div className="lockbar">
-            <button type="button" className="btn btn--primary btn--lg btn--block" onClick={next}>
+            <button
+              type="button"
+              className="btn btn--primary btn--lg btn--block"
+              onClick={next}
+              disabled={!advanceArmed}
+            >
               {state.lives > 0 ? 'Next question' : 'See how you did'}
             </button>
           </div>
