@@ -102,7 +102,7 @@ uses.
 npm test
 ```
 
-112 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
+124 tests. The interesting ones are not unit tests: `apps/worker/test/` boots the real
 Worker under `wrangler dev` and drives real WebSocket clients through complete matches —
 matchmaking, hidden guesses, reveals, reconnection, disconnects, abandoned games, private
 rooms and queue lifecycle. Nothing there reaches past the wire, so a passing test means a
@@ -115,7 +115,10 @@ round timing flaky.
 Two suites deliberately fake a platform rather than a server. `apps/web/test/audio.test.ts`
 stands in a mobile autoplay policy — a context that starts suspended, refuses to resume
 without a gesture, and is suspended again on backgrounding — because a desktop browser
-already has activation and would skip every path that matters on a phone.
+already has activation and would skip every path that matters on a phone. Its fake also
+has an advancing clock and a `baseLatency`, so a cue scheduled inside the window the
+audio thread has already rendered is counted as silent rather than as played. An earlier
+version of that fake had neither, which is exactly why it passed while phones were mute.
 `apps/web/test/solo.test.ts` drives the Solo store directly, which is where the rule that
 the last life still gets its reveal actually lives.
 

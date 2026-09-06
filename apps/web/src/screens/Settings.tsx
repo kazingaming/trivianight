@@ -3,9 +3,111 @@ import { PLAYER_COLORS, TIMER_LABELS, type TimerPreference } from '@trivia/share
 import { Segmented } from '../components/primitives.js';
 import { useSettings } from '../state/settings.js';
 import { useAccount } from '../state/account.js';
-import { sfx } from '../lib/audio.js';
+import { sfx, type AudioDiagnostics } from '../lib/audio.js';
 import { clearSoloRecord, loadSoloRecord, clearRecentQuestions } from '../lib/storage.js';
 import { useState } from 'react';
+
+/**
+ * A sound check.
+ *
+ * Nothing in a browser can answer "did the player hear that", and the two ways
+ * it can fail look identical from inside the page: audio that never started,
+ * and audio that is playing into a device whose media volume is down. Phones
+ * keep media volume separate from the ringer, so the second is common and
+ * invisible.
+ *
+ * So this reports what the device is actually doing, and offers a tone that is
+ * deliberately louder and longer than anything in the game. If the tone plays,
+ * the audio path works and the rest is volume. If it does not, the numbers
+ * below say how far it got.
+ */
+function SoundCheck() {
+  const [report, setReport] = useState<AudioDiagnostics | null>(null);
+  const [signal, setSignal] = useState<number | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const check = async () => {
+    setBusy(true);
+    setSignal(null);
+    const peak = await sfx.measureOutput();
+    setSignal(peak);
+    setReport(sfx.diagnostics());
+    setBusy(false);
+  };
+
+  const verdict = () => {
+    if (signal === null || !report) return null;
+    if (signal > 0.01) {
+      return (
+        <>
+          <strong>A signal is reaching your speaker.</strong> The page measured its own output at{' '}
+          {Math.round(signal * 100)}% while the tone played, so the game&rsquo;s audio is working.
+          If you heard nothing, it is the device: raise the <strong>media</strong> volume — on a
+          phone that is a separate control from the ringer, and the volume keys only change it
+          while something is playing.
+        </>
+      );
+    }
+    if (report.state !== 'running') {
+      return (
+        <>
+          <strong>Audio has not started.</strong> The browser is still refusing to open an audio
+          context ({report.state}). Tap the button once more — some browsers need the tap that
+          starts audio to be a direct one.
+        </>
+      );
+    }
+    if (!report.enabled) {
+      return (
+        <>
+          <strong>Sound effects are switched off</strong> in the control above.
+        </>
+      );
+    }
+    if (report.volume === 0) {
+      return (
+        <>
+          <strong>The in-game volume is at zero.</strong> Raise the slider above.
+        </>
+      );
+    }
+    return (
+      <>
+        <strong>No signal was produced.</strong> Audio is running but nothing came out, which
+        usually means the browser is blocking sound for this site. In Chrome: the padlock or
+        &ldquo;i&rdquo; next to the address, then Permissions, then Sound.
+      </>
+    );
+  };
+
+  return (
+    <div className="field">
+      <span className="field__label">Not hearing anything?</span>
+      <div className="row row-wrap">
+        <button type="button" className="btn btn--sm" disabled={busy} onClick={() => void check()}>
+          {busy ? 'Listening…' : 'Test the sound'}
+        </button>
+      </div>
+      <span className="field__hint">
+        Plays three rising notes, much louder than the game, and measures whether they actually
+        reach the speaker.
+      </span>
+
+      {signal !== null ? <p className="field__hint">{verdict()}</p> : null}
+
+      {report ? (
+        <p className="field__hint faint" style={{ fontVariantNumeric: 'tabular-nums' }}>
+          {report.state}
+          {report.sampleRate ? ` · ${Math.round(report.sampleRate / 100) / 10} kHz` : ''}
+          {report.baseLatencyMs !== null ? ` · buffer ${report.baseLatencyMs}ms` : ''}
+          {report.lookaheadMs !== null ? ` · lookahead ${report.lookaheadMs}ms` : ''}
+          {` · volume ${Math.round(report.volume * 100)}%`}
+          {signal !== null ? ` · measured ${Math.round(signal * 1000) / 10}%` : ''}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export function SettingsScreen() {
   const settings = useSettings((state) => state.settings);
@@ -108,6 +210,8 @@ export function SettingsScreen() {
             style={{ accentColor: 'var(--cyan)' }}
           />
         </div>
+
+        <SoundCheck />
       </section>
 
       <section className="card stack">
