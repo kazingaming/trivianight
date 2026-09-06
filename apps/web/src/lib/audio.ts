@@ -185,7 +185,11 @@ class SoundKit {
   unlock(fromGesture = true): void {
     // On a page wake there may be nothing to resume yet; that is fine.
     const context = fromGesture ? this.ensure() : this.context;
-    if (!context) return;
+    if (!context) {
+      // Nothing to wait for on a browser with no Web Audio at all.
+      if (this.unsupported) this.stopListening();
+      return;
+    }
 
     if (context.state === 'running') {
       this.stopListening();

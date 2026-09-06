@@ -32,7 +32,6 @@ interface RoomState {
   joinedCode: string | null;
   /** What this player locked in, echoed locally until the reveal. */
   myGuess: Guess | null;
-  myGuessRound: number;
   allLockedRound: number | null;
 
   /** Ask the server for a fresh private room. */
@@ -71,7 +70,6 @@ export const useRoom = create<RoomState>((set, get) => ({
   error: null,
   joinedCode: null,
   myGuess: null,
-  myGuessRound: -1,
   allLockedRound: null,
 
   createRoom: async (mode) => {
@@ -124,7 +122,6 @@ export const useRoom = create<RoomState>((set, get) => ({
       // Clear the local echo when a new question opens.
       if (snapshot.phase === 'question' && roundChanged) {
         patch.myGuess = null;
-        patch.myGuessRound = -1;
         patch.allLockedRound = null;
       }
       set(patch);
@@ -197,25 +194,39 @@ export const useRoom = create<RoomState>((set, get) => ({
   submitGuess: async (questionId, guess) => {
     const round = get().snapshot?.round ?? -1;
     // Echo immediately: the player should see "Locked in" without a round trip.
-    set({ myGuess: guess, myGuessRound: round });
+    set({ myGuess: guess });
 
     const result = await connection?.request<{ locked: true }>('round:guess', {
       questionId,
       guess,
     });
     if (!result) {
-      set({ myGuess: null, myGuessRound: -1 });
+      set({ myGuess: null });
       return { ok: false, error: { code: 'ROOM_NOT_FOUND', message: 'You are not in a room.' } };
     }
 
     if (!result.ok) {
-      set({ myGuess: null, myGuessRound: -1 });
-      // If the round has already moved on, the refusal is expected and the
-      // player has nothing to act on. Shouting "Too late" at someone whose
-      // screen has already changed only reads as a fault.
+      /*
+       * A failed acknowledgement is not the same as a failed guess.
+       *
+       * If the socket is replaced between sending and hearing back — a phone
+       * changing network, a screen unlocking — the request times out even
+       * though the room has the guess. The room's own view of this seat says
+       * which happened, and it is the one worth believing.
+       */
       const current = get().snapshot;
+      const clientId = useSettings.getState().identity.clientId;
+      const landed =
+        current?.players.some((player) => player.id === clientId && player.activity === 'locked') ??
+        false;
+
+      if (!landed) set({ myGuess: null });
+
+      // A refusal that arrives after the round has moved on is expected, and
+      // the player has nothing to act on. Shouting "Too late" at someone whose
+      // screen has already changed only reads as a fault.
       const movedOn = !current || current.round !== round || current.phase !== 'question';
-      if (!movedOn) set({ error: result.error });
+      if (!landed && !movedOn) set({ error: result.error });
     }
     return result;
   },
@@ -233,7 +244,11 @@ export const useRoom = create<RoomState>((set, get) => ({
    */
   updateSettings: async (patch) => {
     desiredSettings = { ...desiredSettings, ...patch };
-    const result = await request<RoomSnapshot>('room:settings', patch);
+    // Reported inline next to the control that failed, so no global toast.
+    const result = (await connection?.request<RoomSnapshot>('room:settings', patch)) ?? {
+      ok: false as const,
+      error: { code: 'ROOM_NOT_FOUND' as const, message: 'You are not in a room.' },
+    };
     if (result.ok) desiredSettings = { ...desiredSettings, ...result.data.settings };
     return result;
   },

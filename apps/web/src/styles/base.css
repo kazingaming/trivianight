@@ -98,6 +98,22 @@ summary {
   -webkit-tap-highlight-color: transparent;
 }
 
+/*
+ * A press held a moment too long on a phone starts a text selection, or pops
+ * the iOS callout menu — and either one cancels the tap that was meant to
+ * choose an answer. Labels are not text anyone needs to select.
+ */
+button,
+[role='button'],
+[role='radio'],
+.choice,
+.magchip,
+.segmented__option {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 /* A range slider still needs to own horizontal drags. */
 input[type='range'] {
   touch-action: pan-y;

@@ -413,7 +413,14 @@ function QuestionPhase({ snapshot }: { snapshot: RoomSnapshot }) {
   const [submitting, setSubmitting] = useState(false);
 
   const question = snapshot.question;
-  const locked = myGuess !== null;
+  /*
+   * The server's view of this seat is the truth; the local echo only exists so
+   * "Locked in" appears without waiting for a round trip. Trusting the echo
+   * alone meant a guess that reached the room but whose acknowledgement was
+   * lost — a phone on a flaky connection, nine seconds, a timeout — read as
+   * never having been made, while every retry was refused as a duplicate.
+   */
+  const locked = myGuess !== null || seat?.activity === 'locked';
 
   useEffect(() => {
     setDraft(null);
